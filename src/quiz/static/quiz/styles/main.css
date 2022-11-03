@@ -1,0 +1,37 @@
+h1 
+{
+  position: relative;
+  text-align: center ;
+  padding: 10px;
+  border-top: solid 2px black;
+  border-bottom: solid 2px black;
+}
+h1:before, h1:after 
+{
+  content: '';
+  position: absolute;
+  top: -7px;
+  width: 2px;
+  height: -webkit-calc(100% + 14px);
+  height: calc(100% + 14px);
+  background-color: black;
+}
+h1:before 
+{
+  left: 7px;
+}
+h1:after 
+{
+  right: 7px;
+}
+
+h2 
+{
+  color:#008080;
+  font-size:30px;
+  text-align: center 
+}
+body
+{
+  font-family: 'Hiragino Kaku Gothic ProN','ヒラギノ角ゴ ProN W3','Arial',sans-serif;
+}
