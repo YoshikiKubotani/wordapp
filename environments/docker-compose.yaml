@@ -26,6 +26,7 @@ services:
       TZ: "Asia/Tokyo"
     volumes:
       - ../../mysql/my.cnf:/etc/mysql/conf.d/my.cnf # MySQLの設定ファイル指定
+      - ../../mysql/data:/var/lib/mysql
     ports:
       - "3307:3306"
 
