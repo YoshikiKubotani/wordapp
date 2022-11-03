@@ -1,0 +1,15 @@
+{% load static %}
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{% static 'quiz/styles/main.css' %}">
+    <title>英単語アプリ</title>
+</head>
+<body>
+    {% block content %}
+    {% endblock %}
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="{% static 'quiz/scripts/main.js' %}"></script>
+</body>
+</html>
