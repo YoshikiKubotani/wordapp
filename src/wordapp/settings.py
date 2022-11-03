@@ -75,9 +75,13 @@ WSGI_APPLICATION = 'wordapp.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    'default':{
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'wordapp_db',
+        'USER': 'root',
+        'PASSWORD': 'root',
+        'HOST': 'mysql_container',
+        'PORT': '3306',
     }
 }
 
