@@ -33,7 +33,7 @@ RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python${PYTH
     && python3 -m pip install poetry
 
 RUN apt update && apt install --no-install-recommends -y \
-    mysql-client mysql-devel gcc
+    mysql-client libmysqlclient-dev gcc python3.8-dev
 
 # Add user. Without this, following process is executed as admin. 
 RUN groupadd -g ${GID} ${GROUP_NAME} \
