@@ -1,7 +1,8 @@
 version: "3.8"
 
 services:
-  core:
+  wordapp:
+    container_name: wordapp_container
     build:
       args:
         - BASE_IMAGE=ubuntu:20.04
@@ -12,6 +13,21 @@ services:
       dockerfile: environments/Dockerfile
     tty: true
     volumes:
-        - ../../:/home/challenger/ascender
+        - ../../:/home/challenger/wordapp
     ports:
         - 8000:8000
+
+  mysql:
+    image: mysql:8.0.31 # プロダクトで使うならバージョンはlatestじゃないほうが良いです
+    container_name: mysql_container
+    environment:
+      MYSQL_ROOT_PASSWORD: root # MySQLパスワード設定
+      MYSQL_DATABASE: wordapp_db # MySQLデータベース名設定
+      TZ: "Asia/Tokyo"
+    volumes:
+      - ../../../mysql/my.cnf:/etc/mysql/conf.d/my.cnf # MySQLの設定ファイル指定
+    ports:
+      - "3307:3306"
+
+  
+  
