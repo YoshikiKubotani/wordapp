@@ -1,0 +1,22 @@
+{% extends 'quiz/base.html' %}
+{% load static %}
+{% block content %}
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{% static 'quiz/styles/genra.css' %}">
+    <title>英単語アプリ</title>
+</head>
+<div id="app">
+    <h1>👋 ジャンルを選択する👋</h1>
+    <ul>
+        <li>海外で使う英語</li>
+        <li>品詞</li>
+        <li>喜怒哀楽</li>
+        <li>中学英語</li>
+    </ul>
+</div>
+<body>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="{% static 'quiz/scripts/genra.js' %}"></script>
+</body>
+{% endblock %}

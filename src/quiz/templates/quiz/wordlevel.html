@@ -1,0 +1,22 @@
+{% extends 'quiz/base.html' %}
+{% load static %}
+{% block content %}
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{% static 'quiz/styles/wordlevel.css' %}">
+    <title>英単語アプリ</title>
+</head>
+<div id="app">
+    <h1>👋 学年を選択する👋</h1>
+    <ul>
+        <li>中3</li>
+        <li>高1</li>
+        <li>高2</li>
+        <li>高3</li>
+    </ul>
+</div>
+<body>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="{% static 'quiz/scripts/wordlevel.js' %}"></script>
+</body>
+{% endblock %}

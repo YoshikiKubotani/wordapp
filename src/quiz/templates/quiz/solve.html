@@ -1,0 +1,23 @@
+{% extends 'quiz/base.html' %}
+{% load static %}
+{% block content %}
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{% static 'quiz/styles/solve.css' %}">
+    <title>英単語アプリ</title>
+</head>
+<div id="app">
+    <h1>👋 問題👋</h1>
+    <h2> discuss</h2>
+    <ul>
+        <li>議論する</li>
+        <li>歌う</li>
+        <li>開催する</li>
+        <li>食べる</li>
+    </ul>
+</div>
+<body>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="{% static 'quiz/scripts/solve.js' %}"></script>
+</body>
+{% endblock %}

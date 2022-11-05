@@ -1,0 +1,43 @@
+h1 {
+  border-bottom: solid 3px #a3cccc  ;
+  position: relative;
+}
+
+h1:after {
+  position: absolute;
+  content: " ";
+  display: block;
+  border-bottom: solid 3px #008080  ;
+  bottom: -3px;
+  width: 20%;
+}
+ul, ol {
+  padding: 0;
+  position: relative;
+}
+ul, ol {
+  padding: 0;
+}
+
+ul, ol {
+  padding: 0;
+  position: relative;
+}
+
+ul li, ol li {
+  color: black;
+  border-left: solid 8px #008080;/*左側の線*/
+  background: whitesmoke;/*背景色*/
+  margin-bottom: 5px;/*下のバーとの余白*/
+  line-height: 1.5;
+  border-radius: 0 15px 15px 0;/*右側の角だけ丸く*/
+  padding: 0.5em;
+  list-style-type: none!important;
+}
+body
+{
+  font-family: 'Hiragino Kaku Gothic ProN','ヒラギノ角ゴ ProN W3','Arial',sans-serif;
+}
+
+/*正解したら背景色background:#008080
+/*不正解なら背景色background: whitesmokeのまま
