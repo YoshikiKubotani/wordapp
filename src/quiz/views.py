@@ -8,6 +8,13 @@ class StartPage(TemplateView):
         # getが飛んだ時の処理を書く
         return render(request, self.template_name, context=self.kwargs)
 
+class ModePage(TemplateView):
+    template_name: str = "quiz/mode.html"
+
+    def get(self, request, *args, **kwargs):
+        # getが飛んだ時の処理を書く
+        return render(request, self.template_name, context=self.kwargs)
+
 class GenraPage(TemplateView):
     template_name: str = "quiz/genra.html"
 

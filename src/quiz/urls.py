@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
     path('', views.StartPage.as_view(), name='start'),
+    path('', views.ModePage.as_view(), name='mode'),
     path('genra', views.GenraPage.as_view(), name='genra'),
     path('wordlevel', views.WordLevelPage.as_view(), name='wordlevel'),
     path('solve', views.SolvePage.as_view(), name='solve'),
