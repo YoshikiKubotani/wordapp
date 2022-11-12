@@ -1,0 +1,33 @@
+{% extends 'quiz/base.html' %}
+{% load static %}
+{% block content %}
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{% static 'quiz/styles/start_page.css' %}">
+    <title>英単語アプリ</title>
+</head>
+<div id="app">
+    <h1>👋 英単語アプリ👋</h1>
+    <div class="for-pc">
+        <fieldset>
+            <input id="問題を解く" class="radio-inline__input" type="radio" name="accessible-radio" value="問題を解く" checked="checked"/>
+            <label class="radio-inline__label" for="問題を解く">
+                問題を解く
+            </label>
+        </fieldset>
+    </div>
+
+    <div class="for-sp">
+        <fieldset>
+            <input id="問題を解く" class="radio-inline__input" type="radio" name="accessible-radio" value="問題を解く" checked="checked"/>
+            <label class="radio-inline__label" for="問題を解く">
+                問題を解く
+            </label>
+        </fieldset>
+    </div>
+</div>
+<body>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="{% static 'quiz/scripts/start_page.js' %}"></script>
+</body>
+{% endblock %}

@@ -9,23 +9,24 @@ services:
         - PYTHON_VERSION=3.8
         - UID=${HOST_UID-1000}
         - GID=${HOST_GID-1000}
-      context: ../../
+      context: ../
       dockerfile: environments/Dockerfile
     tty: true
     volumes:
-        - ../../:/home/challenger/wordapp
+        - ../:/home/challenger/wordapp
     ports:
         - 8000:8000
 
   mysql:
-    image: mysql:8.0.31 # プロダクトで使うならバージョンはlatestじゃないほうが良いです
+    image: mysql:8.0.31
     container_name: mysql_container
     environment:
       MYSQL_ROOT_PASSWORD: root # MySQLパスワード設定
       MYSQL_DATABASE: wordapp_db # MySQLデータベース名設定
       TZ: "Asia/Tokyo"
     volumes:
-      - ../../../mysql/my.cnf:/etc/mysql/conf.d/my.cnf # MySQLの設定ファイル指定
+      - ../../mysql/my.cnf:/etc/mysql/conf.d/my.cnf # MySQLの設定ファイル指定
+      - ../../mysql/data:/var/lib/mysql
     ports:
       - "3307:3306"
 
