@@ -1,6 +1,7 @@
 h1 {
   border-bottom: solid 3px #a3cccc  ;
   position: relative;
+  color:black
 }
 
 h1:after {
@@ -11,33 +12,69 @@ h1:after {
   bottom: -3px;
   width: 20%;
 }
-ul, ol {
-  padding: 0;
-  position: relative;
-}
-ul, ol {
-  padding: 0;
-}
 
-ul, ol {
-  padding: 0;
-  position: relative;
-}
-
-ul li, ol li {
-  color: black;
-  border-left: solid 8px #008080;/*左側の線*/
-  background: whitesmoke;/*背景色*/
-  margin-bottom: 5px;/*下のバーとの余白*/
-  line-height: 1.5;
-  border-radius: 0 15px 15px 0;/*右側の角だけ丸く*/
-  padding: 0.5em;
-  list-style-type: none!important;
-}
-body
-{
+body {
   font-family: 'Hiragino Kaku Gothic ProN','ヒラギノ角ゴ ProN W3','Arial',sans-serif;
+/*   max-width: 400px; */
+  margin: 3rem auto 0;
+  line-height: 1.6;
+  color: #008080;
 }
 
-/*正解したら背景色background:#008080
-/*不正解なら背景色background: whitesmokeのまま
+fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+
+
+p {
+  margin: 0 0 1.6rem;
+  padding-bottom: 0.2rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.radio-inline__input {
+    clip: rect(1px, 1px, 1px, 1px);
+    position: absolute !important;
+}
+
+.radio-inline__label {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    margin-right: 18px;
+    border-radius: 3px;
+    transition: all .2s;
+}
+
+.radio-inline__input:checked + .radio-inline__label {
+    background: #008080;
+    color: #fff;
+    text-shadow: 0 0 1px rgba(0,0,0,.7);
+}
+
+.radio-inline__input:focus + .radio-inline__label {
+    outline-color: #4D90FE;
+    outline-offset: -2px;
+    outline-style: auto;
+    outline-width: 5px;
+}
+
+.for-pc {
+  display:block;
+}
+
+.for-sp {
+  display:none;
+  max-width: 400px;
+}
+
+.for-sp-h1{
+  text-align: center;
+}
+
+@media only screen and (max-width : 767px){
+  .for-pc { display:none; }
+  .for-sp { display:block; }
+}

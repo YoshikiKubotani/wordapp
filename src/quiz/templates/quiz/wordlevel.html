@@ -7,13 +7,50 @@
     <title>英単語アプリ</title>
 </head>
 <div id="app">
-    <h1>👋 学年を選択する👋</h1>
-    <ul>
-        <li>中3</li>
-        <li>高1</li>
-        <li>高2</li>
-        <li>高3</li>
-    </ul>
+    <div class="for-pc">
+        <h1>👋 学年を選択する👋</h1><p>&nbsp;</p>
+        <fieldset>
+            <input id="中3" class="radio-inline__input" type="radio" name="accessible-radio" value="中3" checked="checked"/>
+            <label class="radio-inline__label" for="中3">
+                中3
+            </label>
+            <input id="高1" class="radio-inline__input" type="radio" name="accessible-radio" value="高1"/>
+            <label class="radio-inline__label" for="高1">
+                高1
+            </label>
+            <input id="高2" class="radio-inline__input" type="radio" name="accessible-radio" value="高2"/>
+            <label class="radio-inline__label" for="高2">
+                高2
+            </label>
+            <input id="高3" class="radio-inline__input" type="radio" name="accessible-radio" value="高3"/>
+            <label class="radio-inline__label" for="高3">
+                高3
+            </label>
+        </fieldset>
+    </div>
+
+    <div class="for-sp">
+        <h1 class="for-sp-h1" >👋 学年を選択する👋</h1><p>&nbsp;</p>
+        <fieldset>
+            <input id="中3" class="radio-inline__input" type="radio" name="accessible-radio" value="中3" checked="checked"/>
+            <label class="radio-inline__label" for="中3">
+                中3
+            </label>
+            <input id="高1" class="radio-inline__input" type="radio" name="accessible-radio" value="高1"/>
+            <label class="radio-inline__label" for="高1">
+                高1
+            </label>
+            <input id="高2" class="radio-inline__input" type="radio" name="accessible-radio" value="高2"/>
+            <label class="radio-inline__label" for="高2">
+                高2
+            </label>
+            <input id="高3" class="radio-inline__input" type="radio" name="accessible-radio" value="高3"/>
+            <label class="radio-inline__label" for="高3">
+                高3
+            </label>
+        </fieldset>
+    </div>
+
 </div>
 <body>
     <script src="https://unpkg.com/vue@next"></script>
