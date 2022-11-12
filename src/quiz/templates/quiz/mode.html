@@ -1,0 +1,16 @@
+{% extends 'quiz/base.html' %}
+{% load static %}
+{% block content %}
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{% static 'quiz/styles/mode.css' %}">
+    <title>英単語アプリ</title>
+</head>
+<div id="app">
+
+</div>
+<body>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="{% static 'quiz/scripts/mode.js' %}"></script>
+</body>
+{% endblock %}
