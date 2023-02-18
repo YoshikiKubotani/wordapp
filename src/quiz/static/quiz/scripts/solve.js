@@ -24,13 +24,17 @@ const QuestionComponent = {
             [[ op4 ]]
         </label>
     </fieldset>
-    <div id="switch">
+    <div id="answer">
+        <button @click="showSwitch">解答</button>
+    </div>
+    <div id="switch" v-if="showButtons">
         <a href="#" class="btn btn-flat" @click=prevItem><span>前の問題</span></a>
         <a href="#" class="btn btn-flat" @click=nextItem><span>次の問題</span></a>
     </div>
         `,
     setup(props) {
         const count = Vue.ref(0)
+        const showButtons = Vue.ref(false)
         const question = Vue.ref(props.questionSet[count.value]["question_en"])
         const answer = Vue.ref(props.questionSet[count.value]["answer_jp"])
         const op1 = Vue.ref(props.questionSet[count.value]["option_1"])
@@ -48,6 +52,7 @@ const QuestionComponent = {
                 op2.value = props.questionSet[count.value]["option_2"]
                 op3.value = props.questionSet[count.value]["option_3"]
                 op4.value = props.questionSet[count.value]["option_4"]
+                showButtons.value = false
                 console.log(count.value)
                 console.log(question.value)
             }
@@ -62,12 +67,16 @@ const QuestionComponent = {
                 op2.value = props.questionSet[count.value]["option_2"]
                 op3.value = props.questionSet[count.value]["option_3"]
                 op4.value = props.questionSet[count.value]["option_4"]
+                showButtons.value = false
                 console.log(count.value)
                 console.log(question.value)
             }
         };
 
+        const showSwitch = () => { showButtons.value = true }
+
         return {
+            showButtons,
             question,
             answer,
             op1,
@@ -75,7 +84,8 @@ const QuestionComponent = {
             op3,
             op4,
             nextItem,
-            prevItem
+            prevItem,
+            showSwitch
         };
     },
     delimiters: ['[[', ']]']
