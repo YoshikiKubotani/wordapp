@@ -29,6 +29,3 @@ services:
       - ../../mysql/data:/var/lib/mysql
     ports:
       - "3307:3306"
-
-  
-  
