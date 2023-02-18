@@ -5,6 +5,8 @@ h1
   padding: 10px;
   border-top: solid 2px black;
   border-bottom: solid 2px black;
+  margin-top: 50px;
+  margin-bottom: 50px;
 }
 h1:before, h1:after 
 {
@@ -26,6 +28,13 @@ h1:after
 }
 
 h2 
+{
+  color:#000000;
+  font-size:30px;
+  text-align: center 
+}
+
+h3 
 {
   color:#008080;
   font-size:30px;
