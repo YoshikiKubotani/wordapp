@@ -38,7 +38,7 @@ class SolvePage(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         all_items = MasterWordTable.objects.order_by("-id")
-        test_set = make_random_test(all_items, num_question=20, num_options=4)
+        test_set = make_random_test(all_items, num_questions=20, num_options=4)
         context["test_set"] = test_set
         context["num_question"] = 20
         return context
