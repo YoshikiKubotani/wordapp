@@ -1,11 +1,11 @@
 import random
 
-def make_random_test(all_items, num_questions):
+def make_random_test(all_items, num_questions, num_options):
     len_data = len(all_items)
     test_set_list = []
     for i in range(num_questions):
-        item_id_list = random.sample(range(len_data), k=4)
-        answer_id = random.randint(1, 4)
+        item_id_list = random.sample(range(len_data), k=num_options)
+        answer_id = random.randint(1, num_options)
         question_dict = {}
         for idx, item_id in enumerate(item_id_list):
             if idx+1 == answer_id:
