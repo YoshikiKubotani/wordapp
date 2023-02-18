@@ -40,6 +40,7 @@ class SolvePage(TemplateView):
         all_items = MasterWordTable.objects.order_by("-id")
         test_set = make_random_test(all_items, num_question=20)
         context["test_set"] = test_set
+        context["num_question"] = 20
         return context
 
 class ResultPage(TemplateView):

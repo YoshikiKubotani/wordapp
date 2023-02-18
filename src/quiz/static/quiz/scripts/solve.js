@@ -1,6 +1,7 @@
 const QuestionComponent = {
     props: {
         "questionSet": Object,
+        "numQuestion": Number,
     },
     template: `
     <h1>👋 問題👋</h1>
@@ -39,27 +40,31 @@ const QuestionComponent = {
         console.log(count.value)
 
         const nextItem = () => {
-            count.value ++
-            question.value = props.questionSet[count.value]["question_en"]
-            answer.value = props.questionSet[count.value]["answer_jp"]
-            op1.value = props.questionSet[count.value]["option_1"]
-            op2.value = props.questionSet[count.value]["option_2"]
-            op3.value = props.questionSet[count.value]["option_3"]
-            op4.value = props.questionSet[count.value]["option_4"]
-            console.log(count.value)
-            console.log(question.value)
+            if (count.value < props.numQuestion-1) {
+                count.value ++
+                question.value = props.questionSet[count.value]["question_en"]
+                answer.value = props.questionSet[count.value]["answer_jp"]
+                op1.value = props.questionSet[count.value]["option_1"]
+                op2.value = props.questionSet[count.value]["option_2"]
+                op3.value = props.questionSet[count.value]["option_3"]
+                op4.value = props.questionSet[count.value]["option_4"]
+                console.log(count.value)
+                console.log(question.value)
+            }
         };
 
         const prevItem = () => {
-            count.value --
-            question.value = props.questionSet[count.value]["question_en"]
-            answer.value = props.questionSet[count.value]["answer_jp"]
-            op1.value = props.questionSet[count.value]["option_1"]
-            op2.value = props.questionSet[count.value]["option_2"]
-            op3.value = props.questionSet[count.value]["option_3"]
-            op4.value = props.questionSet[count.value]["option_4"]
-            console.log(count.value)
-            console.log(question.value)
+            if (count.value > 0) {
+                count.value --
+                question.value = props.questionSet[count.value]["question_en"]
+                answer.value = props.questionSet[count.value]["answer_jp"]
+                op1.value = props.questionSet[count.value]["option_1"]
+                op2.value = props.questionSet[count.value]["option_2"]
+                op3.value = props.questionSet[count.value]["option_3"]
+                op4.value = props.questionSet[count.value]["option_4"]
+                console.log(count.value)
+                console.log(question.value)
+            }
         };
 
         return {
