@@ -24,8 +24,13 @@ const QuestionComponent = {
             [[ op4 ]]
         </label>
     </fieldset>
-    <div id="answer">
-        <button @click="showSwitch">解答</button>
+    <div id="answer" v-if="!showButtons">
+        <a href="#" class="btn btn-3d-circle" @click="showSwitch">
+            <span class="btn-3d-circle-content">
+                <span class="btn-3d-circle-front">解答</span>
+            </span>
+            <span class="btn-3d-circle-back"><i class="fas fa-mouse-pointer"></i></span>
+        </a>
     </div>
     <div id="switch" v-if="showButtons">
         <a href="#" class="btn btn-flat" @click=prevItem><span>前の問題</span></a>
