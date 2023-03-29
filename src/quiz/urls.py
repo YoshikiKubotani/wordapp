@@ -2,6 +2,7 @@ from django.urls import path
 
 from . import views
 
+app_name = "quiz"
 urlpatterns = [
     path('', views.StartPage.as_view(), name='start'),
     path('mode', views.ModePage.as_view(), name='mode'),
