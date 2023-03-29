@@ -10,18 +10,26 @@
     <h1>👋 英単語アプリ👋</h1>
     <div class="for-pc">
         <fieldset>
-            <input id="問題を解く" class="radio-inline__input" type="radio" name="accessible-radio" value="問題を解く" checked="checked"/>
+            <input id="問題を解く" class="radio-inline__input" type="radio" name="accessible-radio" value="問題を解く" checked="checked" data-href="{% url 'quiz:mode' %}"/>
             <label class="radio-inline__label" for="問題を解く">
-                問題を解く
+                    問題を解く
+            </label>
+            <input id="成績を見る" class="radio-inline__input" type="radio" name="accessible-radio" value="成績を見る" data-href="{% url 'quiz:mode' %}"/>
+            <label class="radio-inline__label" for="成績を見る">
+                    成績を見る
             </label>
         </fieldset>
     </div>
 
     <div class="for-sp">
         <fieldset>
-            <input id="問題を解く" class="radio-inline__input" type="radio" name="accessible-radio" value="問題を解く" checked="checked"/>
+            <input id="問題を解く" class="radio-inline__input" type="radio" name="accessible-radio" value="問題を解く" checked="checked" data-href="{% url 'quiz:mode' %}"/>
             <label class="radio-inline__label" for="問題を解く">
-                問題を解く
+                    問題を解く
+            </label>
+            <input id="成績を見る" class="radio-inline__input" type="radio" name="accessible-radio" value="成績を見る" data-href="{% url 'quiz:mode' %}"/>
+            <label class="radio-inline__label" for="成績を見る">
+                    成績を見る
             </label>
         </fieldset>
     </div>
