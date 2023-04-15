@@ -11,13 +11,13 @@
         <h1>👋 英単語アプリ👋</h1>
         <h2>モードを選択する</h2>
         <fieldset>
-            <input id="学年" class="radio-inline__input" type="radio" name="accessible-radio" value="学年" checked="checked"/>
+            <input id="学年" class="radio-inline__input" type="radio" name="accessible-radio" value="学年" checked="checked" data-href="{% url 'quiz:wordlevel' %}"/>
             <label class="radio-inline__label" for="学年">
                 学年
             </label>
         </fieldset>
         <fieldset>
-            <input id="ジャンル" class="radio-inline__input" type="radio" name="accessible-radio" value="ジャンル" checked="checked"/>
+            <input id="ジャンル" class="radio-inline__input" type="radio" name="accessible-radio" value="ジャンル" data-href="{% url 'quiz:genra' %}"/>
             <label class="radio-inline__label" for="ジャンル">
                 ジャンル
             </label>
@@ -28,13 +28,13 @@
         <h1>👋 英単語アプリ👋</h1>
         <h2>モードを選択する</h2>
         <fieldset>
-            <input id="学年" class="radio-inline__input" type="radio" name="accessible-radio" value="学年" checked="checked"/>
+            <input id="学年" class="radio-inline__input" type="radio" name="accessible-radio" value="学年" checked="checked" data-href="{% url 'quiz:wordlevel' %}"/>
             <label class="radio-inline__label" for="学年">
                 学年
             </label>
         </fieldset>
         <fieldset>
-            <input id="ジャンル" class="radio-inline__input" type="radio" name="accessible-radio" value="ジャンル" checked="checked"/>
+            <input id="ジャンル" class="radio-inline__input" type="radio" name="accessible-radio" value="ジャンル" data-href="{% url 'quiz:genra' %}"/>
             <label class="radio-inline__label" for="ジャンル">
                 ジャンル
             </label>
