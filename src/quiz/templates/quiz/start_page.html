@@ -1,11 +1,19 @@
 {% extends 'quiz/base.html' %}
 {% load static %}
 {% block content %}
+
 <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta charset="utf-8">
     <link rel="stylesheet" href="{% static 'quiz/styles/start_page.css' %}">
     <title>英単語アプリ</title>
 </head>
+
+<link rel="stylesheet" href="start_page.css" media="screen and (max-width:520px)">
+/*　画面サイズ520px以下ではstart_page.cssが適用される。 */
+<link rel="stylesheet" href="start_page_pc.css" media="screen and (min-width:521px)">
+/* 画面サイズ521px以上はこのファイルはstart_page_pc.cssが適用される */
+
 <div id="app">
     <h1>👋 英単語アプリ👋</h1>
     <div class="for-pc">
@@ -20,7 +28,6 @@
             </label>
         </fieldset>
     </div>
-
     <div class="for-sp">
         <fieldset>
             <input id="問題を解く" class="radio-inline__input" type="radio" name="accessible-radio" value="問題を解く" checked="checked" data-href="{% url 'quiz:mode' %}"/>
