@@ -1,3 +1,8 @@
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
 h1
 {
   position: relative;
@@ -23,11 +28,6 @@ h1:before
 h1:after
 {
   right: 7px;
-}
-
-h2
-{
-  text-align:center
 }
 
 body {
@@ -85,10 +85,10 @@ p {
 .for-sp {
   display:none;
   max-width: 400px;
+  text-align: center;
 }
 
 @media only screen and (max-width : 767px){
   .for-pc { display:none; }
   .for-sp { display:block; }
 }
-
