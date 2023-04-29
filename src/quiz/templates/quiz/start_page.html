@@ -9,9 +9,9 @@
     <title>英単語アプリ</title>
 </head>
 
-<link rel="stylesheet" href="start_page_sp.css" media="screen and (max-width:520px)">
-<!-- /*画面サイズ520px以下ではstart_page.cssが適用される。 */ -->
-<link rel="stylesheet" href="start_page_pc.css" media="screen and (min-width:521px)">
+<link rel="stylesheet" href="{% static 'quiz/styles/start_page_sp.css' %}" media="screen and (max-width:520px)">
+<!-- /*画面サイズ520px以下ではstart_page_sp.cssが適用される。 */ -->
+<link rel="stylesheet" href="{% static 'quiz/styles/start_page_pc.css' %}" media="screen and (min-width:521px)">
 <!-- /* 画面サイズ521px以上はこのファイルはstart_page_pc.cssが適用される */ -->
 
 <div id="app">
