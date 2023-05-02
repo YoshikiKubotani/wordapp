@@ -82,13 +82,13 @@ p {
   display:block;
 }
 
-.for-sp {
+/* .for-sp {
   display:none;
   max-width: 400px;
   text-align: center;
-}
+} */
 
 @media only screen and (max-width : 767px){
   .for-pc { display:none; }
-  .for-sp { display:block; }
+  /* .for-sp { display:block; } */
 }
