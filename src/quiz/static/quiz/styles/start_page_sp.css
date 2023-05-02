@@ -15,7 +15,7 @@ a {
     width: 75%;
     margin: 0 auto; /* 中央に配置する */
     margin-top: 150px; /* 上部マージンを追加 */
-    margin-bottom: 150px; /* 下部マージンを追加 */
+    margin-bottom: 90px; /* 下部マージンを追加 */
   }
 
   h1:before, h1:after
