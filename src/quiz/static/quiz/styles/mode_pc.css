@@ -5,11 +5,14 @@ a {
 
 h1
 {
+  margin-top: 120px;
   position: relative;
   text-align: center ;
   padding: 10px;
   border-top: solid 2px black;
   border-bottom: solid 2px black;
+  width: 75%;
+  margin: 0 auto; /* 中央に配置する */
 }
 h1:before, h1:after
 {
@@ -82,13 +85,14 @@ p {
   display:block;
 }
 
-/* .for-sp {
+.for-sp {
   display:none;
   max-width: 400px;
   text-align: center;
-} */
+}
+
 
 @media only screen and (max-width : 767px){
   .for-pc { display:none; }
-  /* .for-sp { display:block; } */
+  .for-sp { display:block; }
 }
