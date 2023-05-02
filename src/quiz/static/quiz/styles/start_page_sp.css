@@ -52,7 +52,6 @@ a {
     text-align: center;
   }
 
-
   p {
     margin: 0 0 1.6rem;
     padding-bottom: 0.2rem;
@@ -85,16 +84,9 @@ a {
       outline-width: 5px;
   }
 
-.for-pc {
-  display:block;
-}
-
-.for-sp {
-  display:none;
-  max-width: 400px;
+.group{
   text-align: center;
 }
-
 
 @media only screen and (max-width : 767px){
   .for-pc { display:none; }
