@@ -5,7 +5,7 @@ const QuestionComponent = {
     },
     template: `
     <h1>👋 問題👋</h1>
-    <div class="question"> [[ question ]] </div>
+    <div class="question"> [[ count+1 ]]. [[ question ]] </div>
     <fieldset>
         <input id="option-1" class="radio-inline__input" type="radio" name="solve-choice[[ count ]]" v-model="radio" v-bind:value="op1" v-bind:disabled="isDisabled" @change="userAttempt"/>
         <label class="radio_label_core" v-bind:class="{radio_label: !isAttempt, disabled: isDisabled && !isOp1, correct: isCorrect && isOp1, wrong: !isCorrect && isOp1}" for="option-1">
@@ -119,6 +119,7 @@ const QuestionComponent = {
         }
 
         return {
+            count,
             showButtons,
             question,
             answer,
