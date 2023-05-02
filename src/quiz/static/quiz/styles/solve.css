@@ -264,7 +264,33 @@ a.btn-3d-circle {
   opacity: 0;
 }
 
-
 #switch {
   text-align:center;
+}
+
+#answer_text {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+#display_text {
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+  margin: 0 auto;
+}
+.left {
+  /* display: block; */
+  text-align: left;
+  flex: 1;
+}
+.center {
+  /* display: block; */
+  text-align: center;
+  flex: 1;
+}
+.right {
+  /* display: block; */
+  text-align: right;
+  flex: 1;
 }
