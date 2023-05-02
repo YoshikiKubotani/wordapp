@@ -48,7 +48,6 @@ const QuestionComponent = {
         const op2 = Vue.ref(props.questionSet[count.value]["option_2"])
         const op3 = Vue.ref(props.questionSet[count.value]["option_3"])
         const op4 = Vue.ref(props.questionSet[count.value]["option_4"])
-        // const radio = Vue.ref(op1.value)
         const radio = Vue.ref("")
         const isCorrect = Vue.ref(false)
         const isDisabled = Vue.ref(false)
@@ -57,7 +56,6 @@ const QuestionComponent = {
         const isOp3 = Vue.ref(false)
         const isOp4 = Vue.ref(false)
         const isAttempt = Vue.ref(false)
-        console.log(count.value)
 
         const nextItem = () => {
             if (count.value < props.numQuestion-1) {
@@ -68,23 +66,7 @@ const QuestionComponent = {
                 op2.value = props.questionSet[count.value]["option_2"]
                 op3.value = props.questionSet[count.value]["option_3"]
                 op4.value = props.questionSet[count.value]["option_4"]
-                showButtons.value = false
-                console.log(count.value)
-                console.log(question.value)
-                // radio.value = op1.value
-                radio.value = ""
-                isDisabled.value = false
-                isCorrect.value = false
-                isOp1.value = false
-                isOp2.value = false
-                isOp3.value = false
-                isOp4.value = false
-                isAttempt.value = false
-                console.log(isCorrect.value)
-                console.log(isOp1.value)
-                console.log(isOp2.value)
-                console.log(isOp3.value)
-                console.log(isOp4.value)
+                moveItemUpdates()
             }
         };
 
@@ -97,25 +79,28 @@ const QuestionComponent = {
                 op2.value = props.questionSet[count.value]["option_2"]
                 op3.value = props.questionSet[count.value]["option_3"]
                 op4.value = props.questionSet[count.value]["option_4"]
-                showButtons.value = false
-                console.log(count.value)
-                console.log(question.value)
-                // radio.value = op1.value
-                radio.value = ""
-                isDisabled.value = false
-                isCorrect.value = false
-                isOp1.value = false
-                isOp2.value = false
-                isOp3.value = false
-                isOp4.value = false
-                isAttempt.value = false
-                console.log(isCorrect.value)
-                console.log(isOp1.value)
-                console.log(isOp2.value)
-                console.log(isOp3.value)
-                console.log(isOp4.value)
+                moveItemUpdates()
             }
         };
+
+        const moveItemUpdates = () => {
+            showButtons.value = false
+            radio.value = ""
+            isDisabled.value = false
+            isCorrect.value = false
+            isOp1.value = false
+            isOp2.value = false
+            isOp3.value = false
+            isOp4.value = false
+            isAttempt.value = false
+            console.log(count.value)
+            console.log(question.value)
+            console.log(isCorrect.value)
+            console.log(isOp1.value)
+            console.log(isOp2.value)
+            console.log(isOp3.value)
+            console.log(isOp4.value)
+        }
 
         const userAttempt = () => {
             isAttempt.value = true
@@ -127,22 +112,6 @@ const QuestionComponent = {
             }
             showButtons.value = true
             isDisabled.value = true
-            // switch(radio.value){
-            //     case op1.value:
-            //         isOp1.value = true
-            //         break
-            //     case op2.value:
-            //         isOp2.value = true
-            //         break
-            //     case op3.value:
-            //         isOp3.value = true
-            //         break
-            //     case op4.value:
-            //         isOp4.value = true
-            //         break
-            //     default:
-            //         console.log("Error!!!")
-            // }
             isOp1.value = radio.value == op1.value
             isOp2.value = radio.value == op2.value
             isOp3.value = radio.value == op3.value
@@ -167,6 +136,7 @@ const QuestionComponent = {
             isAttempt,
             nextItem,
             prevItem,
+            moveItemUpdates,
             userAttempt
         };
     },
