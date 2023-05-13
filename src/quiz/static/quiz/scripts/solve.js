@@ -41,6 +41,7 @@ const QuestionComponent = {
         `,
     setup(props) {
         const count = Vue.ref(0)
+        const countCorrect = Vue.ref(0)
         const showButtons = Vue.ref(false)
         const question = Vue.ref(props.questionSet[count.value]["question_en"])
         const answer = Vue.ref(props.questionSet[count.value]["answer_jp"])
@@ -94,6 +95,7 @@ const QuestionComponent = {
             isOp4.value = false
             isAttempt.value = false
             console.log(count.value)
+            console.log(countCorrect.value)
             console.log(question.value)
             console.log(isCorrect.value)
             console.log(isOp1.value)
@@ -106,6 +108,7 @@ const QuestionComponent = {
             isAttempt.value = true
             if (radio.value == answer.value) {
                 isCorrect.value = true
+                countCorrect.value ++
             }
             else {
                 isCorrect.value = false
@@ -120,6 +123,7 @@ const QuestionComponent = {
 
         return {
             count,
+            countCorrect,
             showButtons,
             question,
             answer,
