@@ -2,6 +2,7 @@ const QuestionComponent = {
     props: {
         "questionSet": Object,
         "numQuestion": Number,
+        // "postUrl": String,
     },
     template: `
     <h1>👋 問題👋</h1>
@@ -37,7 +38,7 @@ const QuestionComponent = {
         </div>
         <a href="#" class="btn btn-flat" @click=prevItem><span>前の問題</span></a>
         <a href="#" class="btn btn-flat" @click=nextItem v-if="count < numQuestion-1"><span>次の問題</span></a>
-        <a href="" class="btn btn-finish" v-if="count === numQuestion-1"><span>提出</span></a>
+        <a href="#" class="btn btn-finish" @click="postWithParams('result')" v-if="count === numQuestion-1"><span>提出</span></a>
     </div>
         `,
     setup(props) {
@@ -58,7 +59,7 @@ const QuestionComponent = {
         const isOp3 = Vue.ref(false)
         const isOp4 = Vue.ref(false)
         const isAttempt = Vue.ref(false)
-
+        
         const nextItem = () => {
             if (count.value < props.numQuestion-1) {
                 count.value ++
@@ -103,8 +104,8 @@ const QuestionComponent = {
             console.log(isOp2.value)
             console.log(isOp3.value)
             console.log(isOp4.value)
-        }
-
+        };
+        
         const userAttempt = () => {
             isAttempt.value = true
             if (radio.value == answer.value) {
@@ -120,8 +121,43 @@ const QuestionComponent = {
             isOp2.value = radio.value == op2.value
             isOp3.value = radio.value == op3.value
             isOp4.value = radio.value == op4.value
-        }
+        };
+        
+        const postWithParams = (path, method = 'get') => {
+            const form = document.createElement('form');
+            const params = {
+                num_question: props.numQuestion,
+                num_correct_items: countCorrect.value,
+            };
+            form.method = method;
+            // form.action = path;
+            form.action = "result";
+            // form.action = "{% url 'quiz:result' %}";
+    
+            for (const key in params) {
+                if (params.hasOwnProperty(key)) {
+                    const hiddenField = document.createElement('input');
+                    hiddenField.type = 'hidden';
+                    hiddenField.name = key;
+                    hiddenField.value = params[key];
+        
+                    form.appendChild(hiddenField);
+                }
+            }
 
+            // //csrf_tokenの追加手動
+            // let csrf_element = document.createElement('input');
+            // csrf_element.type = 'hidden';
+            // csrf_element.name = 'csrfmiddlewaretoken';
+            // csrf_element.value = '{{ csrf_token }}';
+
+            // //csrf_tokenと送信したい情報の追加
+            // form.appendChild(csrf_element);
+
+            document.body.appendChild(form);
+            form.submit();
+        };
+        
         return {
             count,
             countCorrect,
@@ -143,7 +179,8 @@ const QuestionComponent = {
             nextItem,
             prevItem,
             moveItemUpdates,
-            userAttempt
+            userAttempt,
+            postWithParams
         };
     },
     delimiters: ['[[', ']]']
