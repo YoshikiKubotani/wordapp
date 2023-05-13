@@ -36,7 +36,8 @@ const QuestionComponent = {
             <div class="right">です。</div>
         </div>
         <a href="#" class="btn btn-flat" @click=prevItem><span>前の問題</span></a>
-        <a href="#" class="btn btn-flat" @click=nextItem><span>次の問題</span></a>
+        <a href="#" class="btn btn-flat" @click=nextItem v-if="count < numQuestion-1"><span>次の問題</span></a>
+        <a href="" class="btn btn-finish" v-if="count === numQuestion-1"><span>提出</span></a>
     </div>
         `,
     setup(props) {
