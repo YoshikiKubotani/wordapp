@@ -7,44 +7,44 @@
     <link rel="stylesheet" href="{% static 'quiz/styles/mode.css' %}">
     <title>英単語アプリ</title>
 </head>
-
-<link rel="stylesheet" href="{% static 'quiz/styles/mode_sp.css' %}" media="screen and (max-width:520px)">
-<!-- /*画面サイズ520px以下ではstart_page_sp.cssが適用される。 */ -->
-<link rel="stylesheet" href="{% static 'quiz/styles/mode_pc.css' %}" media="screen and (min-width:521px)">
-<!-- /* 画面サイズ521px以上はこのファイルはstart_page_pc.cssが適用される */ -->
-
-<div id="app">
-    <div class="for-pc">
-        <h1>👋 英単語アプリ👋</h1>
-        <fieldset>
-            <input id="学年" class="radio-inline__input" type="radio" name="accessible-radio" value="学年" checked="checked" data-href="{% url 'quiz:wordlevel' %}"/>
-            <label class="radio-inline__label" for="学年">
-                学年
-            </label>
-        </fieldset>
-        <fieldset>
-            <input id="ジャンル" class="radio-inline__input" type="radio" name="accessible-radio" value="ジャンル" data-href="{% url 'quiz:genra' %}"/>
-            <label class="radio-inline__label" for="ジャンル">
-                ジャンル
-            </label>
-        </fieldset>
-    </div>
-
-    <div class="for-sp">
-        <h1>👋 英単語アプリ👋</h1>
-        <fieldset>
-            <input id="学年" class="radio-inline__input" type="radio" name="accessible-radio" value="学年" checked="checked" data-href="{% url 'quiz:wordlevel' %}"/>
-            <label class="radio-inline__label" for="学年">
-                学年
-            </label>
-            <input id="ジャンル" class="radio-inline__input" type="radio" name="accessible-radio" value="ジャンル" data-href="{% url 'quiz:genra' %}"/>
-            <label class="radio-inline__label" for="ジャンル">
-                ジャンル
-            </label>
-        </fieldset>
-    </div>
-</div>
 <body>
+
+    <link rel="stylesheet" href="{% static 'quiz/styles/mode_sp.css' %}" media="screen and (max-width:520px)">
+    <!-- /*画面サイズ520px以下ではstart_page_sp.cssが適用される。 */ -->
+    <link rel="stylesheet" href="{% static 'quiz/styles/mode_pc.css' %}" media="screen and (min-width:521px)">
+    <!-- /* 画面サイズ521px以上はこのファイルはstart_page_pc.cssが適用される */ -->
+
+    <div id="app">
+        <div class="for-pc">
+            <h1>👋 英単語アプリ👋</h1>
+            <fieldset>
+                <input id="学年" class="radio-inline__input" type="radio" name="accessible-radio" value="学年" checked="checked" data-href="{% url 'quiz:wordlevel' %}"/>
+                <label class="radio-inline__label" for="学年">
+                    学年
+                </label>
+            </fieldset>
+            <fieldset>
+                <input id="ジャンル" class="radio-inline__input" type="radio" name="accessible-radio" value="ジャンル" data-href="{% url 'quiz:genra' %}"/>
+                <label class="radio-inline__label" for="ジャンル">
+                    ジャンル
+                </label>
+            </fieldset>
+        </div>
+
+        <div class="for-sp">
+            <h1>👋 英単語アプリ👋</h1>
+            <fieldset>
+                <input id="学年" class="radio-inline__input" type="radio" name="accessible-radio" value="学年" checked="checked" data-href="{% url 'quiz:wordlevel' %}"/>
+                <label class="radio-inline__label" for="学年">
+                    学年
+                </label>
+                <input id="ジャンル" class="radio-inline__input" type="radio" name="accessible-radio" value="ジャンル" data-href="{% url 'quiz:genra' %}"/>
+                <label class="radio-inline__label" for="ジャンル">
+                    ジャンル
+                </label>
+            </fieldset>
+        </div>
+    </div>
     <script src="https://unpkg.com/vue@next"></script>
     <script src="{% static 'quiz/scripts/mode.js' %}"></script>
 </body>

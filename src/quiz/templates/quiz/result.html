@@ -6,16 +6,16 @@
     <link rel="stylesheet" href="{% static 'quiz/styles/result.css' %}">
     <title>英単語アプリ</title>
 </head>
-<div id="app">
-    <h1>👋 テスト結果👋</h1>
-    <h2> 正当問題数</h2>
-    <h3> {{ count }}/{{ count_correct }} </h3>
-    <div style="text-align: center">
-        <img src="{% static 'quiz/images/nazotoki.jpg' %}">
-    </div>
-    <h2> 結果詳細</h2>
-</div>
 <body>
+    <div id="app">
+        <h1>👋 テスト結果👋</h1>
+        <h2> 正当問題数</h2>
+        <h3> {{ count }}/{{ count_correct }} </h3>
+        <div style="text-align: center">
+            <img src="{% static 'quiz/images/nazotoki.jpg' %}">
+        </div>
+        <h2> 結果詳細</h2>
+    </div>
     <script src="https://unpkg.com/vue@next"></script>
     <script src="{% static 'quiz/scripts/result.js' %}"></script>
 </body>
