@@ -46,10 +46,6 @@ class SolvePage(TemplateView):
 class ResultPage(TemplateView):
     template_name: str = "quiz/result.html"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["count"] = self.request.session.get('count')
-        context["count_correct"] = self.request.session.get('countCorrect')
-        print(context["count"])
-        print(context["count_correct"])
-        return context
+    def get(self, request, *args, **kwargs):
+        # getが飛んだ時の処理を書く
+        return render(request, self.template_name, context=self.kwargs)

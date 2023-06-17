@@ -123,10 +123,10 @@ const QuestionComponent = {
         }
 
         const Submit = () => {
-            sessionStorage.setItem('count', count.value+1);
-            sessionStorage.setItem('countCorrect', countCorrect.value);
-            console.log(sessionStorage.getItem('count'));
-            console.log(sessionStorage.getItem('countCorrect'));
+            window.sessionStorage.setItem(['count'], [count.value+1]);
+            window.sessionStorage.setItem(['countCorrect'], [countCorrect.value]);
+            console.log(window.sessionStorage.getItem('count'));
+            console.log(window.sessionStorage.getItem('countCorrect'));
         }
 
         return {
