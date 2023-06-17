@@ -37,7 +37,7 @@ const QuestionComponent = {
         </div>
         <a href="#" class="btn btn-flat" @click=prevItem><span>前の問題</span></a>
         <a href="#" class="btn btn-flat" @click=nextItem v-if="count < numQuestion-1"><span>次の問題</span></a>
-        <a href="" class="btn btn-finish" v-if="count === numQuestion-1"><span>提出</span></a>
+        <a href="result" class="btn btn-finish" @click=Submit v-if="count === numQuestion-1"><span>提出</span></a>
     </div>
         `,
     setup(props) {
@@ -122,6 +122,13 @@ const QuestionComponent = {
             isOp4.value = radio.value == op4.value
         }
 
+        const Submit = () => {
+            sessionStorage.setItem('count', count.value+1);
+            sessionStorage.setItem('countCorrect', countCorrect.value);
+            console.log(sessionStorage.getItem('count'));
+            console.log(sessionStorage.getItem('countCorrect'));
+        }
+
         return {
             count,
             countCorrect,
@@ -143,7 +150,8 @@ const QuestionComponent = {
             nextItem,
             prevItem,
             moveItemUpdates,
-            userAttempt
+            userAttempt,
+            Submit
         };
     },
     delimiters: ['[[', ']]']

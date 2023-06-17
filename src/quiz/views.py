@@ -38,14 +38,18 @@ class SolvePage(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         all_items = MasterWordTable.objects.order_by("-id")
-        test_set = make_random_test(all_items, num_questions=20, num_options=4)
+        test_set = make_random_test(all_items, num_questions=2, num_options=4)
         context["test_set"] = test_set
-        context["num_question"] = 20
+        context["num_question"] = 2
         return context
 
 class ResultPage(TemplateView):
     template_name: str = "quiz/result.html"
 
-    def get(self, request, *args, **kwargs):
-        # getが飛んだ時の処理を書く
-        return render(request, self.template_name, context=self.kwargs)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["count"] = self.request.session.get('count')
+        context["count_correct"] = self.request.session.get('countCorrect')
+        print(context["count"])
+        print(context["count_correct"])
+        return context
