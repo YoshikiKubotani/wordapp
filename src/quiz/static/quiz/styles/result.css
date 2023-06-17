@@ -1,46 +1,64 @@
-h1 
-{
-  position: relative;
-  text-align: center ;
+body {
+  font-family: Arial, sans-serif;
+  color: #333;
+  background-color: #f0f0f0;
+}
+
+.result-container {
+  margin: auto;
+  width: 80%;
+  max-width: 800px;
+  padding: 20px;
+  /* background-color: #fff; */
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.result-title {
+  text-align: center;
+  /* color: black;
+  background-color: beige;
+  height: 15mm; */
+  color: #364e96;/*文字色*/
+  padding: 0.5em 0;/*上下の余白*/
+  border-top: solid 3px #364e96;/*上線*/
+  border-bottom: solid 3px #364e96;/*下線*/
+}
+
+.score-board {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+
+.message {
+  margin: 20px 0;
+  text-align: center;
+  font-size: 1.2em;
+  color: #008017;
+}
+
+.questions-list {
+  margin: 20px 0;
   padding: 10px;
-  border-top: solid 2px black;
-  border-bottom: solid 2px black;
-  margin-top: 50px;
-  margin-bottom: 50px;
-}
-h1:before, h1:after 
-{
-  content: '';
-  position: absolute;
-  top: -7px;
-  width: 2px;
-  height: -webkit-calc(100% + 14px);
-  height: calc(100% + 14px);
-  background-color: black;
-}
-h1:before 
-{
-  left: 7px;
-}
-h1:after 
-{
-  right: 7px;
+  border-top: 1px solid #ccc;
 }
 
-h2 
-{
-  color:#000000;
-  font-size:30px;
-  text-align: center 
+.questions-list li.correct {
+  background-color: #c6ebcd;
 }
 
-h3 
-{
-  color:#008080;
-  font-size:30px;
-  text-align: center 
+.questions-list li.incorrect {
+  background-color: #ebcfc6;
 }
-body
-{
-  font-family: 'Hiragino Kaku Gothic ProN','ヒラギノ角ゴ ProN W3','Arial',sans-serif;
+
+/* マーカー線・赤 */
+.marker{
+  background:linear-gradient(transparent 65%, #ffadad 80%);
+  font-weight:bold; 
+  }
+
+#result{
+  text-align: center;
+  font-size: larger;
 }

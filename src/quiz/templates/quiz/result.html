@@ -16,6 +16,28 @@
         </div>
         <h2> 結果詳細</h2>
     </div>
+    <div class="result-container">
+        <h1 class="result-title">Results</h1>
+    
+        <div class="score-board">
+            <!-- <h2>出題数: <span id="total"></span></h2>
+            <h2>正答数: <span id="correct"></span></h2> -->
+            <span id="result" class="marker"></span>
+        </div>
+    
+        <div class="message">
+            <h3 id="score-message"></h3>
+        </div>
+    
+        <div class="questions-list">
+            <h2>出題リスト</h2>
+            <ul id="question-list">
+                <!-- 問題リストがここに入る -->
+            </ul>
+        </div>
+    </div>
+    
+    
     <script src="https://unpkg.com/vue@next"></script>
     <script src="{% static 'quiz/scripts/result.js' %}"></script>
 </body>
