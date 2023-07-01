@@ -1,3 +1,5 @@
+@import "https://use.fontawesome.com/releases/v5.13.0/css/all.css";
+
 h1 {
   border-bottom: solid 3px #a3cccc  ;
   position: relative;
@@ -13,8 +15,6 @@ h1:after {
   width: 20%;
 }
 
-
-
 body {
   font-family: 'Hiragino Kaku Gothic ProN','ヒラギノ角ゴ ProN W3','Arial',sans-serif;
 /*   max-width: 400px; */
@@ -27,9 +27,12 @@ fieldset {
   border: none;
   padding: 0;
   margin: 0;
+  height: 100px;
   text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-
 
 p {
   margin: 0 0 1.6rem;
@@ -37,31 +40,52 @@ p {
   border-bottom: 1px solid #ddd;
 }
 
-.radio-inline__input {
-    clip: rect(1px, 1px, 1px, 1px);
-    position: absolute !important;
+.question {
+  font-size: 20pt;
+  font-weight: bolder;
+  margin-left: 40px;
+  margin-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  width: 30%;
+  text-align: center;
+  background-color: #c6ebeb;
+  border-width: 3px;
+  border-style: solid;
 }
 
-.radio-inline__label {
-    display: inline-block;
+.radio-inline__input {
+    clip-path: rect(1px, 1px, 1px, 1px);
+    position: absolute !important;
+    appearance: none;
+}
+
+.radio_label_core {
+    display: inline-flex;
+    width: 20%;
+    height: 80px;
+    font-size: 70%;
     padding: 0.5rem 1rem;
     margin-right: 18px;
-    border-radius: 3px;
+    border-radius: 10px;
     transition: all .2s;
+    vertical-align: middle;
+    justify-content: center;
+    align-items: center;
 }
 
-.radio-inline__input:checked + .radio-inline__label {
-    background: #008080;
-    color: #fff;
-    text-shadow: 0 0 1px rgba(0,0,0,.7);
+/* .radio-inline__input:checked + .radio-inline__label {
+    background: #c6ebeb;
+    color: #008080;
+    font-weight: bold;
 }
 
 .radio-inline__input:focus + .radio-inline__label {
-    outline-color: #4D90FE;
+    outline-color: #008080;
     outline-offset: -2px;
     outline-style: auto;
     outline-width: 5px;
-}
+} */
 
 .for-pc {
   display:block;
@@ -72,15 +96,211 @@ p {
   max-width: 400px;
 }
 
-.for-sp-h1{
-  text-align: center;
-}
-
-.for-sp-h2{
-  text-align: center;
-}
-
 @media only screen and (max-width : 767px){
   .for-pc { display:none; }
   .for-sp { display:block; }
+}
+
+
+*,
+*:before,
+*:after {
+  -webkit-box-sizing: inherit;
+  box-sizing: inherit;
+}
+
+*,
+*:before,
+*:after {
+  -webkit-box-sizing: inherit;
+  box-sizing: inherit;
+}
+
+html {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  /* font-size: 62.5%; */
+}
+
+.btn,
+a.btn,
+button.btn {
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.5;
+  position: relative;
+  display: inline-block;
+  padding: 1rem 4rem;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  text-align: center;
+  vertical-align: middle;
+  text-decoration: none;
+  letter-spacing: 0.1em;
+  color: #212529;
+  border-radius: 0.5rem;
+}
+
+a.btn-flat {
+  overflow: hidden;
+
+  padding: 1.0rem 4.3rem;
+  margin-left: 10px;
+
+  color: #e2f3f3;
+  border-radius: 5px;
+  background: #008080;
+}
+
+a.btn-flat span {
+  position: relative;
+}
+
+a.btn-flat:before {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 130%;
+  height: 450%;
+
+  content: "";
+  -webkit-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+  -webkit-transform: translateX(-98%) translateY(-25%) rotate(45deg);
+  transform: translateX(-98%) translateY(-25%) rotate(45deg);
+
+  background: #014a4a;
+}
+
+a.btn-flat:hover:before {
+  -webkit-transform: translateX(-9%) translateY(-25%) rotate(45deg);
+  transform: translateX(-9%) translateY(-25%) rotate(45deg);
+}
+
+a.btn-finish {
+  overflow: hidden;
+
+  padding: 1.0rem 4.3rem;
+
+  color: #e2f3f3;
+  border-radius: 5px;
+  background: #008080;
+}
+
+a.btn-finish span {
+  position: relative;
+  z-index: 1;
+}
+
+a.btn-finish:before {
+  position: absolute;
+  top: 0;
+  left: calc(-150% + 50px);
+
+  width: 150%;
+  height: 500%;
+
+  content: '';
+  -webkit-transition: all .5s ease-in-out;
+  transition: all .5s ease-in-out;
+  -webkit-transform: rotate(45deg) translateX(0) translateY(0);
+  transform: rotate(45deg) translateX(0) translateY(0);
+
+  background: #014a4a;
+}
+
+a.btn-finish:after {
+  position: absolute;
+  top: -400%;
+  right: calc(-150% + 50px);
+
+  width: 150%;
+  height: 500%;
+
+  content: '';
+  -webkit-transition: all .5s ease-in-out;
+  transition: all .5s ease-in-out;
+  -webkit-transform: rotate(45deg) translateX(0) translateY(0);
+  transform: rotate(45deg) translateX(0) translateY(0);
+
+  background: #014a4a;
+}
+
+a.btn-finish:hover:before {
+  -webkit-transform: rotate(45deg) translateX(0) translateY(-50%);
+  transform: rotate(45deg) translateX(0) translateY(-50%);
+}
+
+a.btn-finish:hover:after {
+  -webkit-transform: rotate(45deg) translateX(0) translateY(50%);
+  transform: rotate(45deg) translateX(0) translateY(50%);
+}
+
+#switch {
+  text-align:center;
+}
+
+#answer_text {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#display_text {
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+  margin-top: 10px;
+  margin-right: auto;
+  margin-bottom: 10px;
+  margin-left: auto;
+}
+.left {
+  /* display: block; */
+  text-align: left;
+  flex: 1;
+}
+.center {
+  /* display: block; */
+  text-align: center;
+  flex: 1;
+}
+.right {
+  /* display: block; */
+  text-align: right;
+  flex: 1;
+}
+
+.disabled{
+  background: #d3d3d3;
+  color: #888888;
+  font-weight: bold;
+}
+
+.wrong{
+  background: #ebcfc6;
+  color: #801a00;
+  font-weight: bold;
+}
+
+.correct{
+  background: #c6ebcd;
+  color: #008017;
+  font-weight: bold;
+}
+
+.radio_label {
+  color: #008080;
+}
+
+.radio_label:hover {
+  background: #c6ebeb;
+  font-weight: bold;
 }

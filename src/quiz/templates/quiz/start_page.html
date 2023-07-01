@@ -1,32 +1,35 @@
 {% extends 'quiz/base.html' %}
 {% load static %}
 {% block content %}
+
 <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta charset="utf-8">
     <link rel="stylesheet" href="{% static 'quiz/styles/start_page.css' %}">
     <title>英単語アプリ</title>
 </head>
-<div id="app">
-    <h1>👋 英単語アプリ👋</h1>
-    <div class="for-pc">
-        <fieldset>
-            <input id="問題を解く" class="radio-inline__input" type="radio" name="accessible-radio" value="問題を解く" checked="checked"/>
-            <label class="radio-inline__label" for="問題を解く">
-                問題を解く
-            </label>
-        </fieldset>
-    </div>
-
-    <div class="for-sp">
-        <fieldset>
-            <input id="問題を解く" class="radio-inline__input" type="radio" name="accessible-radio" value="問題を解く" checked="checked"/>
-            <label class="radio-inline__label" for="問題を解く">
-                問題を解く
-            </label>
-        </fieldset>
-    </div>
-</div>
 <body>
+
+    <link rel="stylesheet" href="{% static 'quiz/styles/start_page_sp.css' %}" media="screen and (max-width:520px)">
+    <!-- /*画面サイズ520px以下ではstart_page_sp.cssが適用される。 */ -->
+    <link rel="stylesheet" href="{% static 'quiz/styles/start_page_pc.css' %}" media="screen and (min-width:521px)">
+    <!-- /* 画面サイズ521px以上はこのファイルはstart_page_pc.cssが適用される */ -->
+
+    <div id="app">
+        <h1>👋 英単語アプリ👋</h1>
+        <div class="group">
+            <fieldset>
+                <input id="問題を解く" class="radio-inline__input" type="radio" name="accessible-radio" value="問題を解く" checked="checked" data-href="{% url 'quiz:mode' %}"/>
+                <label class="radio-inline__label" for="問題を解く">
+                        問題を解く
+                </label>
+                <input id="成績を見る" class="radio-inline__input" type="radio" name="accessible-radio" value="成績を見る" data-href="{% url 'quiz:mode' %}"/>
+                <label class="radio-inline__label" for="成績を見る">
+                        成績を見る
+                </label>
+            </fieldset>
+        </div>
+    </div>
     <script src="https://unpkg.com/vue@next"></script>
     <script src="{% static 'quiz/scripts/start_page.js' %}"></script>
 </body>

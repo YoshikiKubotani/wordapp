@@ -6,15 +6,38 @@
     <link rel="stylesheet" href="{% static 'quiz/styles/result.css' %}">
     <title>英単語アプリ</title>
 </head>
-<div id="app">
-    <h1>👋 テスト結果👋</h1>
-    <h2> 正当問題数</h2>
-    <h2> n/N</h2>
-    <p> ここに謎解きの画像</p>
-    
-    <h2> 結果詳細</h2>
-</div>
 <body>
+    <div id="app">
+        <h1>👋 テスト結果👋</h1>
+        <h2> 正当問題数</h2>
+        <div id="vue"><result-component/></div>
+        <div style="text-align: center">
+            <img src="{% static 'quiz/images/nazotoki.jpg' %}">
+        </div>
+        <h2> 結果詳細</h2>
+    </div>
+    <div class="result-container">
+        <h1 class="result-title">Results</h1>
+    
+        <div class="score-board">
+            <!-- <h2>出題数: <span id="total"></span></h2>
+            <h2>正答数: <span id="correct"></span></h2> -->
+            <span id="result" class="marker"></span>
+        </div>
+    
+        <div class="message">
+            <h3 id="score-message"></h3>
+        </div>
+    
+        <div class="questions-list">
+            <h2>出題リスト</h2>
+            <ul id="question-list">
+                <!-- 問題リストがここに入る -->
+            </ul>
+        </div>
+    </div>
+    
+    
     <script src="https://unpkg.com/vue@next"></script>
     <script src="{% static 'quiz/scripts/result.js' %}"></script>
 </body>

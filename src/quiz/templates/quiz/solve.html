@@ -6,55 +6,15 @@
     <link rel="stylesheet" href="{% static 'quiz/styles/solve.css' %}">
     <title>英単語アプリ</title>
 </head>
-<div id="app">
-    <div class="for-pc">
-        <h1>👋 問題👋</h1>
-        <h2> discuss</h2>
-        <fieldset>
-            <input id="議論する" class="radio-inline__input" type="radio" name="accessible-radio" value="議論する" checked="checked"/>
-            <label class="radio-inline__label" for="議論する">
-                議論する
-            </label>
-            <input id="歌う" class="radio-inline__input" type="radio" name="accessible-radio" value="歌う"/>
-            <label class="radio-inline__label" for="歌う">
-                歌う
-            </label>
-            <input id="開催する" class="radio-inline__input" type="radio" name="accessible-radio" value="開催する"/>
-            <label class="radio-inline__label" for="開催する">
-                開催する
-            </label>
-            <input id="支持する" class="radio-inline__input" type="radio" name="accessible-radio" value="支持する"/>
-            <label class="radio-inline__label" for="支持する">
-                支持する
-            </label>
-        </fieldset>
-    </div>
-
-    <div class="for-sp">
-        <h1>👋 問題👋</h1>
-        <h2> discuss</h2>
-        <fieldset>
-            <input id="議論する" class="radio-inline__input" type="radio" name="accessible-radio" value="議論する" checked="checked"/>
-            <label class="radio-inline__label" for="議論する">
-                議論する
-            </label>
-            <input id="歌う" class="radio-inline__input" type="radio" name="accessible-radio" value="歌う"/>
-            <label class="radio-inline__label" for="歌う">
-                歌う
-            </label>
-            <input id="開催する" class="radio-inline__input" type="radio" name="accessible-radio" value="開催する"/>
-            <label class="radio-inline__label" for="開催する">
-                開催する
-            </label>
-            <input id="支持する" class="radio-inline__input" type="radio" name="accessible-radio" value="支持する"/>
-            <label class="radio-inline__label" for="支持する">
-                支持する
-            </label>
-        </fieldset>
-    </div>
-
-</div>
 <body>
+    <div id="app">
+        <div class="for-pc">
+            <question-component :question-set="{{ test_set }}" :num-question="{{ num_question }}"/>
+        </div>
+        <!-- <div class="for-sp">
+            <question-component :question-set="{{ test_set }}"/>
+        </div> -->
+    </div>
     <script src="https://unpkg.com/vue@next"></script>
     <script src="{% static 'quiz/scripts/solve.js' %}"></script>
 </body>
