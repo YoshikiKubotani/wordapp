@@ -1,0 +1,49 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      args:
+        - UID=${HOST_UID-1000}
+        - GID=${HOST_GID-1000}
+      context: ../../
+      dockerfile: environments/Dockerfile.backend
+    env_file:
+      - ../.env.backend
+    tty: true
+    init: true
+    volumes:
+        - ../../applications/backend:/home/trailblazer/wordapp-backend
+    ports:
+        - 8000:8000
+
+  frontend:
+    build:
+      context: ../../
+      dockerfile: environments/Dockerfile.frontend
+    user: "node"
+    tty: true
+    init: true
+    volumes:
+        - ../../applications/frontend:/home/node/wordapp-frontend
+    ports:
+        - 3000:3000
+
+  postgresql:
+    image: postgres:15.3
+    restart: always
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: wordapp-dbuser
+      POSTGRES_PASSWORD: kyogakusya
+      POSTGRES_DB: wordapp
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+volumes:
+  pgdata:
