@@ -1,25 +1,28 @@
 import React from "react";
-import { BrowserRouter as Router } from "react-router-dom";
+import { BrowserRouter, Routes, Route} from "react-router-dom";
+import { ModeSelection } from "./pages/ModeSelection";
+import { Result } from "./pages/Result";
+import { Solve } from "./pages/Solve";
+import { StartPage } from "./pages/StartPage";
+import { WordLevel } from "./pages/WordLevel";
+import { NoMatch } from "./pages/NoMatch";
+
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    // <AppProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<StartPage />} />
+          <Route path="/mode" element={<ModeSelection />} />
+          <Route path="/wordlevel" element={<WordLevel />} />
+          <Route path="/solve" element={<Solve />} />
+          <Route path="/result" element={<Result />} />
+          <Route path="*" element={<NoMatch />} />
+        </Routes>
+      </BrowserRouter>
+    // </AppProvider>
   );
 }
 
