@@ -18,7 +18,7 @@ const overrides = {
   styles,
   // Other foundational style overrides go here
   components: {
-    Button,
+    // Button,
     // Other components go here
   },
 }
