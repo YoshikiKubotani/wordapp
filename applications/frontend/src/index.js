@@ -13,7 +13,7 @@ import WordLevel from "./pages/WordLevel";
 import NoMatch from "./pages/NoMatch";
 import reportWebVitals from './reportWebVitals';
 import './index.css';
-import Root from './root'
+import Root from './Root'
 import theme from './theme';
 
 const router = createBrowserRouter([
