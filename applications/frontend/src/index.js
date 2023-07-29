@@ -1,16 +1,60 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
+import {
+  createBrowserRouter,
+  RouterProvider
+} from "react-router-dom";
+import { ColorModeScript, ChakraProvider } from '@chakra-ui/react'
+import ModeSelection from "./pages/ModeSelection";
+import Result, { resultLoader } from "./pages/Result";
+import Solve, { solveLoader } from "./pages/Solve";
+import StartPage from "./pages/StartPage";
+import WordLevel from "./pages/WordLevel";
+import NoMatch from "./pages/NoMatch";
 import reportWebVitals from './reportWebVitals';
-import { ColorModeScript } from '@chakra-ui/react'
+import './index.css';
+import Root from './root'
 import theme from './theme';
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Root />,
+    errorElement: <NoMatch />,
+    children: [
+      {
+        index: true,
+        element: <StartPage />,
+      },
+      {
+        path: "mode",
+        element: <ModeSelection />,
+      },
+      {
+        path: "wordlevel",
+        element: <WordLevel />,
+      },
+      {
+        path: "solve",
+        element: <Solve />,
+        loader: solveLoader,
+      },
+      {
+        path: "result",
+        element: <Result />,
+        loader: resultLoader,
+      },
+    ],
+  },
+]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-    <App />
+    <ChakraProvider>
+      <RouterProvider router={router} />
+    </ChakraProvider>
   </React.StrictMode>
 );
 
