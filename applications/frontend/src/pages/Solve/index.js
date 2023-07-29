@@ -1,1 +1,1 @@
-export { Solve } from './Solve';
+export { default, loader as solveLoader } from './Solve';

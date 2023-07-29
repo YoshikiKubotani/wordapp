@@ -1,7 +1,9 @@
 import React from "react";
 
-export const ModeSelection = ({}) => {
+const ModeSelection = ({}) => {
     return (
         <div></div>
     );
 };
+
+export default ModeSelection;

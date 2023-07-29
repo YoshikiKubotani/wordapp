@@ -1,7 +1,9 @@
 import React from "react";
 
-export const WordLevel = ({}) => {
+const WordLevel = ({}) => {
     return (
         <div></div>
     );
 };
+
+export default WordLevel;

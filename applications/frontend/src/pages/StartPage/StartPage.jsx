@@ -2,8 +2,7 @@ import React from "react";
 import { Box, Flex, Heading, Button, Spacer} from '@chakra-ui/react'
 import theme from "../../theme";
 
-export const StartPage = ({}) => {
-  console.log(theme.config.initialColorMode)
+const StartPage = ({}) => {
   return (
     // <Box minH="100vh">
       <Flex minH="100vh" direction="column" align='center' gap='30px'>
@@ -22,3 +21,5 @@ export const StartPage = ({}) => {
     // </Box>
   );
 };
+
+export default StartPage;

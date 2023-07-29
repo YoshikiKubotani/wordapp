@@ -1,1 +1,1 @@
-export { Result } from './Result';
+export { default, loader as resultLoader } from './Result';
