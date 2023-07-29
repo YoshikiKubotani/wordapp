@@ -1,5 +1,4 @@
 import React from "react";
-import "./StartPage.css";
 import { Box, Flex, Heading, Button, Spacer} from '@chakra-ui/react'
 import theme from "../../theme";
 

@@ -11,8 +11,6 @@ import { WordLevel } from "./pages/WordLevel";
 import { NoMatch } from "./pages/NoMatch";
 import theme from "./theme";
 
-import './App.css';
-
 function App() {
   return (
     // <AppProvider>
