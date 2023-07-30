@@ -5,10 +5,8 @@ export async function loader() {
   console.log("solve")
 }
 
-const Solve = ({}) => {
+export const Solve = ({}) => {
     return (
         <div></div>
     );
 };
-
-export default Solve;

@@ -1,1 +1,1 @@
-export { default } from './WordLevel';
+export { WordLevel } from './WordLevel';

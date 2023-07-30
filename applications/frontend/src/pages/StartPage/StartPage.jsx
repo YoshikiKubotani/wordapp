@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Flex, Heading, Button} from '@chakra-ui/react'
 import { useNavigate } from "react-router-dom";
 
-const StartPage = ({}) => {
+export const StartPage = ({}) => {
   const navigate = useNavigate();
 
   return (
@@ -17,5 +17,3 @@ const StartPage = ({}) => {
     </Flex>
   );
 };
-
-export default StartPage;

@@ -5,12 +5,12 @@ import {
   RouterProvider
 } from "react-router-dom";
 import { ColorModeScript, ChakraProvider } from '@chakra-ui/react'
-import ModeSelection from "./pages/ModeSelection";
-import Result, { resultLoader } from "./pages/Result";
-import Solve, { solveLoader } from "./pages/Solve";
-import StartPage from "./pages/StartPage";
-import WordLevel from "./pages/WordLevel";
-import NoMatch from "./pages/NoMatch";
+import { ModeSelection } from "./pages/ModeSelection";
+import { Result, resultLoader } from "./pages/Result";
+import { Solve, solveLoader } from "./pages/Solve";
+import { StartPage } from "./pages/StartPage";
+import { WordLevel } from "./pages/WordLevel";
+import { NoMatch } from "./pages/NoMatch";
 import reportWebVitals from './reportWebVitals';
 import './index.css';
 import Root from './Root'

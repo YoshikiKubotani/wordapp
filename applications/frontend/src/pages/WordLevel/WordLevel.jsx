@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import SelectionCard from '../../components/SelectionCard'
 
-const WordLevel = ({}) => {
+export const WordLevel = ({}) => {
   const navigate = useNavigate();
 
   return (
@@ -38,5 +38,3 @@ const WordLevel = ({}) => {
     </Flex>
   );
 };
-
-export default WordLevel;
