@@ -31,13 +31,19 @@ const router = createBrowserRouter([
         element: <ModeSelection />,
       },
       {
-        path: "wordlevel",
-        element: <WordLevel />,
-      },
-      {
-        path: "solve",
-        element: <Solve />,
-        loader: solveLoader,
+        path: "grade",
+        element: <Root />,
+        children: [
+          {
+            index: true,
+            element: <WordLevel />
+          },
+          {
+            path: ":gradeId",
+            element: <Solve />,
+            loader: solveLoader,
+          }
+        ]
       },
       {
         path: "result",
