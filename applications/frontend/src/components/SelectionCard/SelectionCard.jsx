@@ -50,7 +50,7 @@ const SelectionCard = ({
             color='teal.50'
             bg='teal.500'
             _hover={{ bg: 'teal.600' }}
-            onClick={() => navigate({navigateTo})}
+            onClick={() => navigate(navigateTo)}
           >
             {selectionText}
           </Button>
