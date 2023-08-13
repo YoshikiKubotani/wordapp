@@ -17,6 +17,7 @@ import {
   Stepper,
   useSteps,
   Progress,
+  Button
 } from '@chakra-ui/react'
 
 import { EventApi } from "../../api";
@@ -114,15 +115,16 @@ export const Solve = ({}) => {
   // 次の問題へ進むボタンを押したときの挙動
   const onClickNext = async () => {
     // 問題番号を次に進める
-    setItemIndex(itemIndex + 1);
+    const updatedItemIndex = itemIndex + 1;
+    setItemIndex(updatedItemIndex);
 
     // 次の問題を取得
-    const nextItemInfo = await getItemInfo(testItemUuidList[itemIndex]);
+    const nextItemInfo = await getItemInfo(testItemUuidList[updatedItemIndex]);
     // 取得した問題を表示(stateに反映)
     setItemInfo( prevItemInfo => {
       return {
         ...prevItemInfo,
-        item_index: itemIndex,
+        item_index: updatedItemIndex,
         english: nextItemInfo.english,
         op1: nextItemInfo.op1,
         op2: nextItemInfo.op2,
@@ -132,7 +134,9 @@ export const Solve = ({}) => {
     });
 
     // Stepperの表記を更新
-    setActiveStep(itemIndex);
+    setActiveStep(updatedItemIndex);
+    console.log("Item index", updatedItemIndex);
+
   }
 
   const onClickChoice = async (e) => {
@@ -261,6 +265,9 @@ export const Solve = ({}) => {
             hoverBgColor={'teal.200'}
             status={buttonStatus['op4']}
           />
+        </Flex>
+        <Flex direction='row' width="80%" align='center' justify='center' gap='10px'>
+          <Button onClick={onClickNext}>次へ</Button>
         </Flex>
       </Flex>
     );
