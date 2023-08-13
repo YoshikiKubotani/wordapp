@@ -135,8 +135,6 @@ export const Solve = ({}) => {
 
     // Stepperの表記を更新
     setActiveStep(updatedItemIndex);
-    console.log("Item index", updatedItemIndex);
-
   }
 
   const onClickChoice = async (e) => {
