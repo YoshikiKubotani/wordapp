@@ -188,17 +188,6 @@ export const Solve = ({}) => {
       <Flex minH="100vh" direction="column" align='center' justify='center' gap='30px'>
         <Heading as='h1' size='xl'>問題を解く</Heading>
         <Stack width="70%">
-          {/* <Stepper size='xs' index={activeStep} gap='10px'>
-            {testItemUuidList.map((_, index) => (
-              <Step key={index} gap='0'>
-                <StepIndicator>
-                  <StepStatus complete={<StepIcon />} />
-                </StepIndicator>
-                <StepSeparator _horizontal={{ ml: '0' }} />
-              </Step>
-            ))}
-          </Stepper>
-           */}
            <Box position='relative'>
             <Stepper size='sm' index={activeStep} gap='10px' colorScheme="blue">
               {testItemUuidList.map((step, index) => (
