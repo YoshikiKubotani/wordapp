@@ -178,13 +178,15 @@ export const Solve = ({}) => {
       <Box>Loading ...</Box>
     )
   }
-  console.log("Item Info", itemInfo)
+
+  const max = testItemUuidList.length - 1
+  const progressPercent = (activeStep / max) * 100
 
   return (
       <Flex minH="100vh" direction="column" align='center' justify='center' gap='30px'>
         <Heading as='h1' size='xl'>問題を解く</Heading>
-        <Stack>
-          <Stepper size='xs' index={activeStep} gap='10px'>
+        <Stack width="70%">
+          {/* <Stepper size='xs' index={activeStep} gap='10px'>
             {testItemUuidList.map((_, index) => (
               <Step key={index} gap='0'>
                 <StepIndicator>
@@ -194,7 +196,31 @@ export const Solve = ({}) => {
               </Step>
             ))}
           </Stepper>
-          <Text>
+           */}
+           <Box position='relative'>
+            <Stepper size='sm' index={activeStep} gap='10px' colorScheme="blue">
+              {testItemUuidList.map((step, index) => (
+                <Step key={index} gap='0'>
+                  <StepIndicator bg='blue.100' color="blue">
+                    <StepStatus
+                      complete={<StepIcon />}
+                      incomplete={<StepNumber />}
+                      active={<StepNumber />}
+                    />
+                  </StepIndicator>
+                </Step>
+              ))}
+            </Stepper>
+            <Progress
+              value={progressPercent}
+              position='absolute'
+              height='3px'
+              width='full'
+              top='10px'
+              zIndex={-1}
+            />
+          </Box>
+          <Text fontSize="3xl">
             問題 {activeStep + 1} / {testItemUuidList.length} : <b>{itemInfo.english}</b>
           </Text>
         </Stack>
