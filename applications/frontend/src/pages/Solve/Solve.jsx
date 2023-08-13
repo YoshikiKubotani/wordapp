@@ -42,6 +42,13 @@ const defaultItemInfo = {
   op4: "test",
 }
 
+const defaultButtonStatus = {
+  'op1': 'default',
+  'op2': 'default',
+  'op3': 'default',
+  'op4': 'default',
+}
+
 
 export async function loader({ params }) {
   let res;
@@ -63,17 +70,14 @@ export const Solve = ({}) => {
   const { testItemUuidList } = useLoaderData();
   const [ itemIndex, setItemIndex] = useState(0);
   const [ isLoading, setIsLoading ] = useState(true);
+  const [ isAnyNotDefault, setIsAnyNotDefault ] = useState(false);
   const [ itemInfo, setItemInfo ] = useState(defaultItemInfo);
-  const [ buttonStatus, setButtonStatus ] = useState({
-    'op1': 'default',
-    'op2': 'default',
-    'op3': 'default',
-    'op4': 'default',
-  });
+  const [ buttonStatus, setButtonStatus ] = useState(defaultButtonStatus);
   const { activeStep, setActiveStep } = useSteps({
     index: 0,
     count: testItemUuidList.length,
   })
+
 
   // 初回のレンダリング時に実行。最初の問題を取得して表示する。
   useEffect(() => {
@@ -96,6 +100,7 @@ export const Solve = ({}) => {
     fetchData();
   }, [])
 
+
   // 与えられたUUIDの問題を取得する
   const getItemInfo = async (itemUuid) => {
     let res;
@@ -111,6 +116,7 @@ export const Solve = ({}) => {
     console.log("Item Info", itemInfo);
     return itemInfo;
   }
+
 
   // 次の問題へ進むボタンを押したときの挙動
   const onClickNext = async () => {
@@ -135,10 +141,22 @@ export const Solve = ({}) => {
 
     // Stepperの表記を更新
     setActiveStep(updatedItemIndex);
+
+    // 選択肢のステータスを初期化
+    setButtonStatus(defaultButtonStatus);
+
+    // 次へボタンを無効化
+    setIsAnyNotDefault(false);
+
+    // 次の問題がない場合、結果画面へ遷移
+    if (updatedItemIndex === testItemUuidList.length - 1) {
+      window.alert("最後の問題です。");
+    }
   }
 
+
+  // 選択肢をクリックしたときの挙動
   const onClickChoice = async (e) => {
-    console.log(e.target.textContent );
     let res;
     try {
       res = await EventApi.getItemAnswer(testItemUuidList[itemIndex])
@@ -151,9 +169,12 @@ export const Solve = ({}) => {
     const itemAnswerInfo = await res.json();
     console.log("Answer Info", itemAnswerInfo);
 
+    // クリックされたボタンのテキストを取得
     const userAnswer = e.target.textContent;
+    // 正解のテキストを取得
     const itemAnswer = itemAnswerInfo.answer;
 
+    // 正誤判定
     let selectedButtonStatus = '';
     if (itemAnswer === userAnswer) {
       selectedButtonStatus = 'correct';
@@ -162,6 +183,7 @@ export const Solve = ({}) => {
       selectedButtonStatus = 'incorrect';
     }
 
+    // クリックされたボタンのステータスを更新
     setButtonStatus(prevButtonStatus => {
       let newStatus = {};
 
@@ -172,7 +194,11 @@ export const Solve = ({}) => {
 
       return newStatus;
     });
+
+    // 次へ進むボタンの活性/非活性を判定
+    setIsAnyNotDefault(!Object.values(buttonStatus).some(status => status !== 'default'));
   }
+
 
   // 初回のレンダリングが終わり、最初の問題が取得＆表示されるまでの間はローディング画面を表示する
   if (isLoading) {
@@ -181,6 +207,7 @@ export const Solve = ({}) => {
     )
   }
 
+  // Stepperの進捗率を計算
   const max = testItemUuidList.length - 1
   const progressPercent = (activeStep / max) * 100
 
@@ -254,7 +281,7 @@ export const Solve = ({}) => {
           />
         </Flex>
         <Flex direction='row' width="80%" align='center' justify='center' gap='10px'>
-          <Button onClick={onClickNext}>次へ</Button>
+          <Button onClick={onClickNext} isDisabled={!isAnyNotDefault}>次へ</Button>
         </Flex>
       </Flex>
     );
