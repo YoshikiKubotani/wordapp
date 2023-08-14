@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 export const ModeSelection = ({}) => {
   const navigate = useNavigate();
-  
+
   return (
     <Flex minH="100vh" direction="column" align='center' justify='center' gap='30px'>
       <Heading as='h1' size='xl'>英単語アプリ</Heading>

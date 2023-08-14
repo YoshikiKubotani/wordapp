@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import SelectionCard from '../../components/SelectionCard'
 
 export const WordLevel = ({}) => {
-  const navigate = useNavigate();
 
   return (
     <Flex minH="100vh" direction="column" align='center' justify='center' gap='30px'>

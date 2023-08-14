@@ -20,8 +20,8 @@ import {
   Button,
   Icon
 } from '@chakra-ui/react';
-// import { FiCheck, FiX  } from 'react-icons/fi';
 import { GoCheck, GoX } from "react-icons/go";
+import { useNavigate } from "react-router-dom";
 
 import { EventApi } from "../../api";
 import AnswerButton from "../../components/AnswerButton";
@@ -81,7 +81,9 @@ export const Solve = ({}) => {
   const { activeStep, setActiveStep } = useSteps({
     index: 0,
     count: testItemUuidList.length,
-  })
+  });
+  const navigate = useNavigate();
+
 
 
   // 初回のレンダリング時に実行。最初の問題を取得して表示する。
@@ -155,7 +157,7 @@ export const Solve = ({}) => {
 
     // 次の問題がない場合、結果画面へ遷移
     if (updatedItemIndex === testItemUuidList.length) {
-      window.alert("最後の問題です。");
+      navigate("/result");
     }
   }
 
