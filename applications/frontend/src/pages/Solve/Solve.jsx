@@ -17,8 +17,11 @@ import {
   Stepper,
   useSteps,
   Progress,
-  Button
-} from '@chakra-ui/react'
+  Button,
+  Icon
+} from '@chakra-ui/react';
+// import { FiCheck, FiX  } from 'react-icons/fi';
+import { GoCheck, GoX } from "react-icons/go";
 
 import { EventApi } from "../../api";
 import AnswerButton from "../../components/AnswerButton";
@@ -73,6 +76,7 @@ export const Solve = ({}) => {
   const [ isAnyNotDefault, setIsAnyNotDefault ] = useState(false);
   const [ itemInfo, setItemInfo ] = useState(defaultItemInfo);
   const [ buttonStatus, setButtonStatus ] = useState(defaultButtonStatus);
+  const [ answerHistory, setAnswerHistory ] = useState([]);
   const { activeStep, setActiveStep } = useSteps({
     index: 0,
     count: testItemUuidList.length,
@@ -178,10 +182,24 @@ export const Solve = ({}) => {
     let selectedButtonStatus = '';
     if (itemAnswer === userAnswer) {
       selectedButtonStatus = 'correct';
+      setAnswerHistory(prevAnswerHistory => {
+        let newHistory = [...prevAnswerHistory.slice(0, activeStep), 'correct'];
+        const restHistory = Array(testItemUuidList.length - newHistory.length).fill(null)
+        newHistory = newHistory.concat(restHistory);
+        return newHistory;
+      });
     }
     else {
       selectedButtonStatus = 'incorrect';
+      setAnswerHistory(prevAnswerHistory => {
+        let newHistory = [...prevAnswerHistory.slice(0, activeStep), 'incorrect'];
+        const restHistory = Array(testItemUuidList.length - newHistory.length).fill(null)
+        newHistory = newHistory.concat(restHistory);
+        return newHistory;
+      });
     }
+
+    console.log(answerHistory)
 
     // クリックされたボタンのステータスを更新
     setButtonStatus(prevButtonStatus => {
@@ -195,8 +213,16 @@ export const Solve = ({}) => {
       return newStatus;
     });
 
-    // 次へ進むボタンの活性/非活性を判定
-    setIsAnyNotDefault(!Object.values(buttonStatus).some(status => status !== 'default'));
+
+  // 問題の正誤に合わせて、完了済みのStepIndicatorに使用するアイコンを変更
+  const completedIcon = (index) => {
+    if (answerHistory[index] === 'correct') {
+      return <Icon as={GoCheck} />;
+    }
+    if (answerHistory[index] === 'incorrect') {
+      return <Icon as={GoX} />;
+    }
+    return null;  // または他のデフォルトのコンポーネントやエレメント
   }
 
 
@@ -221,7 +247,7 @@ export const Solve = ({}) => {
                 <Step key={index} gap='0'>
                   <StepIndicator bg='blue.100' color="blue">
                     <StepStatus
-                      complete={<StepIcon />}
+                      complete={completedIcon(index)}
                       incomplete={<StepNumber />}
                       active={<StepNumber />}
                     />
