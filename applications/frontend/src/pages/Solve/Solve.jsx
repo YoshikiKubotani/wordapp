@@ -154,7 +154,7 @@ export const Solve = ({}) => {
     setIsNextButtonDisable(true);
 
     // 次の問題がない場合、結果画面へ遷移
-    if (updatedItemIndex === testItemUuidList.length - 1) {
+    if (updatedItemIndex === testItemUuidList.length) {
       window.alert("最後の問題です。");
     }
   }
