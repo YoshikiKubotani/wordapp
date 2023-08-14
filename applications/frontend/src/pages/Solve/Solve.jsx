@@ -69,11 +69,12 @@ export async function loader({ params }) {
   return { testItemUuidList };
 }
 
+
 export const Solve = ({}) => {
   const { testItemUuidList } = useLoaderData();
   const [ itemIndex, setItemIndex] = useState(0);
   const [ isLoading, setIsLoading ] = useState(true);
-  const [ isAnyNotDefault, setIsAnyNotDefault ] = useState(false);
+  const [ isNextButtonDisable, setIsNextButtonDisable ] = useState(true);
   const [ itemInfo, setItemInfo ] = useState(defaultItemInfo);
   const [ buttonStatus, setButtonStatus ] = useState(defaultButtonStatus);
   const [ answerHistory, setAnswerHistory ] = useState([]);
@@ -149,8 +150,8 @@ export const Solve = ({}) => {
     // 選択肢のステータスを初期化
     setButtonStatus(defaultButtonStatus);
 
-    // 次へボタンを無効化
-    setIsAnyNotDefault(false);
+    // 次へ進むボタンを無効化
+    setIsNextButtonDisable(true);
 
     // 次の問題がない場合、結果画面へ遷移
     if (updatedItemIndex === testItemUuidList.length - 1) {
@@ -212,6 +213,10 @@ export const Solve = ({}) => {
 
       return newStatus;
     });
+
+    // 次へ進むボタンを活性化
+    setIsNextButtonDisable(false);
+  }
 
 
   // 問題の正誤に合わせて、完了済みのStepIndicatorに使用するアイコンを変更
@@ -307,7 +312,7 @@ export const Solve = ({}) => {
           />
         </Flex>
         <Flex direction='row' width="80%" align='center' justify='center' gap='10px'>
-          <Button onClick={onClickNext} isDisabled={!isAnyNotDefault}>次へ</Button>
+          <Button onClick={onClickNext} isDisabled={isNextButtonDisable}>次へ</Button>
         </Flex>
       </Flex>
     );
