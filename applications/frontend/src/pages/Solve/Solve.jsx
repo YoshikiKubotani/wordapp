@@ -43,10 +43,10 @@ const defaultItemInfo = {
 }
 
 const defaultButtonStatus = {
-  'op1': 'default',
-  'op2': 'default',
-  'op3': 'default',
-  'op4': 'default',
+  op1: 'default',
+  op2: 'default',
+  op3: 'default',
+  op4: 'default',
 }
 
 
