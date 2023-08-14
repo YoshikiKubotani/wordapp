@@ -222,10 +222,10 @@ export const Solve = ({}) => {
   // 問題の正誤に合わせて、完了済みのStepIndicatorに使用するアイコンを変更
   const completedIcon = (index) => {
     if (answerHistory[index] === 'correct') {
-      return <Icon as={GoCheck} />;
+      return <Icon as={GoCheck} color="green.600" bg="green.200" borderRadius="50%" width="85%" height="85%" />;
     }
     if (answerHistory[index] === 'incorrect') {
-      return <Icon as={GoX} />;
+      return <Icon as={GoX} color="red.600" bg="red.200" borderRadius="50%" width="85%" height="85%" />;
     }
     return null;  // または他のデフォルトのコンポーネントやエレメント
   }
@@ -247,7 +247,7 @@ export const Solve = ({}) => {
         <Heading as='h1' size='xl'>問題を解く</Heading>
         <Stack width="70%">
            <Box position='relative'>
-            <Stepper size='sm' index={activeStep} gap='10px' colorScheme="blue">
+            <Stepper size='md' index={activeStep} gap='10px' colorScheme="gray">
               {testItemUuidList.map((step, index) => (
                 <Step key={index} gap='0'>
                   <StepIndicator bg='blue.100' color="blue">
@@ -265,7 +265,7 @@ export const Solve = ({}) => {
               position='absolute'
               height='3px'
               width='full'
-              top='10px'
+              top='15px'
               zIndex={-1}
             />
           </Box>
