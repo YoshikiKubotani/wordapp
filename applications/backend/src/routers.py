@@ -42,6 +42,12 @@ def get_item(item_uuid: UUID4) -> dict[str, Any]:
 def get_answer(item_uuid: UUID4) -> dict[str, str]:
     return {"answer": "こんにちは"}
 
+# 与えられたUUIDの問題に対するユーザーの回答を受け取る
+@router.post("/items/{item_uuid}/response")
+def post_response(item_uuid: UUID4, answer_info: dict[str, str]) -> bool:
+    print(answer_info)
+    return True
+
 # # 新規エージェントの登録
 # @router.post("/agents")
 # async def register_agent(

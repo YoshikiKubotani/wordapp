@@ -202,6 +202,23 @@ export const Solve = ({}) => {
       });
     }
 
+    try {
+      // 現在の問題の回答情報を記録
+      await EventApi.sendResponseInfo(
+        testItemUuidList[itemIndex],
+        {
+          item_id: testItemUuidList[itemIndex],
+          answer: userAnswer,
+          is_correct: itemAnswer === userAnswer
+        }
+      );
+    }
+    catch (err) {
+      console.log(err);
+      window.alert("回答情報の送信に失敗しました。");
+      return;
+    }
+
     console.log(answerHistory)
 
     // クリックされたボタンのステータスを更新

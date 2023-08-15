@@ -25,6 +25,11 @@ class _EventApi {
     return this._request(`/items/${itemUuid}/answer`, 'GET')
   }
 
+  static sendResponseInfo(itemUuid, answerInfo) {
+    // ユーザーの回答を送信するためのAPI
+    return this._request(`/items/${itemUuid}/response`, 'POST', answerInfo)
+  }
+
 //   static updateAgent(avatarInfo) {
 //       // エージェントの情報編集API
 //       // avatarInfo: AgentDTOに相当するものを渡す
