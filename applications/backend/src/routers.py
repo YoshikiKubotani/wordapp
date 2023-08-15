@@ -23,7 +23,6 @@ def make_test_set(grade_id: int) -> list[UUID4]:
     testset_list = []
     for i in range(10):
         testset_list.append(uuid.uuid4())
-    print(testset_list)
     return testset_list
 
 # 与えられたUUIDを元に、キャッシュされたテストセットの中の問題を取得
