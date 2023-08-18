@@ -80,16 +80,13 @@ export const Solve = () => {
   useEffect(() => {
     const fetchData = async () => {
       const firstItemInfo = await getItemInfo(testItemUuidList[itemIndex]);
-      setItemInfo( prevItemInfo => {
-        return {
-          ...prevItemInfo,
+      setItemInfo({
         item_index: itemIndex,
         english: firstItemInfo.english,
         op1: firstItemInfo.op1,
         op2: firstItemInfo.op2,
         op3: firstItemInfo.op3,
         op4: firstItemInfo.op4,
-        }
       });
       setIsLoading(false);
     }
@@ -115,16 +112,13 @@ export const Solve = () => {
     // 次の問題を取得
     const nextItemInfo = await getItemInfo(testItemUuidList[updatedItemIndex]);
     // 取得した問題を表示(stateに反映)
-    setItemInfo( prevItemInfo => {
-      return {
-        ...prevItemInfo,
-        item_index: updatedItemIndex,
-        english: nextItemInfo.english,
-        op1: nextItemInfo.op1,
-        op2: nextItemInfo.op2,
-        op3: nextItemInfo.op3,
-        op4: nextItemInfo.op4,
-      }
+    setItemInfo({
+      item_index: updatedItemIndex,
+      english: nextItemInfo.english,
+      op1: nextItemInfo.op1,
+      op2: nextItemInfo.op2,
+      op3: nextItemInfo.op3,
+      op4: nextItemInfo.op4,
     });
 
     // Stepperの表記を更新
