@@ -1,11 +1,7 @@
 class _EventApi {
   static async _request({url, method, body = undefined, customHeaders = {}, queryParams = {}}) {
-    console.log(url)
-    console.log(method)
-    console.log(queryParams)
     const backend_url = process.env.BACKEND_API_URL ?? 'http://localhost:8000';
     const queryString = this._encodeQueryParams(queryParams);
-    console.log(queryString)
     const fullUrl = `${backend_url}${url}${queryString}`;
     let headers = {
       "Content-Type": "application/json",
