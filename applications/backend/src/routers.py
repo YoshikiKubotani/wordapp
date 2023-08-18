@@ -1,4 +1,3 @@
-import uuid
 from pathlib import Path
 from typing import Final, Optional, Any
 from pydantic import UUID4
@@ -7,6 +6,7 @@ import fastapi
 from fastapi import Depends
 from fastapi.responses import ORJSONResponse
 
+from src.adapter.controller import TestController
 
 router: Final = fastapi.APIRouter(default_response_class=ORJSONResponse)
 
@@ -19,11 +19,15 @@ router: Final = fastapi.APIRouter(default_response_class=ORJSONResponse)
 
 # テストセットの作成とそのUUIDの取得
 @router.get("/tests/{grade_id}")
-def make_test_set(grade_id: int) -> list[UUID4]:
-    testset_list = []
-    for i in range(10):
-        testset_list.append(uuid.uuid4())
-    return testset_list
+def make_test_set(grade_id: int, num: int) -> list[UUID4]:
+    return TestController(
+        user_repository,
+        item_repository,
+        genra_repository,
+        deck_repository,
+        score_repository,
+        history_repository,
+    ).make_test_set(grade_id, num)
 
 # 与えられたUUIDを元に、キャッシュされたテストセットの中の問題を取得
 @router.get("/items/{item_uuid}")
