@@ -54,23 +54,13 @@ const defaultButtonStatus = {
 
 
 export async function loader({ params }) {
-  let res;
-  try {
-    res = await EventApi.makeTest(Number(params.gradeId));
-  }
-  catch (err) {
-    console.log(err);
-    window.alert("テストの作成に失敗しました。");
-    return;
-  }
-  const testItemUuidList = await res.json();
-
+  const testItemUuidList = await EventApi.makeTest(Number(params.gradeId));
   console.log("Item IDs in a created test", testItemUuidList)
   return { testItemUuidList };
 }
 
 
-export const Solve = ({}) => {
+export const Solve = () => {
   const { testItemUuidList } = useLoaderData();
   const [ itemIndex, setItemIndex] = useState(0);
   const [ isLoading, setIsLoading ] = useState(true);
@@ -93,12 +83,12 @@ export const Solve = ({}) => {
       setItemInfo( prevItemInfo => {
         return {
           ...prevItemInfo,
-          item_index: itemIndex,
-          english: firstItemInfo.english,
-          op1: firstItemInfo.op1,
-          op2: firstItemInfo.op2,
-          op3: firstItemInfo.op3,
-          op4: firstItemInfo.op4,
+        item_index: itemIndex,
+        english: firstItemInfo.english,
+        op1: firstItemInfo.op1,
+        op2: firstItemInfo.op2,
+        op3: firstItemInfo.op3,
+        op4: firstItemInfo.op4,
         }
       });
       setIsLoading(false);
@@ -110,16 +100,7 @@ export const Solve = ({}) => {
 
   // 与えられたUUIDの問題を取得する
   const getItemInfo = async (itemUuid) => {
-    let res;
-    try {
-      res = await EventApi.getItemInfo(itemUuid)
-    }
-    catch (err) {
-      console.log(err);
-      window.alert("問題の取得に失敗しました。");
-      return;
-    }
-    const itemInfo = await res.json();
+    const itemInfo = await EventApi.getItemInfo(itemUuid)
     console.log("Item Info", itemInfo);
     return itemInfo;
   }
@@ -164,16 +145,7 @@ export const Solve = ({}) => {
 
   // 選択肢をクリックしたときの挙動
   const onClickChoice = async (e) => {
-    let res;
-    try {
-      res = await EventApi.getItemAnswer(testItemUuidList[itemIndex])
-    }
-    catch (err) {
-      console.log(err);
-      window.alert("問題の取得に失敗しました。");
-      return;
-    }
-    const itemAnswerInfo = await res.json();
+    const itemAnswerInfo = await EventApi.getItemAnswer(testItemUuidList[itemIndex])
     console.log("Answer Info", itemAnswerInfo);
 
     // クリックされたボタンのテキストを取得
@@ -202,22 +174,14 @@ export const Solve = ({}) => {
       });
     }
 
-    try {
-      // 現在の問題の回答情報を記録
-      await EventApi.sendResponseInfo(
-        testItemUuidList[itemIndex],
-        {
-          item_id: testItemUuidList[itemIndex],
-          answer: userAnswer,
-          is_correct: itemAnswer === userAnswer
-        }
-      );
-    }
-    catch (err) {
-      console.log(err);
-      window.alert("回答情報の送信に失敗しました。");
-      return;
-    }
+    await EventApi.sendResponseInfo(
+      testItemUuidList[itemIndex],
+      {
+        item_id: testItemUuidList[itemIndex],
+        answer: userAnswer,
+        is_correct: itemAnswer === userAnswer
+      }
+    );
 
     console.log(answerHistory)
 
