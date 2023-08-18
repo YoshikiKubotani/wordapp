@@ -41,12 +41,12 @@ class _EventApi {
     return pairs.length ? `?${pairs.join('&')}` : '';
   }
 
-  static makeTest(gradeId) {
+  static makeTest(gradeId, numItems) {
     // テストを作成するためのAPI
     return this._request({
       url: `/tests/${gradeId}`,
       method: 'GET',
-      queryParams: {numItem: 20}
+      queryParams: {num: numItems}
     })
   }
 
