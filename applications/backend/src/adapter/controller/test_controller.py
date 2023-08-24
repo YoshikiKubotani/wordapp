@@ -9,38 +9,38 @@ from src.usecase.interactor import TestUsecase
 class TestController:
   def __init__(
     self,
-    user_repository: RDBRepositoryGateway,
+    # user_repository: RDBRepositoryGateway,
     item_repository: RDBRepositoryGateway,
-    genra_repository: RDBRepositoryGateway,
+    # genra_repository: RDBRepositoryGateway,
     deck_repository: RDBRepositoryGateway,
-    score_repository: RDBRepositoryGateway,
-    history_repository: RDBRepositoryGateway,
+    # score_repository: RDBRepositoryGateway,
+    # history_repository: RDBRepositoryGateway,
   ):
-    self.user_repository = user_repository
+    # self.user_repository = user_repository
     self.item_repository = item_repository
-    self.genra_repository = genra_repository
+    # self.genra_repository = genra_repository
     self.deck_repository = deck_repository
-    self.score_repository = score_repository
-    self.history_repository = history_repository
+    # self.score_repository = score_repository
+    # self.history_repository = history_repository
 
   def _create_test_usecase(self) -> TestUsecase:
     return TestUsecase(
-      self.user_repository,
+      # self.user_repository,
       self.item_repository,
-      self.genra_repository,
-      self.deck_repository,
-      self.score_repository,
-      self.history_repository,
+      # self.genra_repository,
+      # self.deck_repository,
+      # self.score_repository,
+      # self.history_repository,
     )
 
   def _create_deck_usecase(self) -> DeckUsecase:
     return DeckUsecase(
-      self.user_repository,
+      # self.user_repository,
       self.item_repository,
-      self.genra_repository,
+      # self.genra_repository,
       self.deck_repository,
-      self.score_repository,
-      self.history_repository,
+      # self.score_repository,
+      # self.history_repository,
     )
 
   def make_test_set(self, grade_id: int, num_items: int) -> list[dict[str, Any]]:

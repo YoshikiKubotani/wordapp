@@ -6,19 +6,19 @@ from src.adapter.gateway import RDBRepositoryGateway
 class TestUsecase:
   def __init__(
     self,
-    user_repository: RDBRepositoryGateway,
+    # user_repository: RDBRepositoryGateway,
     item_repository: RDBRepositoryGateway,
-    genra_repository: RDBRepositoryGateway,
-    deck_repository: RDBRepositoryGateway,
-    score_repository: RDBRepositoryGateway,
-    history_repository: RDBRepositoryGateway,
+    # genra_repository: RDBRepositoryGateway,
+    # deck_repository: RDBRepositoryGateway,
+    # score_repository: RDBRepositoryGateway,
+    # history_repository: RDBRepositoryGateway,
   ):
-    self.user_repository = user_repository
+    # self.user_repository = user_repository
     self.item_repository = item_repository
-    self.genra_repository = genra_repository
-    self.deck_repository = deck_repository
-    self.score_repository = score_repository
-    self.history_repository = history_repository
+    # self.genra_repository = genra_repository
+    # self.deck_repository = deck_repository
+    # self.score_repository = score_repository
+    # self.history_repository = history_repository
 
   def make_random_test_set(self, num_items: int, source: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """

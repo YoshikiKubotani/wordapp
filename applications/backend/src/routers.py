@@ -7,6 +7,9 @@ from fastapi import Depends
 from fastapi.responses import ORJSONResponse
 
 from src.adapter.controller import TestController
+from src.frameworks.postgres import (
+    ItemTable
+)
 
 router: Final = fastapi.APIRouter(default_response_class=ORJSONResponse)
 
@@ -21,12 +24,12 @@ router: Final = fastapi.APIRouter(default_response_class=ORJSONResponse)
 @router.get("/tests/{grade_id}")
 def make_test_set(grade_id: int, num: int) -> list[UUID4]:
     return TestController(
-        user_repository,
-        item_repository,
-        genra_repository,
+        # user_repository,
+        ItemTable,
+        # genra_repository,
         deck_repository,
-        score_repository,
-        history_repository,
+        # score_repository,
+        # history_repository,
     ).make_test_set(grade_id, num)
 
 # 与えられたUUIDを元に、キャッシュされたテストセットの中の問題を取得
