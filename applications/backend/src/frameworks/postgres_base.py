@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import Any, Generic, list, TypeVar, Union, dict
 
 import psycopg2
-from psycopg2.extensions import AsIs, connection
+from psycopg2.extensions import connection
 from psycopg2.extras import dictCursor
 from pydantic import PositiveInt
 
