@@ -10,6 +10,10 @@ from pydantic import PositiveInt
 
 from src.adapter.gateway import RDBRepositoryGateway
 
+from src.utils import get_my_logger
+
+logger = get_my_logger(__name__)
+
 PY2SQL_TYPE_DICT = {
     str: "text",
     int: "bigint",

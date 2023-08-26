@@ -4,7 +4,9 @@ import fastapi
 from fastapi.middleware.cors import CORSMiddleware
 
 from src import routers
+from src.utils import get_my_logger
 
+logger = get_my_logger(__name__)
 
 def main() -> fastapi.FastAPI:
     """Create FastAPI application instance.
