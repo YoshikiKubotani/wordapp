@@ -1,6 +1,1 @@
-.env.backend
-__pycache__
-.coverage
-.mypy_cache
-.pytest_cache
-.venv
+/environments/envs.env
