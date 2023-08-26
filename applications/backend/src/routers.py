@@ -27,7 +27,7 @@ def make_test_set(grade_id: int, num: int) -> list[UUID4]:
         # user_repository,
         ItemTable,
         # genra_repository,
-        deck_repository,
+        # deck_repository,
         # score_repository,
         # history_repository,
     ).make_test_set(grade_id, num)

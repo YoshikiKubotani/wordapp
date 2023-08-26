@@ -38,7 +38,7 @@ class TestController:
       # self.user_repository,
       self.item_repository,
       # self.genra_repository,
-      self.deck_repository,
+      # self.deck_repository,
       # self.score_repository,
       # self.history_repository,
     )
@@ -50,10 +50,12 @@ class TestController:
 
     # テストセットを作成するためのユースケースを作成
     test_usecase = self._create_test_usecase()
-    deck_usecase = self._create_deck_usecase()
+    # deck_usecase = self._create_deck_usecase()
 
     # デッキを取得
-    deck = deck_usecase.get_deck(grade_id)
+    # deck = deck_usecase.get_deck(grade_id)
+    # 指定した学年の問題を取得
+    deck = self.item_repository.select_data({"grade_id": grade_id})
 
     # 取得したデッキからテストセットを作成
     test_set = test_usecase.make_random_test_set(num_items, deck)
