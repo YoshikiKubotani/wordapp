@@ -8,6 +8,8 @@ from psycopg2.extensions import connection
 from psycopg2.extras import dictCursor
 from pydantic import PositiveInt
 
+from src.adapter.gateway import RDBRepositoryGateway
+
 PY2SQL_TYPE_DICT = {
     str: "text",
     int: "bigint",
@@ -29,7 +31,7 @@ def get_db() -> connection:
         session.close()
 
 
-class PostgreSQL(Generic[T]):
+class PostgreSQL(RDBRepositoryGateway, Generic[T]):
     def __init__(
             self,
             db_name: str,
