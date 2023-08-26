@@ -73,6 +73,19 @@ class PostgreSQL(RDBRepositoryGateway, Generic[T]):
             port=os.getenv("DATABASE_PORT", 5432),
         )
 
+    @classmethod
+    def recreate_schema(cls, conn: connection, schema: str = "test") -> None:
+        """Drop all tables in the schema and recreate the schema."""
+        with conn.cursor() as cursor:
+            cursor.execute(
+                """
+                drop schema if exists %s cascade;
+                create schema %s;
+                """,
+                (schema, schema)
+            )
+        logger.info(f"Dropped and recreated schema: {schema}")
+
     def _validate_db_name_and_features(self):
         """Check if db_name and features are valid."""
         reserved_words = [
