@@ -24,17 +24,19 @@ def main() -> fastapi.FastAPI:
     async def lifespan(app: FastAPI) -> AsyncIterator:
         # Startup
         logger.info("Starup...")
-        # PostgresSQLのテーブルを管理するクラスの一覧を取得
-        all_tool_classes = [
-            cls[1](conn) for cls in inspect.getmembers(postgres, inspect.isclass)
-        ]
-        # テストの際はここでtestスキーマにあるテーブルを削除・再作成する
+
+        # コネクションを一つ作成して、with内部で使いまわす
         with get_db() as conn:
+            # PostgresSQLのテーブルを管理するクラスの一覧を取得
+            all_tool_classes = [
+                cls[1](conn) for cls in inspect.getmembers(postgres, inspect.isclass)
+            ]
+            # テストの際はここでtestスキーマにあるテーブルを削除・再作成する
             PostgreSQL.recreate_schema(conn)
 
-        # テーブルを作成
-        initialize_all(all_tool_classes)
-        yield
+            # テーブルを作成
+            initialize_all(all_tool_classes)
+            yield
         # Cleanup(shutdown)
         logger.info("Shutdown...")
 

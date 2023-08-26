@@ -1,11 +1,13 @@
+from contextlib import contextmanager
 import os
 import re
 from datetime import datetime
-from typing import Any, Generic, list, TypeVar, Union, dict
+from typing import Any, Generic, TypeVar, Union
 
 import psycopg2
 from psycopg2.extensions import connection
-from psycopg2.extras import dictCursor
+from psycopg2.extras import DictCursor
+from psycopg2.sql import Identifier, SQL
 from pydantic import PositiveInt
 
 from src.adapter.gateway import RDBRepositoryGateway
@@ -26,6 +28,7 @@ PY2SQL_TYPE_DICT = {
 T = TypeVar("T")
 
 
+@contextmanager
 def get_db() -> connection:
     """Establish a connection to the database and yield the session."""
     session = PostgreSQL.create_connection()
@@ -77,13 +80,14 @@ class PostgreSQL(RDBRepositoryGateway, Generic[T]):
     def recreate_schema(cls, conn: connection, schema: str = "test") -> None:
         """Drop all tables in the schema and recreate the schema."""
         with conn.cursor() as cursor:
-            cursor.execute(
+            query = SQL(
                 """
-                drop schema if exists %s cascade;
-                create schema %s;
-                """,
-                (schema, schema)
-            )
+                drop schema if exists {} cascade;
+                create schema {};
+                """
+            ).format(Identifier(schema), Identifier(schema))
+
+            cursor.execute(query)
         logger.info(f"Dropped and recreated schema: {schema}")
 
     def _validate_db_name_and_features(self):
@@ -111,7 +115,7 @@ class PostgreSQL(RDBRepositoryGateway, Generic[T]):
         raise ValueError(f"Unsupported Python data type: {pytype}")
 
     def create_table(self) -> None:
-        with self.connection.cursor() as cursor:
+        with self.conn.cursor() as cursor:
             # Custom type creation
             type_creation_prompt = ""
             var_prompt = ""
@@ -169,7 +173,7 @@ class PostgreSQL(RDBRepositoryGateway, Generic[T]):
         """Get a new ID for insertion. Assumes ID column contains integer values."""
         if len(self.pk) > 1:
             return 0
-        with self.connection.cursor() as cursor:
+        with self.conn.cursor() as cursor:
             cursor.execute(
                 f"""
                 SELECT {self.pk}
@@ -213,7 +217,7 @@ class PostgreSQL(RDBRepositoryGateway, Generic[T]):
 
     def select_data(self, conditions: dict[str, Any]= {}) -> list[T]:
         """Select data from the table based on provided conditions."""
-        with self.conn.cursor(cursor_factory=dictCursor) as cur:
+        with self.conn.cursor(cursor_factory=DictCursor) as cur:
             if conditions:
                 conditions_str = " AND ".join([f"{key} = %s" for key in conditions.keys()])
                 select_cmd = f"SELECT * FROM {self.schema}.{self.db_name} WHERE {conditions_str};"

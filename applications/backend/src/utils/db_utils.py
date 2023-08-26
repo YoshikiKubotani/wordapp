@@ -2,10 +2,7 @@ import inspect
 import os
 
 import networkx as nx
-import psycopg2
-from psycopg2.extensions import AsIs, connection
 
-from src.frameworks import postgres
 from src.adapter.gateway import RDBRepositoryGateway
 
 from .logger_utils import get_my_logger
