@@ -4,7 +4,7 @@ import redis
 import json
 
 from src.adapter.gateway import RDBRepositoryGateway
-from src.usecase.interactor import TestUsecase
+from src.usecase.interactor import TestUsecase, DeckUsecase
 
 class TestController:
   def __init__(
