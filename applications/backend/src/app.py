@@ -1,16 +1,17 @@
-from contextlib import asynccontextmanager
 import inspect
-from typing import Final, AsyncIterator
+from contextlib import asynccontextmanager
+from typing import AsyncIterator, Final
 
 import fastapi
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from src import routers
+from src.frameworks import PostgreSQL, get_db, postgres
 from src.utils import get_my_logger, initialize_all
-from src.frameworks import PostgreSQL, postgres, get_db
 
 logger = get_my_logger(__name__)
+
 
 def main() -> fastapi.FastAPI:
     """Create FastAPI application instance.

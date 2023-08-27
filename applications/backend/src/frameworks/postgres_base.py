@@ -1,17 +1,16 @@
-from contextlib import contextmanager
 import os
 import re
+from contextlib import contextmanager
 from datetime import datetime
 from typing import Any, Generic, TypeVar, Union
 
 import psycopg2
 from psycopg2.extensions import connection
 from psycopg2.extras import DictCursor
-from psycopg2.sql import Identifier, SQL
+from psycopg2.sql import SQL, Identifier
 from pydantic import PositiveInt
 
 from src.adapter.gateway import RDBRepositoryGateway
-
 from src.utils import get_my_logger
 
 logger = get_my_logger(__name__)
@@ -40,16 +39,16 @@ def get_db() -> connection:
 
 class PostgreSQL(RDBRepositoryGateway, Generic[T]):
     def __init__(
-            self,
-            db_name: str,
-            target_class: T,
-            pk: Union[str, list[str]],
-            fk: dict[str, dict[str, str]],
-            sort_key: str | None = None,
-            py2sql: dict[str, str] = {},
-            fk_constraint: str = "ON DELETE CASCADE",
-            schema: str = "test",
-            connection: connection | None = None
+        self,
+        db_name: str,
+        target_class: T,
+        pk: Union[str, list[str]],
+        fk: dict[str, dict[str, str]],
+        sort_key: str | None = None,
+        py2sql: dict[str, str] = {},
+        fk_constraint: str = "ON DELETE CASCADE",
+        schema: str = "test",
+        connection: connection | None = None,
     ):
         self.conn = connection or self.create_connection()
         self.conn.autocommit = True
@@ -93,12 +92,25 @@ class PostgreSQL(RDBRepositoryGateway, Generic[T]):
     def _validate_db_name_and_features(self):
         """Check if db_name and features are valid."""
         reserved_words = [
-            "select", "from", "where", "join", "like", "and", "or", "not",
-            "insert", "update", "delete"
+            "select",
+            "from",
+            "where",
+            "join",
+            "like",
+            "and",
+            "or",
+            "not",
+            "insert",
+            "update",
+            "delete",
         ]
 
-        invalid_name_msg = "'{}' is an invalid column name: Only lowercase alphabets are allowed."
-        reserved_word_msg = "'{}' is a reserved word in PostgreSQL and cannot be used as an identifier."
+        invalid_name_msg = (
+            "'{}' is an invalid column name: Only lowercase alphabets are allowed."
+        )
+        reserved_word_msg = (
+            "'{}' is a reserved word in PostgreSQL and cannot be used as an identifier."
+        )
 
         for name in [self.db_name] + list(self.feature.keys()):
             if not re.match("^[a-z_-]*$", name):
@@ -160,7 +172,6 @@ class PostgreSQL(RDBRepositoryGateway, Generic[T]):
             """
             cursor.execute(table_creation_query)
 
-
     def is_exist(self, conditions: dict[str, Any]) -> bool:
         """Check if data exists in the table based on provided conditions."""
         with self.conn.cursor() as cur:
@@ -196,7 +207,9 @@ class PostgreSQL(RDBRepositoryGateway, Generic[T]):
 
             # Prepare for ON CONFLICT clause
             pks_str = ", ".join(self.pk)
-            update_statements = [f"{column} = EXCLUDED.{column}" for column in data.__dict__.keys()]
+            update_statements = [
+                f"{column} = EXCLUDED.{column}" for column in data.__dict__.keys()
+            ]
             update_prompt = ", ".join(update_statements)
 
             insert_cmd = f"""
@@ -212,14 +225,18 @@ class PostgreSQL(RDBRepositoryGateway, Generic[T]):
         """Delete data from the table based on provided conditions."""
         with self.conn.cursor() as cur:
             conditions_str = " AND ".join([f"{key} = %s" for key in conditions.keys()])
-            delete_cmd = f"DELETE FROM {self.schema}.{self.db_name} WHERE {conditions_str};"
+            delete_cmd = (
+                f"DELETE FROM {self.schema}.{self.db_name} WHERE {conditions_str};"
+            )
             cur.execute(delete_cmd, list(conditions.values()))
 
-    def select_data(self, conditions: dict[str, Any]= {}) -> list[T]:
+    def select_data(self, conditions: dict[str, Any] = {}) -> list[T]:
         """Select data from the table based on provided conditions."""
         with self.conn.cursor(cursor_factory=DictCursor) as cur:
             if conditions:
-                conditions_str = " AND ".join([f"{key} = %s" for key in conditions.keys()])
+                conditions_str = " AND ".join(
+                    [f"{key} = %s" for key in conditions.keys()]
+                )
                 select_cmd = f"SELECT * FROM {self.schema}.{self.db_name} WHERE {conditions_str};"
                 cur.execute(select_cmd, list(conditions.values()))
             else:
