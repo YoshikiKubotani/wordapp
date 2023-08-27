@@ -105,6 +105,12 @@ export const Solve = () => {
     const updatedItemIndex = itemIndex + 1;
     setItemIndex(updatedItemIndex);
 
+    // 次の問題がない場合、結果画面へ遷移
+    if (updatedItemIndex === testItemUuidList.length) {
+      navigate("/result");
+    }
+
+    else{
     // 次の問題を取得
     const nextItemInfo = await getItemInfo(testItemUuidList[updatedItemIndex]);
     // 取得した問題を表示(stateに反映)
@@ -125,11 +131,8 @@ export const Solve = () => {
 
     // 次へ進むボタンを無効化
     setIsNextButtonDisable(true);
-
-    // 次の問題がない場合、結果画面へ遷移
-    if (updatedItemIndex === testItemUuidList.length) {
-      navigate("/result");
     }
+
   }
 
 
