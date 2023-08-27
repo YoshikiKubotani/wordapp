@@ -1,4 +1,5 @@
 import random
+import json
 import uuid
 import redis
 from typing import Any
@@ -54,9 +55,39 @@ class TestUsecase:
       test_set_uuid_list.append(key_uuid)
 
     return test_set_uuid_list
+
+
+  def get_question(self, item_uuid: UUID4) -> TestItemQuestionDTO:
+    test_item_dto = self._retrieve_item_from_redis(item_uuid)
+
+    # 問いに必要な情報のみを取得
+    test_item_question_dto = TestItemQuestionDTO.model_validate({
+      "item_index": test_item_dto.item_index,
+      "english": test_item_dto.english,
+      "op1": test_item_dto.op1,
+      "op2": test_item_dto.op2,
+      "op3": test_item_dto.op3,
+      "op4": test_item_dto.op4,
+    })
+
+    return test_item_question_dto
+
+
+  def get_answer(self, item_uuid: UUID4) -> TestItemAnswerDTO:
+    test_item_dto = self._retrieve_item_from_redis(item_uuid)
+
+    # 答えに必要な情報のみを取得
+    test_item_answer_dto = TestItemAnswerDTO.model_validate({
+      "answer": test_item_dto.answer,
+    })
+
+    return test_item_answer_dto
+
+
   def _shuffle_and_split(self, l: list[Any], n: int) -> tuple[list[Any], list[Any]]:
     random.shuffle(l)
     return l[:n], l[n:]
+
 
   def _get_options_for_each_item(self, items: list[dict[str, Any]], num_options: int) -> list[TestItemDTO]:
     # 帰り値用のリスト
@@ -115,3 +146,19 @@ class TestUsecase:
       test_item_dto_list.append(test_item_dto)
 
     return test_item_dto_list
+
+
+  def _retrieve_item_from_redis(self, item_uuid: UUID4) -> TestItemDTO:
+    # Redisに接続
+    pool = redis.ConnectionPool(host='redis', port=6379, db=0)
+    r = redis.StrictRedis(connection_pool=pool)
+
+    # RedisからUUIDに対応する問題の情報を取得
+    test_item = r.get(str(item_uuid))
+    # 問題情報をJSONから辞書に変換
+    test_item_dict = json.loads(test_item)
+
+    # 辞書をDTOに変換
+    test_item_dto = TestItemDTO.model_validate(test_item_dict)
+
+    return test_item_dto

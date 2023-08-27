@@ -63,3 +63,38 @@ class TestController:
     test_set_uuid_list = test_usecase.cache_test_set(test_set)
 
     return test_set_uuid_list
+
+
+  def get_question(self, item_uuid: UUID4) -> TestItemQuestionDTO:
+    # テストセットを取得するためのユースケースを作成
+    test_usecase = self._create_test_usecase()
+
+    # RedisからUUIDに対応する問題の情報を取得
+    test_item_question_dto = test_usecase.get_question(item_uuid)
+
+    return test_item_question_dto
+
+
+  def get_answer(self, item_uuid: UUID4) -> TestItemAnswerDTO:
+    # テストセットを取得するためのユースケースを作成
+    test_usecase = self._create_test_usecase()
+
+    # RedisからUUIDに対応する答えの情報を取得
+    test_item_answer_dto = test_usecase.get_answer(item_uuid)
+
+    return test_item_answer_dto
+
+
+  def check_answer(self, item_uuid: UUID4, response_info: dict[str, Any]) -> bool:
+    # テストセットを取得するためのユースケースを作成
+    test_usecase = self._create_test_usecase()
+
+    # RedisからUUIDに対応する答えの情報を取得
+    test_item_answer_dto = test_usecase.get_answer(item_uuid)
+
+    # ユーザーの回答と正解を比較
+    print(response_info)
+    if test_item_answer_dto.answer == response_info["userAnswer"]:
+      return True
+    else:
+      return False
