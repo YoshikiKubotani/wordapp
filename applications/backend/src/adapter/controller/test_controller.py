@@ -2,6 +2,7 @@ from typing import Any
 import uuid
 import redis
 import json
+from pydantic import UUID4
 
 from src.adapter.gateway import RDBRepositoryGateway
 from src.usecase.interactor import TestUsecase, DeckUsecase
@@ -12,14 +13,14 @@ class TestController:
     # user_repository: RDBRepositoryGateway,
     item_repository: RDBRepositoryGateway,
     # genra_repository: RDBRepositoryGateway,
-    deck_repository: RDBRepositoryGateway,
+    # deck_repository: RDBRepositoryGateway,
     # score_repository: RDBRepositoryGateway,
     # history_repository: RDBRepositoryGateway,
   ):
     # self.user_repository = user_repository
     self.item_repository = item_repository
     # self.genra_repository = genra_repository
-    self.deck_repository = deck_repository
+    # self.deck_repository = deck_repository
     # self.score_repository = score_repository
     # self.history_repository = history_repository
 
@@ -55,7 +56,7 @@ class TestController:
     # デッキを取得
     # deck = deck_usecase.get_deck(grade_id)
     # 指定した学年の問題を取得
-    deck = self.item_repository.select_data({"grade_id": grade_id})
+    deck = self.item_repository.select_data({"grade": grade_id})
 
     # 取得したデッキからテストセットを作成
     test_set = test_usecase.make_random_test_set(num_items, deck)
@@ -66,7 +67,7 @@ class TestController:
       # UUID4の生成
       key_uuid = uuid.uuid4()
       # UUIDをkeyとして、作成したテストセットをRedisに保存
-      r.set(key_uuid, json.dumps(test_item))
+      r.set(str(key_uuid), test_item.model_dump_json(round_trip=True))
       # UUIDをリストに追加
       test_set_uuid_list.append(key_uuid)
 
