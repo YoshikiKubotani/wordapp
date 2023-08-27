@@ -50,7 +50,7 @@ const defaultButtonStatus = {
 
 
 export async function loader({ params }) {
-  const testItemUuidList = await EventApi.makeTest(Number(params.gradeId, 20));
+  const testItemUuidList = await EventApi.makeTest(Number(params.gradeId), 20);
   console.log("Item IDs in a created test", testItemUuidList)
   return { testItemUuidList };
 }

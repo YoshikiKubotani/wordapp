@@ -5,11 +5,11 @@ from pydantic import UUID4
 import fastapi
 from fastapi import Depends
 from fastapi.responses import ORJSONResponse
+from psycopg2.extensions import connection
 
 from src.adapter.controller import TestController
-from src.frameworks.postgres import (
-    ItemTable
-)
+from src.frameworks import get_db
+from src.frameworks.postgres import ItemTable
 
 router: Final = fastapi.APIRouter(default_response_class=ORJSONResponse)
 
@@ -22,15 +22,17 @@ router: Final = fastapi.APIRouter(default_response_class=ORJSONResponse)
 
 # テストセットの作成とそのUUIDの取得
 @router.get("/tests/{grade_id}")
-def make_test_set(grade_id: int, num: int) -> list[UUID4]:
-    return TestController(
-        # user_repository,
-        ItemTable,
-        # genra_repository,
-        # deck_repository,
-        # score_repository,
-        # history_repository,
-    ).make_test_set(grade_id, num)
+def make_test_set(grade_id: int, num: int, conn: connection = Depends(get_db)) -> list[UUID4]:
+    with conn as conn:
+        test_set = TestController(
+            # user_repository,
+            ItemTable(conn),
+            # genra_repository,
+            # deck_repository,
+            # score_repository,
+            # history_repository,
+        ).make_test_set(grade_id, num)
+    return test_set
 
 # 与えられたUUIDを元に、キャッシュされたテストセットの中の問題を取得
 @router.get("/items/{item_uuid}")

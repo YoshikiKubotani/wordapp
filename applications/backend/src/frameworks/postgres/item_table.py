@@ -19,5 +19,5 @@ class ItemTable(PostgreSQL):
             schema=schema,
         )
 
-    def select_data(self, conditions: int | dict[str, Any]) -> list[ItemEntity]:
+    def select_data(self, conditions: dict[str, Any]) -> list[ItemEntity]:
         return super().select_data(conditions=conditions)

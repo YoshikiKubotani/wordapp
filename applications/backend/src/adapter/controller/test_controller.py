@@ -43,9 +43,9 @@ class TestController:
       # self.history_repository,
     )
 
-  def make_test_set(self, grade_id: int, num_items: int) -> list[dict[str, Any]]:
+  def make_test_set(self, grade_id: int, num_items: int) -> list[UUID4]:
     # Redisに接続
-    pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
+    pool = redis.ConnectionPool(host='redis', port=6379, db=0)
     r = redis.StrictRedis(connection_pool=pool)
 
     # テストセットを作成するためのユースケースを作成
