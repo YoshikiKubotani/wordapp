@@ -2,6 +2,11 @@ import random
 from typing import Any
 
 from src.adapter.gateway import RDBRepositoryGateway
+from src.domain.dto import TestItemDTO
+from src.utils import get_my_logger
+
+logger = get_my_logger(__name__)
+
 
 class TestUsecase:
   def __init__(
@@ -20,7 +25,7 @@ class TestUsecase:
     # self.score_repository = score_repository
     # self.history_repository = history_repository
 
-  def make_random_test_set(self, num_items: int, source: list[dict[str, Any]]) -> list[dict[str, Any]]:
+  def make_random_test_set(self, num_items: int, source: list[dict[str, Any]]) -> list[TestItemDTO]:
     """
     source = [{
       "item_id": int,
@@ -40,13 +45,24 @@ class TestUsecase:
     random.shuffle(l)
     return l[:n], l[n:]
 
-  def _get_options_for_each_item(self, items: list[dict[str, Any]], num_options: int) -> list[dict[str, Any]]:
+  def _get_options_for_each_item(self, items: list[dict[str, Any]], num_options: int) -> list[TestItemDTO]:
+    # 帰り値用のリスト
+    test_item_dto_list = []
+
     # 全問題の数を取得し、間違い選択肢に用いることが可能な問題のIDリストを取得
     item_num = self.item_repository.get_new_id()
-    option_source = list(range(item_num))
+    option_source = list(range(1, item_num))
+    logger.debug(f"The number of items in a source DB: {item_num}")
 
     # 各問題につき、間違い選択肢を取得
-    for target_item_info in items:
+    for i, target_item_info in enumerate(items):
+      # DTO作成用の辞書
+      test_item_dict = {
+        "item_id": target_item_info.item_id,
+        "index": i,
+        "english": target_item_info.english,
+      }
+
       while True:
         # 間違い選択肢に用いる問題のIDをnum_options-1個取得
         wrong_options, option_source = self._shuffle_and_split(option_source, num_options-1)
@@ -55,19 +71,34 @@ class TestUsecase:
         if target_item_info.item_id in wrong_options:
           continue
 
+        logger.debug(f"---{i}/{len(items)}--")
         # 選択肢の情報を追加
         # 間違いの選択肢の順番をランダムにする
-        wrong_options = random.shuffle(wrong_options)
+        random.shuffle(wrong_options)
+
         # 何番目に正解の選択肢を入れるかをランダムに決める
         correct_option_index = random.randint(0, num_options-1)
+
         # 正解の選択肢を追加
-        target_item_info[f"op{correct_option_index}"] = target_item_info.japanese
+        test_item_dict[f"op{correct_option_index+1}"] = target_item_info.japanese
+        test_item_dict["answer"] = correct_option_index
+        logger.debug(f"Correct Answer Index: {correct_option_index+1}")
+
         # 間違いの選択肢を追加
+        logger.debug("Wrong Options:")
         for idx, wrong_option_id in enumerate(wrong_options):
           if idx < correct_option_index:
-            target_item_info[f"op{idx}"] = self.item_repository.get({"item_id": wrong_option_id})[0].japanese
+            logger.debug(f"{idx+1}: {wrong_option_id}")
+            test_item_dict[f"op{idx+1}"] = self.item_repository.select_data({"item_id": wrong_option_id})[0].japanese
           if idx >= correct_option_index:
-            target_item_info[f"op{idx+1}"] = self.item_repository.get({"item_id": wrong_option_id})[0].japanese
+            logger.debug(f"{idx+2}: {wrong_option_id}")
+            test_item_dict[f"op{idx+2}"] = self.item_repository.select_data({"item_id": wrong_option_id})[0].japanese
         break
 
-    return items
+      # 辞書をDTOに変換
+      test_item_dto = TestItemDTO.model_validate(test_item_dict)
+
+      # DTOをリストに追加
+      test_item_dto_list.append(test_item_dto)
+
+    return test_item_dto_list
