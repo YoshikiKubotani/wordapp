@@ -6,6 +6,8 @@ from pydantic import UUID4
 
 from src.adapter.gateway import RDBRepositoryGateway
 from src.usecase.interactor import TestUsecase, DeckUsecase
+from src.domain.dto import TestItemQuestionDTO, TestItemAnswerDTO
+
 
 class TestController:
   def __init__(

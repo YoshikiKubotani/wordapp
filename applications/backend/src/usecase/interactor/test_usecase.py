@@ -5,7 +5,7 @@ from typing import Any
 from pydantic import UUID4
 
 from src.adapter.gateway import RDBRepositoryGateway
-from src.domain.dto import TestItemDTO
+from src.domain.dto import TestItemDTO, TestItemQuestionDTO, TestItemAnswerDTO
 from src.utils import get_my_logger
 
 logger = get_my_logger(__name__)
@@ -72,7 +72,7 @@ class TestUsecase:
       # DTO作成用の辞書
       test_item_dict = {
         "item_id": target_item_info.item_id,
-        "index": i,
+        "item_index": i,
         "english": target_item_info.english,
       }
 
@@ -94,7 +94,7 @@ class TestUsecase:
 
         # 正解の選択肢を追加
         test_item_dict[f"op{correct_option_index+1}"] = target_item_info.japanese
-        test_item_dict["answer"] = correct_option_index
+        test_item_dict["answer"] = target_item_info.japanese
         logger.debug(f"Correct Answer Index: {correct_option_index+1}")
 
         # 間違いの選択肢を追加
