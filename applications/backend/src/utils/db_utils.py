@@ -1,6 +1,3 @@
-import inspect
-import os
-
 import networkx as nx
 
 from src.adapter.gateway import RDBRepositoryGateway
@@ -19,7 +16,7 @@ def get_ordered_dbs(
         G.add_node(db.db_name)
         for v in db.fk.values():
             if isinstance(v, dict):
-                v = v["table"]
+                v = v["table"]  # type: ignore
             G.add_edge(v, db.db_name)
 
     order = list(nx.topological_sort(G))

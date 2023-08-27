@@ -1,9 +1,7 @@
 from typing import Any, Final
 
 import fastapi
-from fastapi import Depends
 from fastapi.responses import ORJSONResponse
-from psycopg2.extensions import connection
 from pydantic import UUID4
 
 from src.adapter.controller import TestController

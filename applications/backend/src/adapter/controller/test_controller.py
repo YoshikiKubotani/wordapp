@@ -1,8 +1,5 @@
-import json
-import uuid
 from typing import Any
 
-import redis
 from pydantic import UUID4
 
 from src.adapter.gateway import RDBRepositoryGateway

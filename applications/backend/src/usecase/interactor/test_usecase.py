@@ -8,6 +8,7 @@ from pydantic import UUID4
 
 from src.adapter.gateway import RDBRepositoryGateway
 from src.domain.dto import TestItemAnswerDTO, TestItemDTO, TestItemQuestionDTO
+from src.domain.entity import ItemEntity
 from src.utils import get_my_logger
 
 logger = get_my_logger(__name__)
@@ -31,7 +32,7 @@ class TestUsecase:
         # self.history_repository = history_repository
 
     def make_random_test_set(
-        self, num_items: int, source: list[dict[str, Any]]
+        self, num_items: int, source: list[ItemEntity]
     ) -> list[TestItemDTO]:
         # ランダムにnum_items個の問題を選択
         selected_items = random.sample(source, num_items)
@@ -43,7 +44,7 @@ class TestUsecase:
 
     def cache_test_set(self, test_set: list[TestItemDTO]) -> list[UUID4]:
         # Redisに接続
-        pool = redis.ConnectionPool(host="redis", port=6379, db=0)
+        pool = redis.ConnectionPool(host="redis", port=6379, db=0)  # type: ignore
         r = redis.StrictRedis(connection_pool=pool)
 
         # Redisにテストセットを保存し、keyに用いるUUIDをリストに追加
@@ -87,12 +88,12 @@ class TestUsecase:
 
         return test_item_answer_dto
 
-    def _shuffle_and_split(self, l: list[Any], n: int) -> tuple[list[Any], list[Any]]:
-        random.shuffle(l)
-        return l[:n], l[n:]
+    def _shuffle_and_split(self, li: list[Any], n: int) -> tuple[list[Any], list[Any]]:
+        random.shuffle(li)
+        return li[:n], li[n:]
 
     def _get_options_for_each_item(
-        self, items: list[dict[str, Any]], num_options: int
+        self, items: list[ItemEntity], num_options: int
     ) -> list[TestItemDTO]:
         # 帰り値用のリスト
         test_item_dto_list = []
@@ -161,13 +162,13 @@ class TestUsecase:
 
     def _retrieve_item_from_redis(self, item_uuid: UUID4) -> TestItemDTO:
         # Redisに接続
-        pool = redis.ConnectionPool(host="redis", port=6379, db=0)
+        pool = redis.ConnectionPool(host="redis", port=6379, db=0)  # type: ignore
         r = redis.StrictRedis(connection_pool=pool)
 
         # RedisからUUIDに対応する問題の情報を取得
         test_item = r.get(str(item_uuid))
         # 問題情報をJSONから辞書に変換
-        test_item_dict = json.loads(test_item)
+        test_item_dict = json.loads(test_item)  # type: ignore
 
         # 辞書をDTOに変換
         test_item_dto = TestItemDTO.model_validate(test_item_dict)

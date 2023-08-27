@@ -3,6 +3,14 @@ from typing import Any
 
 
 class RDBRepositoryGateway(ABC):
+    def __init__(
+        self,
+        db_name: str,
+        fk: dict[str, dict[str, str]],
+    ) -> None:
+        self.db_name = db_name
+        self.fk = fk
+
     @classmethod
     @abstractmethod
     def create_connection(cls) -> Any:
@@ -13,7 +21,7 @@ class RDBRepositoryGateway(ABC):
         pass
 
     @abstractmethod
-    def insert_or_update_data(self, data: Any) -> bool:
+    def insert_or_update_data(self, data: Any) -> None:
         pass
 
     @abstractmethod
@@ -21,7 +29,7 @@ class RDBRepositoryGateway(ABC):
         pass
 
     @abstractmethod
-    def delete_data(self, conditions: dict[str, Any]) -> bool:
+    def delete_data(self, conditions: dict[str, Any]) -> None:
         pass
 
     @abstractmethod

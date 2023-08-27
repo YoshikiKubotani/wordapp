@@ -2,7 +2,7 @@ import os
 import re
 from contextlib import contextmanager
 from datetime import datetime
-from typing import Any, Generic, TypeVar, Union
+from typing import Any, Generic, TypeVar, Union, cast
 
 import psycopg2
 from psycopg2.extensions import connection
@@ -49,15 +49,17 @@ class PostgreSQL(RDBRepositoryGateway, Generic[T]):
         fk_constraint: str = "ON DELETE CASCADE",
         schema: str = "test",
         connection: connection | None = None,
-    ):
+    ) -> None:
+        super().__init__(
+            db_name=db_name,
+            fk=fk,
+        )
         self.conn = connection or self.create_connection()
         self.conn.autocommit = True
         self.schema = schema
-        self.db_name = db_name
         self.target_class = target_class
         self.feature = target_class.__annotations__
         self.pk = [pk] if isinstance(pk, str) else pk
-        self.fk = fk
         self.sort_key = sort_key
         self.py2sql = py2sql
         self.fk_constraint = fk_constraint
@@ -89,7 +91,7 @@ class PostgreSQL(RDBRepositoryGateway, Generic[T]):
             cursor.execute(query)
         logger.info(f"Dropped and recreated schema: {schema}")
 
-    def _validate_db_name_and_features(self):
+    def _validate_db_name_and_features(self) -> None:
         """Check if db_name and features are valid."""
         reserved_words = [
             "select",
@@ -178,7 +180,7 @@ class PostgreSQL(RDBRepositoryGateway, Generic[T]):
             conditions_str = " AND ".join([f"{key} = %s" for key in conditions.keys()])
             select_cmd = f"SELECT EXISTS (SELECT 1 FROM {self.schema}.{self.db_name} WHERE {conditions_str});"
             cur.execute(select_cmd, list(conditions.values()))
-            return cur.fetchone()[0]
+            return cast(bool, cur.fetchone()[0])
 
     def get_new_id(self) -> int:
         """Get a new ID for insertion. Assumes ID column contains integer values."""
@@ -195,10 +197,10 @@ class PostgreSQL(RDBRepositoryGateway, Generic[T]):
             )
             last_id = cursor.fetchone()
             if last_id:
-                return last_id[0] + 1
+                return cast(int, last_id[0] + 1)
             return 1
 
-    def insert_or_update_data(self, data: T) -> bool:
+    def insert_or_update_data(self, data: T) -> None:
         """Insert data into the table. If conflict, update the data."""
         with self.conn.cursor() as cur:
             columns = ", ".join(data.__dict__.keys())
@@ -221,7 +223,7 @@ class PostgreSQL(RDBRepositoryGateway, Generic[T]):
 
             cur.execute(insert_cmd, values)
 
-    def delete_data(self, conditions: dict[str, Any]) -> bool:
+    def delete_data(self, conditions: dict[str, Any]) -> None:
         """Delete data from the table based on provided conditions."""
         with self.conn.cursor() as cur:
             conditions_str = " AND ".join([f"{key} = %s" for key in conditions.keys()])
@@ -248,9 +250,9 @@ class PostgreSQL(RDBRepositoryGateway, Generic[T]):
         records_as_dicts = [dict(record) for record in records]
 
         # Convert dictionaries to instances of the target class
-        return [self.target_class(**record) for record in records_as_dicts]
+        return [self.target_class(**record) for record in records_as_dicts]  # type: ignore
 
-    def __del__(self):
+    def __del__(self) -> None:
         """Destructor to ensure that the connection is closed."""
         if self.conn:
             self.conn.close()
