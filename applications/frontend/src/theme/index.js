@@ -4,7 +4,7 @@ import { extendTheme } from '@chakra-ui/react'
 import styles from './styles'
 
 // Component style overrides
-import Button from './components/button'
+// import Button from './components/button'
 
 const overrides = {
   config: {

@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Flex, Heading, Button} from '@chakra-ui/react'
 import { useNavigate } from "react-router-dom";
 
-export const StartPage = ({}) => {
+export const StartPage = () => {
   const navigate = useNavigate();
 
   return (

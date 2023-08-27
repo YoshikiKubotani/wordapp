@@ -1,10 +1,9 @@
 import React from "react";
 import { Box, Flex, Heading, SimpleGrid } from '@chakra-ui/react'
-import { useNavigate } from "react-router-dom";
 
 import SelectionCard from '../../components/SelectionCard'
 
-export const WordLevel = ({}) => {
+export const WordLevel = () => {
 
   return (
     <Flex minH="100vh" direction="column" align='center' justify='center' gap='30px'>

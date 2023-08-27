@@ -1,6 +1,6 @@
 import React from "react";
 
-export const NoMatch = ({}) => {
+export const NoMatch = () => {
     return (
         <div></div>
     );

@@ -13,7 +13,6 @@ import {
   StatNumber,
   StatHelpText,
   StatArrow,
-  StatGroup,
   Card,
   CardHeader,
   CardBody
