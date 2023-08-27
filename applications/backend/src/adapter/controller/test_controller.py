@@ -45,10 +45,6 @@ class TestController:
     )
 
   def make_test_set(self, grade_id: int, num_items: int) -> list[UUID4]:
-    # Redisに接続
-    pool = redis.ConnectionPool(host='redis', port=6379, db=0)
-    r = redis.StrictRedis(connection_pool=pool)
-
     # テストセットを作成するためのユースケースを作成
     test_usecase = self._create_test_usecase()
     # deck_usecase = self._create_deck_usecase()
@@ -61,14 +57,7 @@ class TestController:
     # 取得したデッキからテストセットを作成
     test_set = test_usecase.make_random_test_set(num_items, deck)
 
-    # Redisにテストセットを保存し、keyに用いるUUIDをリストに追加
-    test_set_uuid_list = []
-    for test_item in test_set:
-      # UUID4の生成
-      key_uuid = uuid.uuid4()
-      # UUIDをkeyとして、作成したテストセットをRedisに保存
-      r.set(str(key_uuid), test_item.model_dump_json(round_trip=True))
-      # UUIDをリストに追加
-      test_set_uuid_list.append(key_uuid)
+    # テストセットをRedisにキャッシュし、その際にUUIDを生成して返す
+    test_set_uuid_list = test_usecase.cache_test_set(test_set)
 
     return test_set_uuid_list

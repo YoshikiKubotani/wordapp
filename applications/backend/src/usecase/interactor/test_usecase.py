@@ -1,5 +1,8 @@
 import random
+import uuid
+import redis
 from typing import Any
+from pydantic import UUID4
 
 from src.adapter.gateway import RDBRepositoryGateway
 from src.domain.dto import TestItemDTO
@@ -26,13 +29,6 @@ class TestUsecase:
     # self.history_repository = history_repository
 
   def make_random_test_set(self, num_items: int, source: list[dict[str, Any]]) -> list[TestItemDTO]:
-    """
-    source = [{
-      "item_id": int,
-      "english": str,
-      "japanese": str,
-    }]
-    """
     # ランダムにnum_items個の問題を選択
     selected_items = random.sample(source, num_items)
 
@@ -41,6 +37,23 @@ class TestUsecase:
 
     return selected_items_with_options
 
+
+  def cache_test_set(self, test_set: list[TestItemDTO]) -> list[UUID4]:
+    # Redisに接続
+    pool = redis.ConnectionPool(host='redis', port=6379, db=0)
+    r = redis.StrictRedis(connection_pool=pool)
+
+    # Redisにテストセットを保存し、keyに用いるUUIDをリストに追加
+    test_set_uuid_list = []
+    for test_item in test_set:
+      # UUID4の生成
+      key_uuid = uuid.uuid4()
+      # UUIDをkeyとして、作成したテストセットをRedisに保存
+      r.set(str(key_uuid), test_item.model_dump_json(round_trip=True))
+      # UUIDをリストに追加
+      test_set_uuid_list.append(key_uuid)
+
+    return test_set_uuid_list
   def _shuffle_and_split(self, l: list[Any], n: int) -> tuple[list[Any], list[Any]]:
     random.shuffle(l)
     return l[:n], l[n:]
