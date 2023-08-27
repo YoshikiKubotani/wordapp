@@ -73,7 +73,7 @@ class PostgreSQL(RDBRepositoryGateway, Generic[T]):
             user=os.getenv("DATABASE_USER"),
             password=os.getenv("DATABASE_PASSWORD"),
             host=os.getenv("DATABASE_HOST"),
-            port=os.getenv("DATABASE_PORT", 5432),
+            port=os.getenv("DATABASE_PORT"),
         )
 
     @classmethod
