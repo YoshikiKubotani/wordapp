@@ -57,12 +57,4 @@ def post_response(item_uuid: UUID4, answer_info: dict[str, Any]) -> bool:
     print(answer_info)
     return True
 
-# # 新規エージェントの登録
-# @router.post("/agents")
-# async def register_agent(
-#     register_agent_dto: RegisterAgentDTO, connection: connection = Depends(get_db)
-# ) -> AgentDTO:
-#     return AgentController(function_calling_handler, connection).create_agent(
-#         register_agent_dto
-#     )
 

@@ -75,26 +75,6 @@ class _EventApi {
     })
   }
 
-//   static updateAgent(avatarInfo) {
-//       // エージェントの情報編集API
-//       // avatarInfo: AgentDTOに相当するものを渡す
-//       return this._request(`/agents/${avatarInfo.agent_id}`, 'PUT', avatarInfo)
-//   }
-
-//   static actAction(agent_id, function_dto) {
-//       // Playerが関数を実行するためのAPI
-//       return this._request(`/agents/${agent_id}/action`, 'POST', function_dto)
-//   }
-
-//   static actGenerateAction(agent_id) {
-//       // AIが関数を実行するためのAPI
-//       return this._request(`/agents/${agent_id}/action`, 'POST', {"type": "undecided"})
-//   }
-
-//   static registerVisibleAgent(avatarTable) {
-//       // 席情報を登録するAPI
-//       return this._request('/agents/recognition', 'POST', avatarTable)
-//   }
 }
 
 export const EventApi = _EventApi
