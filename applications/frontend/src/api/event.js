@@ -66,12 +66,12 @@ class _EventApi {
     })
   }
 
-  static sendResponseInfo(itemUuid, answerInfo) {
+  static checkUserResponse(itemUuid, userResponse) {
     // ユーザーの回答を送信するためのAPI
     return this._request({
       url: `/items/${itemUuid}/response`,
       method: 'POST',
-      body: answerInfo
+      body: userResponse
     })
   }
 

@@ -111,26 +111,26 @@ export const Solve = () => {
     }
 
     else{
-    // 次の問題を取得
-    const nextItemInfo = await getItemInfo(testItemUuidList[updatedItemIndex]);
-    // 取得した問題を表示(stateに反映)
-    setItemInfo({
-      item_index: updatedItemIndex,
-      english: nextItemInfo.english,
-      op1: nextItemInfo.op1,
-      op2: nextItemInfo.op2,
-      op3: nextItemInfo.op3,
-      op4: nextItemInfo.op4,
-    });
+      // 次の問題を取得
+      const nextItemInfo = await getItemInfo(testItemUuidList[updatedItemIndex]);
+      // 取得した問題を表示(stateに反映)
+      setItemInfo({
+        item_index: updatedItemIndex,
+        english: nextItemInfo.english,
+        op1: nextItemInfo.op1,
+        op2: nextItemInfo.op2,
+        op3: nextItemInfo.op3,
+        op4: nextItemInfo.op4,
+      });
 
-    // Stepperの表記を更新
-    setActiveStep(updatedItemIndex);
+      // Stepperの表記を更新
+      setActiveStep(updatedItemIndex);
 
-    // 選択肢のステータスを初期化
-    setButtonStatus(defaultButtonStatus);
+      // 選択肢のステータスを初期化
+      setButtonStatus(defaultButtonStatus);
 
-    // 次へ進むボタンを無効化
-    setIsNextButtonDisable(true);
+      // 次へ進むボタンを無効化
+      setIsNextButtonDisable(true);
     }
 
   }
@@ -138,17 +138,22 @@ export const Solve = () => {
 
   // 選択肢をクリックしたときの挙動
   const onClickChoice = async (e) => {
-    const itemAnswerInfo = await EventApi.getItemAnswer(testItemUuidList[itemIndex])
-    console.log("Answer Info", itemAnswerInfo);
+    // const itemAnswerInfo = await EventApi.getItemAnswer(testItemUuidList[itemIndex])
+    // console.log("Answer Info", itemAnswerInfo);
 
     // クリックされたボタンのテキストを取得
     const userAnswer = e.target.textContent;
-    // 正解のテキストを取得
-    const itemAnswer = itemAnswerInfo.answer;
+
+    const isCorrect = await EventApi.checkUserResponse(
+      testItemUuidList[itemIndex],
+      {
+        userAnswer: userAnswer
+      }
+    );
 
     // 正誤判定
     let selectedButtonStatus = '';
-    if (itemAnswer === userAnswer) {
+    if (isCorrect) {
       selectedButtonStatus = 'correct';
       setAnswerHistory(prevAnswerHistory => {
         let newHistory = [...prevAnswerHistory.slice(0, activeStep), 'correct'];
@@ -166,15 +171,6 @@ export const Solve = () => {
         return newHistory;
       });
     }
-
-    await EventApi.sendResponseInfo(
-      testItemUuidList[itemIndex],
-      {
-        item_id: testItemUuidList[itemIndex],
-        answer: userAnswer,
-        is_correct: itemAnswer === userAnswer
-      }
-    );
 
     console.log(answerHistory)
 
