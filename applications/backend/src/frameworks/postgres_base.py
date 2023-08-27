@@ -176,9 +176,9 @@ class PostgreSQL(RDBRepositoryGateway, Generic[T]):
         with self.conn.cursor() as cursor:
             cursor.execute(
                 f"""
-                SELECT {self.pk}
+                SELECT {self.pk[0]}
                 FROM {self.schema}.{self.db_name}
-                ORDER BY {self.pk} DESC
+                ORDER BY {self.pk[0]} DESC
                 LIMIT 1
                 """
             )
