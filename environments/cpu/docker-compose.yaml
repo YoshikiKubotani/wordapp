@@ -33,7 +33,8 @@ services:
   postgresql:
     image: postgres:15.3
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - ../../db/data:/var/lib/postgresql/data
+      - ../../db/init:/docker-entrypoint-initdb.d
     environment:
       POSTGRES_USER: wordapp-dbuser
       POSTGRES_PASSWORD: kyogakusya
@@ -46,6 +47,3 @@ services:
 
   redis:
     image: redis:6.2.13-alpine3.18
-
-volumes:
-  pgdata:
