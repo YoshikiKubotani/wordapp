@@ -17,6 +17,9 @@ services:
         - ../../applications/backend:/home/trailblazer/wordapp-backend
     ports:
         - 8000:8000
+    depends_on:
+      - postgres
+      - redis
 
   frontend:
     build:
@@ -29,6 +32,8 @@ services:
         - ../../applications/frontend:/home/node/wordapp-frontend
     ports:
         - 3000:3000
+    depends_on:
+      - backend
 
   postgresql:
     image: postgres:15.3
