@@ -70,11 +70,9 @@ class PostgreSQL(RDBRepositoryGateway, Generic[T]):
     def create_connection(cls) -> connection:
         """Establish and return a connection to the database."""
         return psycopg2.connect(
-            database=os.getenv("DATABASE_NAME"),
-            user=os.getenv("DATABASE_USER"),
-            password=os.getenv("DATABASE_PASSWORD"),
-            host=os.getenv("DATABASE_HOST"),
-            port=os.getenv("DATABASE_PORT"),
+            dbname=os.getenv("POSTGRES_DB"),
+            user=os.getenv("POSTGRES_USER"),
+            password=os.getenv("POSTGRES_PASSWORD"),
         )
 
     @classmethod
