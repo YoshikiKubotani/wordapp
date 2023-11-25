@@ -37,13 +37,12 @@ services:
 
   postgresql:
     image: postgres:15.3
+    user: "${HOST_UID-1000}:${HOST_GID-1000}"
     volumes:
       - ../../db/data:/var/lib/postgresql/data
       - ../../db/init:/docker-entrypoint-initdb.d
-    environment:
-      POSTGRES_USER: wordapp-dbuser
-      POSTGRES_PASSWORD: kyogakusya
-      POSTGRES_DB: wordapp
+    env_file:
+      - ../.env.backend
 
   adminer:
     image: adminer
