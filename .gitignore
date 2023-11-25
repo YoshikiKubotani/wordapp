@@ -1,5 +1,3 @@
 db/data/*
 
-/environments/.env.backend
-
-!/db/data/.gitkeep
+/environments/.env
