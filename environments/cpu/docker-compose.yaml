@@ -10,7 +10,7 @@ services:
       context: ../../
       dockerfile: environments/Dockerfile.backend
     env_file:
-      - ../.env.backend
+      - ../.env
     tty: true
     init: true
     volumes:
@@ -42,7 +42,7 @@ services:
       - ../../db/data:/var/lib/postgresql/data
       - ../../db/init:/docker-entrypoint-initdb.d
     env_file:
-      - ../.env.backend
+      - ../.env
 
   adminer:
     image: adminer
