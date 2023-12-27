@@ -7,8 +7,6 @@ services:
         - RUN_POETRY_INSTALL_AT_BUILD_TIME=true
       context: ../../
       dockerfile: environments/Dockerfile.backend
-    env_file:
-      - ../.env.backend
     tty: true
     volumes:
         - ../../:/home/trailblazer/wordapp-backend
