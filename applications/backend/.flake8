@@ -1,0 +1,17 @@
+[flake8]
+exclude =
+    .git
+    .venv
+    .pytest_cache
+    .mypy_cache
+    __pycache__
+# These rules conflict with black. Black doesn't cover some checks of flake8 for example unused import.
+# pysen (https://github.com/pfnet/pysen/blob/main/setup.cfg#L8) also ignore following.
+
+# https://flake8.pycqa.org/en/latest/user/error-codes.html
+# https://pycodestyle.pycqa.org/en/latest/intro.html#error-codes
+ignore =
+    E203,
+    E231,
+    E501,
+    W503,

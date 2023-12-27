@@ -1,0 +1,53 @@
+version: "3.8"
+
+name: cpu-wordapp
+services:
+  backend:
+    build:
+      args:
+        - UID=${HOST_UID-1000}
+        - GID=${HOST_GID-1000}
+      context: ../../
+      dockerfile: environments/Dockerfile.backend
+    env_file:
+      - ../.env
+    tty: true
+    init: true
+    volumes:
+        - ../../applications/backend:/home/trailblazer/wordapp-backend
+    ports:
+        - 8000:8000
+    depends_on:
+      - postgresql
+      - redis
+
+  frontend:
+    build:
+      context: ../../
+      dockerfile: environments/Dockerfile.frontend
+    user: "node"
+    tty: true
+    init: true
+    volumes:
+        - ../../applications/frontend:/home/node/wordapp-frontend
+    ports:
+        - 3000:3000
+    depends_on:
+      - backend
+
+  postgresql:
+    image: postgres:15.3
+    user: "${HOST_UID-1000}:${HOST_GID-1000}"
+    volumes:
+      - ../../db/data:/var/lib/postgresql/data
+      - ../../db/init:/docker-entrypoint-initdb.d
+    env_file:
+      - ../.env
+
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
+
+  redis:
+    image: redis:6.2.13-alpine3.18
