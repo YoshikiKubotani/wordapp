@@ -13,4 +13,4 @@ CREATE TABLE IF NOT EXISTS dev.item (
 TRUNCATE TABLE dev.item;
 
 -- 新しいデータを挿入
-\COPY dev.item (id, english, japanese, grade) FROM '/docker-entrypoint-initdb.d/sokutan.csv' WITH (FORMAT csv, DELIMITER ',', HEADER, ENCODING 'UTF8');
+\COPY dev.item (id, english, japanese, grade) FROM '/docker-entrypoint-initdb.d/default_word_list.csv' WITH (FORMAT csv, DELIMITER ',', HEADER, ENCODING 'UTF8');
