@@ -1,7 +1,3 @@
-## Issue URL
-
-<!-- Please paste url to issue here. -->
-
 ## Change overview
 
 <!-- Please describe what is changed / achieved by this pull request. -->
