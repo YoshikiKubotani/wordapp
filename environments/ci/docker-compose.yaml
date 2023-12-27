@@ -9,4 +9,4 @@ services:
       dockerfile: environments/Dockerfile.backend
     tty: true
     volumes:
-        - ../../:/home/trailblazer/wordapp-backend
+        - ../../applications/backend:/home/trailblazer/wordapp-backend
