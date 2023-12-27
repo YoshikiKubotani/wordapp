@@ -23,14 +23,6 @@ ruff:
 ruff-check:
 	poetry run ruff check src tests
 
-.PHONY: mdformat
-mdformat:
-	poetry run mdformat .
-
-.PHONY: mdformat-check
-mdformat-check:
-	poetry run mdformat --check .
-
 .PHONY: mypy
 mypy:
 	poetry run mypy src
@@ -43,13 +35,11 @@ test:
 format:
 	$(MAKE) black
 	$(MAKE) isort
-	$(MAKE) mdformat
 
 .PHONY: lint
 lint:
 	$(MAKE) black-check
 	$(MAKE) ruff-check
-	$(MAKE) mdformat-check
 	$(MAKE) mypy
 
 .PHONY: test-all
