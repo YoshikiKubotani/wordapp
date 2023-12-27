@@ -29,11 +29,11 @@ isort:
 
 .PHONY: mdformat
 mdformat:
-	poetry run mdformat *.md
+	poetry run mdformat .
 
 .PHONY: mdformat-check
 mdformat-check:
-	poetry run mdformat --check *.md
+	poetry run mdformat --check .
 
 .PHONY: mypy
 mypy:
