@@ -5,7 +5,7 @@ services:
     build:
       args:
         - RUN_POETRY_INSTALL_AT_BUILD_TIME=true
-      context: ../../applications/backend/
+      context: ../../
       dockerfile: environments/Dockerfile.backend
     tty: true
     volumes:

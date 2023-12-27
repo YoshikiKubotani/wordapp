@@ -33,7 +33,7 @@ jobs:
       # However, the directory made by actions/checkout does not allow write
       # chmod is needed to resolve above problem
       - name: Change permission
-        run: chmod 777 .
+        run: chmod 777 ./applications/backend
 
       - name: debug print
         run: ls -la
