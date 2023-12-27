@@ -5,7 +5,7 @@ LOGLEVEL := info
 
 .PHONY: run-backend
 run-backend:
-	poetry run gunicorn 'src.app:main' -k uvicorn.workers.UvicornWorker -b 0.0.0.0:$(APPLICATION_PORT) -t $(GUNICORN_TIMEOUT) --log-level $(LOGLEVEL) 
+	poetry run gunicorn 'src.app:main' -k uvicorn.workers.UvicornWorker -b 0.0.0.0:$(APPLICATION_PORT) -t $(GUNICORN_TIMEOUT) --log-level $(LOGLEVEL)
 
 .PHONY: black-check
 black-check:
@@ -15,25 +15,13 @@ black-check:
 black:
 	poetry run black src tests
 
-.PHONY: flake8
-flake8:
-	poetry run flake8 src tests
+.PHONY: ruff
+ruff:
+	poetry run ruff check src tests --fix
 
-.PHONY: isort-check
-isort-check:
-	poetry run isort --check-only src tests
-
-.PHONY: isort
-isort:
-	poetry run isort src tests
-
-.PHONY: mdformat
-mdformat:
-	poetry run mdformat *.md
-
-.PHONY: mdformat-check
-mdformat-check:
-	poetry run mdformat --check *.md
+.PHONY: ruff-check
+ruff-check:
+	poetry run ruff check src tests
 
 .PHONY: mypy
 mypy:
@@ -47,14 +35,11 @@ test:
 format:
 	$(MAKE) black
 	$(MAKE) isort
-	$(MAKE) mdformat
 
 .PHONY: lint
 lint:
 	$(MAKE) black-check
-	$(MAKE) isort-check
-	$(MAKE) mdformat-check
-	$(MAKE) flake8
+	$(MAKE) ruff-check
 	$(MAKE) mypy
 
 .PHONY: test-all
