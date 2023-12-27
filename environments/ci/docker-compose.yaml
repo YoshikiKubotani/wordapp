@@ -1,17 +1,14 @@
 version: "3.8"
 
 services:
-  core:
-    image: localhost:5000/core:${DOCKER_IMAGE_TAG_CI}
+  backend:
     build:
       args:
-        - BASE_IMAGE=ubuntu:20.04
-        - PYTHON_VERSION=3.8
         - RUN_POETRY_INSTALL_AT_BUILD_TIME=true
       context: ../../
-      dockerfile: environments/Dockerfile
+      dockerfile: environments/Dockerfile.backend
     env_file:
       - ../.env.backend
     tty: true
     volumes:
-        - ../../:/home/challenger/ascender
+        - ../../:/home/trailblazer/wordapp-backend
