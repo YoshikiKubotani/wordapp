@@ -7,6 +7,7 @@ from new_src.api.schemas import DeckOut, ItemCreate, ItemOut, ItemUpdate
 
 router = APIRouter()
 
+
 @router.get("/", response_model=list[DeckOut])
 def read_all_decks(
     # current_user: User = Depends(get_current_user),
@@ -15,6 +16,7 @@ def read_all_decks(
     """Read all the decks registered by a user."""
     decks = [DeckOut(deck_id=1, deck_name="dummy_deck")]
     return decks
+
 
 @router.post("/", response_model=DeckOut)
 def create_deck(
@@ -25,6 +27,7 @@ def create_deck(
     """Create a new deck."""
     return DeckOut(deck_id=1, deck_name="dummy_deck")
 
+
 @router.get("/{deck_id}", response_model=DeckOut)
 def read_deck(
     # deck_id: int,
@@ -33,6 +36,7 @@ def read_deck(
 ) -> Any:
     """Get the details of a deck."""
     return DeckOut(deck_id=1, deck_name="dummy_deck")
+
 
 @router.put("/{deck_id}", response_model=DeckOut)
 def update_deck(
@@ -44,6 +48,7 @@ def update_deck(
     """Update the details of a deck."""
     return DeckOut(deck_id=1, deck_name="dummy_deck")
 
+
 @router.delete("/{deck_id}")
 def delete_deck(
     # deck_id: int,
@@ -52,6 +57,7 @@ def delete_deck(
 ) -> bool:
     """Delete a deck."""
     return True
+
 
 @router.get("/{deck_id}/items", response_model=list[ItemOut])
 def read_deck_items(
@@ -63,6 +69,7 @@ def read_deck_items(
     items = [ItemOut(item_id=1, item_name="dummy_item")]
     return items
 
+
 @router.post("/{deck_id}/items", response_model=ItemOut)
 def create_deck_item(
     # deck_id: int,
@@ -72,6 +79,7 @@ def create_deck_item(
 ) -> Any:
     """Create a new item in a deck."""
     return ItemOut(item_id=1, item_name="dummy_item")
+
 
 @router.delete("/{deck_id}/items/{item_id}")
 def delete_deck_item(
