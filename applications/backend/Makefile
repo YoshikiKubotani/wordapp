@@ -34,7 +34,7 @@ test:
 .PHONY: format
 format:
 	$(MAKE) black
-	$(MAKE) isort
+	$(MAKE) ruff
 
 .PHONY: lint
 lint:
