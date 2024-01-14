@@ -2,7 +2,7 @@ from fastapi import APIRouter, FastAPI
 from fastapi.routing import APIRoute
 from starlette.middleware.cors import CORSMiddleware
 
-from new_src.api.routers import decks, items, tests, users
+from new_src.api.routers import decks, items, tests, users, login
 
 from .config import settings
 

@@ -13,6 +13,7 @@ from .tests_schema import (
     TestCheckedResponse
 )
 from .users_schema import UserResponse, User, DummyUser
+from .login_schema import Token
 
 __all__ = [
     "CreateDeckRequest",
@@ -29,4 +30,5 @@ __all__ = [
     "TestMetaDataResponse",
     "TestUnsolvedResponse",
     "TestCheckedResponse",
+    "Token",
 ]
