@@ -23,7 +23,7 @@ def authenticate_user(
         user_name="dummy_user",
         email="dummy@gmail.com",
         full_name="dummy user",
-        disabled=False,
+        is_active=True,
         hashed_password="$2b$12$Z3wv6Y5wqQ9RZ7x7tXv6IeQ2jzR0YVW8Q8b6N4Yf6RZ5n0V7YJZ4S"
     )
     if user is None:
