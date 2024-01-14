@@ -13,7 +13,7 @@ from .tests_schema import (
     TestCheckedResponse
 )
 from .users_schema import UserResponse, User, DummyUser
-from .login_schema import Token
+from .login_schema import Token, TokenPayload
 
 __all__ = [
     "CreateDeckRequest",
@@ -31,4 +31,5 @@ __all__ = [
     "TestUnsolvedResponse",
     "TestCheckedResponse",
     "Token",
+    "TokenPayload"
 ]
