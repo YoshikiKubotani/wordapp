@@ -1,16 +1,16 @@
-from typing import Any
 import datetime
+from typing import Any
 
 from fastapi import APIRouter, HTTPException
 
 from new_src.api.dependencies import CurrentUser, SessionDep
 from new_src.api.schemas import (
+    TestCheckedResponse,
     TestItemAfterAttemptRequest,
     TestItemBeforeAttemptResponse,
     TestItemCheckedResponse,
     TestMetaDataResponse,
     TestUnsolvedResponse,
-    TestCheckedResponse,
 )
 
 router = APIRouter()
@@ -29,6 +29,7 @@ def read_all_tests(
         )
     ]
     return tests
+
 
 @router.post("/", response_model=TestUnsolvedResponse)
 def create_test(
@@ -100,6 +101,7 @@ def answer_test(
         ],
         timestamp=datetime.datetime.now(),
     )
+
 
 @router.get("/{test_id}/items", response_model=list[TestCheckedResponse])
 def read_test_items(

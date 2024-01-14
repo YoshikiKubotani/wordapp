@@ -3,7 +3,7 @@ from typing import Any
 from fastapi import APIRouter, HTTPException
 
 from new_src.api.dependencies import CurrentUser, SessionDep
-from new_src.api.schemas import CreateItemRequest, UpdateItemRequest, ItemResponse
+from new_src.api.schemas import CreateItemRequest, ItemResponse, UpdateItemRequest
 
 router = APIRouter()
 

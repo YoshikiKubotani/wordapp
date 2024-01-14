@@ -3,7 +3,12 @@ from typing import Any
 from fastapi import APIRouter, HTTPException
 
 from new_src.api.dependencies import CurrentUser, SessionDep
-from new_src.api.schemas import CreateDeckRequest, CreateItemRequest, DeckResponse, ItemResponse
+from new_src.api.schemas import (
+    CreateDeckRequest,
+    CreateItemRequest,
+    DeckResponse,
+    ItemResponse,
+)
 
 router = APIRouter()
 
@@ -27,6 +32,7 @@ def create_deck(
     """Create a new deck."""
     return DeckResponse(deck_id=1, deck_name="dummy_deck")
 
+
 @router.put("/{deck_id}", response_model=DeckResponse)
 def update_deck(
     # deck_id: int,
@@ -36,6 +42,7 @@ def update_deck(
 ) -> Any:
     """Update the details of a deck."""
     return DeckResponse(deck_id=1, deck_name="dummy_deck")
+
 
 @router.delete("/{deck_id}")
 def delete_deck(

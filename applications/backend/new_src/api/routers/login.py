@@ -1,27 +1,28 @@
-from typing import Annotated
 from datetime import timedelta
+from typing import Annotated
 
-from fastapi import Depends, APIRouter, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 
+from new_src.api.schemas import Token
 from new_src.core.config import settings
 from new_src.core.security import (
     authenticate_user,
     create_access_token,
 )
-from new_src.api.schemas import Token
 
 router = APIRouter()
 
+
 @router.post("/login/access-token")
 async def login(
-        # session: SessionDep,
-        form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
-    ) -> Token:
+    # session: SessionDep,
+    form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
+) -> Token:
     user = authenticate_user(
         # session,
         form_data.username,
-        form_data.password
+        form_data.password,
     )
     if user is None:
         raise HTTPException(
