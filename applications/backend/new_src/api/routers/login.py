@@ -31,8 +31,9 @@ async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]) -> T
             status_code=status.HTTP_400_BAD_REQUEST, detail="Inactive user"
         )
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+    # TODO:最終的にはuser.idを使う
     access_token = create_access_token(
-        data={"sub": user.username}, expires_delta=access_token_expires
+        subject=user.user_name, expires_delta=access_token_expires
     )
 
     return Token(access_token=access_token, token_type="bearer")
