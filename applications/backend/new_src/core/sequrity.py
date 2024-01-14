@@ -20,7 +20,7 @@ def authenticate_user(
     # user_dict = session.get(User, user_name)
     # user = UserInDB(**user_dict)
     user = DummyUser(
-        user_name="dummy_user",
+        user_name=user_name,
         email="dummy@gmail.com",
         full_name="dummy user",
         is_active=True,
