@@ -14,9 +14,12 @@ from new_src.api.schemas import Token
 router = APIRouter()
 
 @router.post("/login/access-token")
-async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]) -> Token:
+async def login(
+        # session: SessionDep,
+        form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
+    ) -> Token:
     user = authenticate_user(
-        # fake_users_db,
+        # session,
         form_data.username,
         form_data.password
     )

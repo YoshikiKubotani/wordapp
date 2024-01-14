@@ -13,11 +13,11 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
     return password_context.verify(plain_password, hashed_password)
 
 def authenticate_user(
-        # fake_db,
-        username: str,
+        # session: SessionDep,
+        user_name: str,
         password: str
     ) -> User | None:
-    # user_dict = fake_db.get(username)
+    # user_dict = session.get(User, user_name)
     # user = UserInDB(**user_dict)
     user = DummyUser(
         user_name="dummy_user",
