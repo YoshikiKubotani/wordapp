@@ -1,5 +1,5 @@
-from .deck_schema import CreateDeckRequest, DeckResponse
-from .item_schema import (
+from .decks_schema import CreateDeckRequest, DeckResponse
+from .items_schema import (
     CreateItemRequest,
     UpdateItemRequest,
     ItemResponse,
