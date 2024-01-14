@@ -6,9 +6,9 @@ class UserResponse(BaseModel):
 
 class User(BaseModel):
     user_name: str
-    email: str | None
-    full_name: str | None
-    disabled: bool | None
+    email: str | None = None
+    full_name: str | None = None
+    disabled: bool | None = None
 
 class DummyUser(User):
     hashed_password: str
