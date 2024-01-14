@@ -65,14 +65,14 @@ def create_test(
 
 @router.post("/{test_id}", response_model=TestCheckedResponse)
 def answer_test(
-    # test_id: int,
+    test_id: int,
     # solved_items: list[TestItemAfterAttemptRequest],
     # current_user: User = Depends(get_current_user),
     # session: Session = Depends(get_session),
 ) -> Any:
     """Answer a test."""
     return TestCheckedResponse(
-        test_id=1,
+        test_id=test_id,
         test_items=[
             TestItemCheckedResponse(
                 question_number=1,
@@ -103,9 +103,9 @@ def answer_test(
     )
 
 
-@router.get("/{test_id}/items", response_model=list[TestCheckedResponse])
+@router.get("/{test_id}/items", response_model=list[TestItemCheckedResponse])
 def read_test_items(
-    # test_id: int,
+    test_id: int,
     # current_user: User = Depends(get_current_user),
     # session: Session = Depends(get_session),
 ) -> Any:

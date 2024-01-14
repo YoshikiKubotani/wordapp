@@ -8,7 +8,7 @@ from pydantic import ValidationError
 from new_src.api.schemas import DummyUser, TokenPayload, User
 from new_src.core.config import settings
 
-reusable_oauth2 = OAuth2PasswordBearer(tokenUrl="/login/access-token")
+reusable_oauth2 = OAuth2PasswordBearer(tokenUrl=f"{settings.API_V1_STR}/login/access-token")
 
 # def get_db() -> Generator:
 #     with Session(engine) as session:
@@ -40,7 +40,8 @@ def get_current_user(
         email="dummy@gmail.com",
         full_name="dummy user",
         is_active=True,
-        hashed_password="$2b$12$Z3wv6Y5wqQ9RZ7x7tXv6IeQ2jzR0YVW8Q8b6N4Yf6RZ5n0V7YJZ4S",
+        is_superuser=True,
+        hashed_password="$2b$12$gjLw4vccsNb41k/eHJeGtemKhjzw3aKxW6ANle2ZXzJTfhiRyvgNy",
     )
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")

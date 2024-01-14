@@ -25,4 +25,5 @@ class User(BaseModel):
 
 
 class DummyUser(User):
+    is_superuser: bool
     hashed_password: str
