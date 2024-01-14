@@ -1,6 +1,10 @@
 from pydantic import BaseModel
 
 
-class DeckOut(BaseModel):
+class CreateDeckRequest(BaseModel):
+    deck_name: str
+
+
+class DeckResponse(BaseModel):
     deck_id: int
     deck_name: str
