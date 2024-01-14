@@ -12,7 +12,7 @@ from .tests_schema import (
     TestUnsolvedResponse,
     TestCheckedResponse
 )
-from .users_schema import UserResponse, User
+from .users_schema import UserResponse, User, DummyUser
 
 __all__ = [
     "CreateDeckRequest",
@@ -22,6 +22,7 @@ __all__ = [
     "ItemResponse",
     "UserResponse",
     "User",
+    "DummyUser",
     "TestItemAfterAttemptRequest",
     "TestItemBeforeAttemptResponse",
     "TestItemCheckedResponse",

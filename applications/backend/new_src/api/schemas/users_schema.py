@@ -10,3 +10,5 @@ class User(BaseModel):
     full_name: str | None
     disabled: bool | None
 
+class DummyUser(User):
+    hashed_password: str
