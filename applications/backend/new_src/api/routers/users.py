@@ -4,7 +4,7 @@ from fastapi import APIRouter, HTTPException, Depends
 
 from new_src.api.dependencies import (
     CurrentUser,
-    SessionDep,
+    # SessionDep,
     get_current_active_superuser,
 )
 from new_src.api.schemas import CreateUserRequest, UpdateUserRequest, UserResponse
