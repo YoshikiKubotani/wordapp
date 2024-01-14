@@ -13,7 +13,13 @@ from .tests_schema import (
     TestMetaDataResponse,
     TestUnsolvedResponse,
 )
-from .users_schema import DummyUser, User, UserResponse
+from .users_schema import (
+  CreateUserRequest,
+  UpdateUserRequest,
+  UserResponse,
+  User,
+  DummyUser,
+)
 
 __all__ = [
     "CreateDeckRequest",
@@ -21,6 +27,8 @@ __all__ = [
     "CreateItemRequest",
     "UpdateItemRequest",
     "ItemResponse",
+    "CreateUserRequest",
+    "UpdateUserRequest",
     "UserResponse",
     "User",
     "DummyUser",
