@@ -3,8 +3,8 @@ from typing import Any
 from fastapi import APIRouter, HTTPException, Depends
 
 from new_src.api.dependencies import (
-    CurrentUser,
-    # SessionDep,
+    CurrentUserDep,
+    AsyncSessionDep,
     get_current_active_superuser,
 )
 from new_src.api.schemas import CreateUserRequest, UpdateUserRequest, UserResponse
@@ -17,8 +17,8 @@ router = APIRouter()
     dependencies=[Depends(get_current_active_superuser)],
     response_model=list[UserResponse],
 )
-def read_all_users(
-    # session: SessionDep = Depends(get_session),
+async def read_all_users(
+    async_session: AsyncSessionDep,
 ) -> Any:
     """Get all users."""
     users = [UserResponse(user_id=1, email="dummy_user")]
@@ -30,37 +30,38 @@ def read_all_users(
     dependencies=[Depends(get_current_active_superuser)],
     response_model=UserResponse,
 )
-def create_user(
+async def create_user(
     # user: CreateUserRequest,
-    # session: SessionDep = Depends(get_session),
+    async_session: AsyncSessionDep,
 ) -> Any:
     """Create a new user."""
     return UserResponse(user_id=1, email="dummy_user")
 
 
 @router.get("/{user_name}", response_model=UserResponse)
-def read_own_user(
+async def read_own_user(
     # user_name: str,
-    # session: SessionDep = Depends(get_session),
+    currenct_user: CurrentUserDep,
+    async_session: AsyncSessionDep,
 ) -> Any:
     """Get the details of a user."""
-    return UserResponse(user_id=1, email="dummy_user")
+    return currenct_user
 
 
 @router.put("/{user_name}", response_model=UserResponse)
-def update_own_user(
+async def update_own_user(
     # user_name: str,
     # user: UpdateUserRequest,
-    # session: SessionDep = Depends(get_session),
+    async_session: AsyncSessionDep,
 ) -> Any:
     """Update the details of a user."""
     return UserResponse(user_id=1, email="dummy_user")
 
 
 @router.delete("/{user_name}")
-def delete_own_user(
+async def delete_own_user(
     # user_name: str,
-    # session: SessionDep = Depends(get_session),
+    async_session: AsyncSessionDep,
 ) -> bool:
     """Delete a user."""
     return True

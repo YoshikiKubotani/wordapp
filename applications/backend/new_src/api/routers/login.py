@@ -10,17 +10,18 @@ from new_src.core.security import (
     authenticate_user,
     create_access_token,
 )
+from new_src.api.dependencies import AsyncSessionDep
 
 router = APIRouter()
 
 
 @router.post("/login/access-token")
 async def login(
-    # session: SessionDep,
+    async_session: AsyncSessionDep,
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
 ) -> Token:
     user = authenticate_user(
-        # session,
+        async_session,
         form_data.username,
         form_data.password,
     )

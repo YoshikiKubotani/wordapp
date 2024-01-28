@@ -5,16 +5,17 @@ from passlib.context import CryptContext
 
 from new_src.api.schemas import DummyUser, User
 from new_src.core.config import settings
+from new_src.api.dependencies import AsyncSessionDep
 
 password_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
-def verify_password(plain_password: str, hashed_password: str) -> bool:
+async def verify_password(plain_password: str, hashed_password: str) -> bool:
     return password_context.verify(plain_password, hashed_password)
 
 
-def authenticate_user(
-    # session: SessionDep,
+async def authenticate_user(
+    async_session: AsyncSessionDep,
     user_name: str,
     password: str,
 ) -> User | None:
@@ -35,7 +36,7 @@ def authenticate_user(
     return user
 
 
-def create_access_token(subject: str, expires_delta: timedelta | None = None) -> str:
+async def create_access_token(subject: str, expires_delta: timedelta | None = None) -> str:
     if expires_delta:
         expire = datetime.now(timezone.utc) + expires_delta
     else:
