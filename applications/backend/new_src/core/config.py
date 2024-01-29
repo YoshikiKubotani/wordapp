@@ -1,8 +1,16 @@
 import secrets
 from typing import Any
 
-from pydantic import AnyHttpUrl, EmailStr, HttpUrl, PostgresDsn, field_validator, ValidationInfo
+from pydantic import (
+    AnyHttpUrl,
+    EmailStr,
+    HttpUrl,
+    PostgresDsn,
+    ValidationInfo,
+    field_validator,
+)
 from pydantic_settings import BaseSettings
+
 
 class Settings(BaseSettings, case_sensitive=True):
     PROJECT_NAME: str = "Word App"

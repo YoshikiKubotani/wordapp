@@ -1,10 +1,10 @@
 from typing import Any
 
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, Depends, HTTPException
 
 from new_src.api.dependencies import (
-    CurrentUserDep,
     AsyncSessionDep,
+    CurrentUserDep,
     get_current_active_superuser,
 )
 from new_src.api.schemas import CreateUserRequest, UpdateUserRequest, UserResponse

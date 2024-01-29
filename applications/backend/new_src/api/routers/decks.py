@@ -2,7 +2,7 @@ from typing import Any
 
 from fastapi import APIRouter, HTTPException
 
-from new_src.api.dependencies import CurrentUserDep, AsyncSessionDep
+from new_src.api.dependencies import AsyncSessionDep, CurrentUserDep
 from new_src.api.schemas import (
     CreateDeckRequest,
     CreateItemRequest,

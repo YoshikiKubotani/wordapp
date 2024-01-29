@@ -1,12 +1,12 @@
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
 from typing import cast
+
 from fastapi import APIRouter, FastAPI
 from fastapi.routing import APIRoute
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from starlette.middleware.cors import CORSMiddleware
 
-from collections.abc import AsyncIterator
-
-from contextlib import asynccontextmanager
-from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 from new_src.api.routers import decks, items, login, tests, users
 
 from .config import settings

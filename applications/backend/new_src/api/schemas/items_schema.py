@@ -1,5 +1,6 @@
 from pydantic import BaseModel, PastDatetime
 
+
 class CreateItemRequest(BaseModel):
     english: str
     japanese: str

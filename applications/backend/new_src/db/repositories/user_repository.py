@@ -1,8 +1,9 @@
 from sqlalchemy import select
 
-from new_src.db.repositories.base_repository import BaseRepository, AsyncSessionDep
+from new_src.api.schemas import UserLoginHistorySchema, UserSchema
 from new_src.db.data_models import User, UserLoginHistory
-from new_src.api.schemas import UserSchema, UserLoginHistorySchema
+from new_src.db.repositories.base_repository import AsyncSessionDep, BaseRepository
+
 
 class UserRepository(BaseRepository[User, UserSchema]):
   def __init__(self) -> None:

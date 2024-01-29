@@ -1,6 +1,7 @@
 from pydantic import BaseModel, PastDatetime
 from pydantic.networks import IPvAnyAddress
 
+
 class CreateUserRequest(BaseModel):
     user_name: str
     email: str

@@ -1,8 +1,9 @@
 from sqlalchemy import select
 
-from new_src.db.repositories.base_repository import BaseRepository, AsyncSessionDep
-from new_src.db.data_models import Item
 from new_src.api.schemas import ItemSchema
+from new_src.db.data_models import Item
+from new_src.db.repositories.base_repository import AsyncSessionDep, BaseRepository
+
 
 class ItemRepository(BaseRepository[Item, ItemSchema]):
   def __init__(self) -> None:

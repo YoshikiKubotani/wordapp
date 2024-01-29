@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 
+
 class CreateDeckRequest(BaseModel):
     deck_name: str
 

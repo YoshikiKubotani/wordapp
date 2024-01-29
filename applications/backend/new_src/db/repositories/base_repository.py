@@ -1,8 +1,17 @@
-from typing import TypeVar, Type, Generic
+from typing import Generic, Type, TypeVar
+
 from pydantic import BaseModel
 
 from new_src.api.dependencies import AsyncSessionDep
-from new_src.db.data_models import User, Item, Genre, Deck, Test, TestItem, UserLoginHistory
+from new_src.db.data_models import (
+  Deck,
+  Genre,
+  Item,
+  Test,
+  TestItem,
+  User,
+  UserLoginHistory,
+)
 
 DataModelType = TypeVar("DataModelType",  User, Item, Genre, Deck, Test, TestItem, UserLoginHistory)
 DomainModelType = TypeVar("DomainModelType",  BaseModel)

@@ -4,13 +4,13 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 
+from new_src.api.dependencies import AsyncSessionDep
 from new_src.api.schemas import Token
 from new_src.core.config import settings
 from new_src.core.security import (
     authenticate_user,
     create_access_token,
 )
-from new_src.api.dependencies import AsyncSessionDep
 
 router = APIRouter()
 
