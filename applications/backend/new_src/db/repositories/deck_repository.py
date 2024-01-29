@@ -4,7 +4,7 @@ from new_src.db.repositories.base_repository import BaseRepository, AsyncSession
 from new_src.db.data_models import Deck
 from new_src.api.schemas import DeckSchema
 
-class DeckRepository(BaseRepository):
+class DeckRepository(BaseRepository[Deck, DeckSchema]):
   def __init__(self) -> None:
     super().__init__(data_model=Deck)
 

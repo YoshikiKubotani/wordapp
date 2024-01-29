@@ -4,7 +4,7 @@ from new_src.db.repositories.base_repository import BaseRepository, AsyncSession
 from new_src.db.data_models import User, UserLoginHistory
 from new_src.api.schemas import UserSchema, UserLoginHistorySchema
 
-class UserRepository(BaseRepository):
+class UserRepository(BaseRepository[User, UserSchema]):
   def __init__(self) -> None:
     super().__init__(data_model=User)
   
@@ -17,7 +17,7 @@ class UserRepository(BaseRepository):
         user = await session.execute(select(self.data_model).where(self.data_model.user_name == user_name))
         return user.scalars().one_or_none()
       
-class UserLoginHistoryRepository(BaseRepository):
+class UserLoginHistoryRepository(BaseRepository[UserLoginHistory, UserLoginHistorySchema]):
   def __init__(self) -> None:
     super().__init__(data_model=UserLoginHistory)
   

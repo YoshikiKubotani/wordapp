@@ -4,7 +4,7 @@ from new_src.db.repositories.base_repository import BaseRepository, AsyncSession
 from new_src.db.data_models import Test
 from new_src.api.schemas import TestSchema
 
-class TestRepository(BaseRepository):
+class TestRepository(BaseRepository[Test, TestSchema]):
   def __init__(self) -> None:
     super().__init__(data_model=Test)
   
