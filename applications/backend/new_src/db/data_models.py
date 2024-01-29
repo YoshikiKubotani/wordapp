@@ -23,7 +23,7 @@ item_deck_mapper_table = Table(
 class User(Base):
   __tablename__ = "users"
 
-  user_id: Mapped[int] = mapped_column(primary_key=True, index=True)
+  user_id: Mapped[int] = mapped_column(primary_key=True)
   user_name: Mapped[str] = mapped_column(unique=True, index=True)
   email: Mapped[str] = mapped_column(unique=True, index=True)
   password: Mapped[str]
@@ -46,7 +46,7 @@ class User(Base):
 class UserLoginHistory(Base):
   __tablename__ = "user_login_history"
 
-  user_login_history_id: Mapped[int] = mapped_column(primary_key=True, index=True)
+  user_login_history_id: Mapped[int] = mapped_column(primary_key=True)
   user_id: Mapped[int] = mapped_column(ForeignKey("users.user_id"))
   login_timestamp: Mapped[datetime.datetime] = mapped_column(default=datetime.datetime.now)
   logout_timestamp: Mapped[datetime.datetime] = mapped_column(default=datetime.datetime.now)
@@ -59,7 +59,7 @@ class UserLoginHistory(Base):
 class Item(Base):
   __tablename__ = "items"
 
-  item_id: Mapped[int] = mapped_column(primary_key=True, index=True)
+  item_id: Mapped[int] = mapped_column(primary_key=True)
   user_id: Mapped[int] = mapped_column(ForeignKey("users.user_id"))
   english: Mapped[str]
   japanese: Mapped[str]
@@ -85,7 +85,7 @@ class Item(Base):
 class Genre(Base):
   __tablename__ = "genres"
 
-  genre_id: Mapped[int] = mapped_column(primary_key=True, index=True)
+  genre_id: Mapped[int] = mapped_column(primary_key=True)
   genre_name: Mapped[str] = mapped_column(unique=True, index=True)
 
   # Many-to-many relationship with Item
@@ -97,7 +97,7 @@ class Genre(Base):
 class Deck(Base):
   __tablename__ = "decks"
 
-  deck_id: Mapped[int] = mapped_column(primary_key=True, index=True)
+  deck_id: Mapped[int] = mapped_column(primary_key=True)
   user_id: Mapped[int] = mapped_column(ForeignKey("users.user_id"))
   deck_name: Mapped[str]
 
@@ -115,7 +115,7 @@ class Deck(Base):
 class TestItem(Base):
   __tablename__ = "test_items"
 
-  test_item_id: Mapped[int] = mapped_column(primary_key=True, index=True)
+  test_item_id: Mapped[int] = mapped_column(primary_key=True)
   test_id: Mapped[int] = mapped_column(ForeignKey("tests.test_id"))
   item_id: Mapped[int] = mapped_column(ForeignKey("items.item_id"))
   question_number: Mapped[int]
@@ -133,7 +133,7 @@ class TestItem(Base):
 class Test(Base):
   __tablename__ = "tests"
 
-  test_id: Mapped[int] = mapped_column(primary_key=True, index=True)
+  test_id: Mapped[int] = mapped_column(primary_key=True)
   user_id: Mapped[int] = mapped_column(ForeignKey("users.user_id"))
   deck_id: Mapped[int] = mapped_column(ForeignKey("decks.deck_id"))
   test_type: Mapped[int]
