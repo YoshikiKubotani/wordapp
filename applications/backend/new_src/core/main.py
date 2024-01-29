@@ -1,7 +1,9 @@
-from typing import AsyncGenerator, cast
+from typing import cast
 from fastapi import APIRouter, FastAPI
 from fastapi.routing import APIRoute
 from starlette.middleware.cors import CORSMiddleware
+
+from collections.abc import AsyncIterator
 
 from contextlib import asynccontextmanager
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
@@ -17,7 +19,7 @@ AsyncSessionFactory: async_sessionmaker[AsyncSession] | None = None
 
 # This is the lifespan context manager, which is called once before/after the server starts/stops.
 @asynccontextmanager
-async def lifespan(app: FastAPI) -> AsyncGenerator:
+async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     global AsyncSessionFactory
     # Create a new async engine instance, which offers a session environment to manage a database.
     engine = create_async_engine(settings.SQLALCHEMY_DATABASE_URI.unicode_string())
