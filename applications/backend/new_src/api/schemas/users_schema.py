@@ -14,7 +14,9 @@ class UpdateUserRequest(BaseModel):
 
 class UserResponse(BaseModel):
     user_id: int
+    user_name: str
     email: str
+    full_name: str
 
 
 class User(BaseModel):
@@ -25,5 +27,6 @@ class User(BaseModel):
 
 
 class DummyUser(User):
+    user_id: int
     is_superuser: bool
     hashed_password: str

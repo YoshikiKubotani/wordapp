@@ -22,12 +22,13 @@ async def authenticate_user(
     # user_dict = session.get(User, user_name)
     # user = UserInDB(**user_dict)
     user = DummyUser(
+        user_id=1,
         user_name=user_name,
         email="dummy@gmail.com",
         full_name="dummy user",
         is_active=True,
         is_superuser=True,
-        hashed_password="$2b$12$gjLw4vccsNb41k/eHJeGtemKhjzw3aKxW6ANle2ZXzJTfhiRyvgNy",
+        hashed_password="$2y$10$p8UIk5H4aim92irVURglF.M4A7kkCEELzZV6I2xyEN9GRIKVu5PMy",
     )
     if user is None:
         return None

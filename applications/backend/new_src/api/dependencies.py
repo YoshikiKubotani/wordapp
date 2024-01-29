@@ -37,6 +37,7 @@ async def get_current_user(
         )
     # user = session.get(User, token_data.sub)
     user = DummyUser(
+        user_id=1,
         user_name=token_data.sub,
         email="dummy@gmail.com",
         full_name="dummy user",
