@@ -136,7 +136,7 @@ class Test(Base):
   test_id: Mapped[int] = mapped_column(primary_key=True)
   user_id: Mapped[int] = mapped_column(ForeignKey("users.user_id"))
   deck_id: Mapped[int] = mapped_column(ForeignKey("decks.deck_id"))
-  test_type: Mapped[int]
+  test_type: Mapped[str]
   test_timestamp: Mapped[datetime.datetime] = mapped_column(default=datetime.datetime.now)
 
   # One-to-many relationship with TestItem
