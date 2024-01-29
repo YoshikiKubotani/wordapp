@@ -10,7 +10,7 @@ from new_src.api.dependencies import AsyncSessionDep
 password_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
-async def verify_password(plain_password: str, hashed_password: str) -> bool:
+def verify_password(plain_password: str, hashed_password: str) -> bool:
     return password_context.verify(plain_password, hashed_password)
 
 
@@ -37,7 +37,7 @@ async def authenticate_user(
     return user
 
 
-async def create_access_token(subject: str, expires_delta: timedelta | None = None) -> str:
+def create_access_token(subject: str, expires_delta: timedelta | None = None) -> str:
     if expires_delta:
         expire = datetime.now(timezone.utc) + expires_delta
     else:

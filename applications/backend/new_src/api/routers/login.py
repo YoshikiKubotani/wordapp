@@ -20,7 +20,7 @@ async def login(
     async_session: AsyncSessionDep,
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
 ) -> Token:
-    user = authenticate_user(
+    user = await authenticate_user(
         async_session,
         form_data.username,
         form_data.password,
