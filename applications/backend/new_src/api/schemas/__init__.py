@@ -1,8 +1,9 @@
-from .decks_schema import CreateDeckRequest, DeckResponse
+from .decks_schema import CreateDeckRequest, DeckResponse, DeckSchema
 from .items_schema import (
     CreateItemRequest,
     ItemResponse,
     UpdateItemRequest,
+    ItemSchema,
 )
 from .login_schema import Token, TokenPayload
 from .tests_schema import (
@@ -12,32 +13,42 @@ from .tests_schema import (
     TestItemCheckedResponse,
     TestMetaDataResponse,
     TestUnsolvedResponse,
+    TestItemSchema,
+    TestSchema,
 )
 from .users_schema import (
-  CreateUserRequest,
-  UpdateUserRequest,
-  UserResponse,
-  User,
-  DummyUser,
+    CreateUserRequest,
+    UpdateUserRequest,
+    UserResponse,
+    User,
+    DummyUser,
+    UserSchema,
+    UserLoginHistorySchema,
 )
 
 __all__ = [
     "CreateDeckRequest",
     "DeckResponse",
+    "DeckSchema",
     "CreateItemRequest",
-    "UpdateItemRequest",
     "ItemResponse",
+    "UpdateItemRequest",
+    "ItemSchema",
+    "Token",
+    "TokenPayload",
     "CreateUserRequest",
     "UpdateUserRequest",
     "UserResponse",
     "User",
     "DummyUser",
+    "UserSchema",
+    "UserLoginHistorySchema",
     "TestItemAfterAttemptRequest",
     "TestItemBeforeAttemptResponse",
     "TestItemCheckedResponse",
     "TestMetaDataResponse",
     "TestUnsolvedResponse",
     "TestCheckedResponse",
-    "Token",
-    "TokenPayload",
+    "TestItemSchema",
+    "TestSchema",
 ]

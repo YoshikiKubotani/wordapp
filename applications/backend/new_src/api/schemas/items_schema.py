@@ -1,5 +1,4 @@
-from pydantic import BaseModel
-
+from pydantic import BaseModel, PastDatetime
 
 class CreateItemRequest(BaseModel):
     english: str
@@ -18,3 +17,12 @@ class ItemResponse(BaseModel):
     english: str
     japanese: str
     grade: int
+
+class ItemSchema(BaseModel):
+    _id: int
+    user_id: int
+    english: str
+    japanese: str
+    grade: int
+    created_at: PastDatetime
+    updated_at: PastDatetime
