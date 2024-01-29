@@ -51,7 +51,7 @@ class Settings(BaseSettings, case_sensitive=True):
             username=info.data.get("POSTGRES_USER"),
             password=info.data.get("POSTGRES_PASSWORD"),
             host="postgresql",
-            path=f"/{info.data.get('POSTGRES_DB') or ''}",
+            path=f"{info.data.get('POSTGRES_DB') or ''}",
         )
 
     # SMTP_TLS: bool = True

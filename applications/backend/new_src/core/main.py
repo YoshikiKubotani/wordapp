@@ -20,7 +20,7 @@ AsyncSessionFactory: async_sessionmaker[AsyncSession] | None = None
 async def lifespan(app: FastAPI) -> AsyncGenerator:
     global AsyncSessionFactory
     # Create a new async engine instance, which offers a session environment to manage a database.
-    engine = create_async_engine(settings.SQLALCHEMY_DATABASE_URI)
+    engine = create_async_engine(settings.SQLALCHEMY_DATABASE_URI.unicode_string())
     # Create a factiry that returns a new AsyncSession instance.
     AsyncSessionFactory = cast(async_sessionmaker[AsyncSession], async_sessionmaker(engine, expire_on_commit=False))
     
