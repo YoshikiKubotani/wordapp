@@ -1,8 +1,8 @@
 from typing import Generic, Type, TypeVar
 
 from pydantic import BaseModel
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.api.dependencies import AsyncSessionDep
 from src.db.data_models import (
   Deck,
   Genre,
@@ -20,7 +20,7 @@ class BaseRepository(Generic[DataModelType, DomainModelType]):
   def __init__(self, data_model: Type[DataModelType]) -> None:
     self.data_model = data_model
 
-  async def create(self, async_session: AsyncSessionDep, domain_entity: DomainModelType) -> DomainModelType:
+  async def create(self, async_session: AsyncSession, domain_entity: DomainModelType) -> DomainModelType:
     # This context automatically calls session.close() when the code block is exited.
     async with async_session() as session:
       # This context automatically calls session.commit() if no exceptions are raised.
@@ -33,7 +33,7 @@ class BaseRepository(Generic[DataModelType, DomainModelType]):
       created_domain_entity = DomainModelType.model_validate(data_entity)
       return created_domain_entity
 
-  async def read(self, async_session: AsyncSessionDep, id: int) -> DomainModelType:
+  async def read(self, async_session: AsyncSession, id: int) -> DomainModelType:
     # This context automatically calls session.close() when the code block is exited.
     async with async_session() as session:
       # This context automatically calls session.commit() if no exceptions are raised.
@@ -43,7 +43,7 @@ class BaseRepository(Generic[DataModelType, DomainModelType]):
       read_domain_entity = DomainModelType.model_validate(data_entity)
       return read_domain_entity
 
-  async def update(self, async_session: AsyncSessionDep, domain_entity: DomainModelType) -> DomainModelType:
+  async def update(self, async_session: AsyncSession, domain_entity: DomainModelType) -> DomainModelType:
     # This context automatically calls session.close() when the code block is exited.
     async with async_session() as session:
       # This context automatically calls session.commit() if no exceptions are raised.
@@ -60,7 +60,7 @@ class BaseRepository(Generic[DataModelType, DomainModelType]):
       return updated_domain_entity
 
 
-  async def delete(self, async_session: AsyncSessionDep, id: int) -> DomainModelType:
+  async def delete(self, async_session: AsyncSession, id: int) -> DomainModelType:
     # This context automatically calls session.close() when the code block is exited.
     async with async_session() as session:
       # This context automatically calls session.commit() if no exceptions are raised.
