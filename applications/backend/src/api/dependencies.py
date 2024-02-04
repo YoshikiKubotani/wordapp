@@ -25,6 +25,7 @@ async def get_current_user(
     token: TokenDep,
 ) -> User:
     try:
+        print(f"Received a request with authentication header of token {token}.")
         payload = jwt.decode(
             token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
         )

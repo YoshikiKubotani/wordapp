@@ -40,5 +40,7 @@ async def login(
     access_token = create_access_token(
         subject=user.user_name, expires_delta=access_token_expires
     )
+    print(f"Issued a verfied token for {user.user_name} which will expire in {access_token_expires}.")
+    print(f"token: {access_token}")
 
     return Token(access_token=access_token, token_type="bearer")

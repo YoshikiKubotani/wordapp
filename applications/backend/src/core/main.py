@@ -20,15 +20,17 @@ AsyncSessionFactory: async_sessionmaker[AsyncSession] | None = None
 # This is the lifespan context manager, which is called once before/after the server starts/stops.
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+    print("Running startup lifespan events ...")
+
     global AsyncSessionFactory
     # Create a new async engine instance, which offers a session environment to manage a database.
     engine = create_async_engine(settings.SQLALCHEMY_DATABASE_URI.unicode_string())
     # Create a factiry that returns a new AsyncSession instance.
     AsyncSessionFactory = cast(async_sessionmaker[AsyncSession], async_sessionmaker(engine, expire_on_commit=False))
-
     # Yield the app instance.
     yield
 
+    print("Running shutdown lifespan events ...")
     # Close the engine instance as a clean-up operation.
     await engine.dispose()
 
