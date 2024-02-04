@@ -4,11 +4,11 @@ LOGLEVEL := info
 
 
 .PHONY: old-run-backend
-run-backend:
+old-run-backend:
 	poetry run gunicorn 'old_src.app:main' -k uvicorn.workers.UvicornWorker -b 0.0.0.0:$(APPLICATION_PORT) -t $(GUNICORN_TIMEOUT) --log-level $(LOGLEVEL)
 
 .PHONY: run-backend
-new-run-backend:
+run-backend:
 	poetry run gunicorn 'src.core.main:app' -k uvicorn.workers.UvicornWorker -b 0.0.0.0:$(APPLICATION_PORT) -t $(GUNICORN_TIMEOUT) --log-level $(LOGLEVEL)
 
 .PHONY: black-check
