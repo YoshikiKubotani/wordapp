@@ -14,11 +14,14 @@ pytestmark = pytest.mark.anyio
 
 @pytest.mark.usefixtures("async_client")
 class TestDeckRoutes:
+    fixture_overridden_attribute_names: list[str] | None = ["client"]
+
     async def test_deck_get(self):
+        response = await self.client.get("/decks/")
         assert response.status_code == 200
         assert response.json() == [{"deck_id": 1, "deck_name": "dummy_deck"}]
 
     async def test_deck_post(self):
-        response = await self.client.post("/")
+        response = await self.client.post("/decks/")
         assert response.status_code == 200
         assert response.json() == {"deck_id": 1, "deck_name": "dummy_deck"}

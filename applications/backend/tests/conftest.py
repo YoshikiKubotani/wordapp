@@ -4,6 +4,7 @@ from asgi_lifespan import LifespanManager
 
 from src.core.main import app
 from src.core.config import settings
+server_url = f"http://localhost:8000{settings.API_V1_STR}/"
 
 @pytest.fixture
 def anyio_backend():
@@ -17,7 +18,7 @@ async def async_client(request):
     and then close the engine after the test.
     """
     async with LifespanManager(app) as manager:
-      async with AsyncClient(app=manager.app, base_url=settings.API_V1_STR) as client:
+      async with AsyncClient(app=manager.app, base_url=server_url) as client:
         # If the test class has attrubutes to override, do it here.
         if hasattr(request.cls, "fixture_overridden_attribute_names"):
             # Only override the client attribute.
