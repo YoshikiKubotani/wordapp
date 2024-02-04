@@ -11,12 +11,17 @@ from src.core.config import settings
 
 # Create a callable object that will look for and parse the request for the `Authorization` header
 # Note that the `tokenUrl` parameter is only used for the OpenAPI documentation, not for the authentication itself
-reusable_oauth2 = OAuth2PasswordBearer(tokenUrl=f"{settings.API_V1_STR}/login/access-token")
+reusable_oauth2 = OAuth2PasswordBearer(
+    tokenUrl=f"{settings.API_V1_STR}/login/access-token"
+)
+
 
 async def get_db_session() -> AsyncGenerator[AsyncSession, None]:
     from src.core.main import AsyncSessionFactory
+
     async with AsyncSessionFactory() as session:
         yield session
+
 
 AsyncSessionDep = Annotated[AsyncSession, Depends(get_db_session)]
 TokenDep = Annotated[str, Depends(reusable_oauth2)]

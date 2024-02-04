@@ -25,6 +25,7 @@ class Settings(BaseSettings, case_sensitive=True):
     # e.g: '["http://localhost", "http://localhost:4200", "http://localhost:3000", \
     # "http://localhost:8080", "http://local.dockertoolbox.tiangolo.com"]'
     BACKEND_CORS_ORIGINS: list[AnyHttpUrl] = []
+
     @field_validator("BACKEND_CORS_ORIGINS", mode="before")
     @classmethod
     def assemble_cors_origins(cls, v: str | list[str]) -> list[str] | str:
@@ -49,6 +50,7 @@ class Settings(BaseSettings, case_sensitive=True):
 
     # TODO: 設定対象ごとに別のSettingクラスを作る場合、ここはmodel_validatorにする
     SQLALCHEMY_DATABASE_URI: PostgresDsn | None = None
+
     @field_validator("SQLALCHEMY_DATABASE_URI", mode="before")
     @classmethod
     def assemble_db_connection(cls, v: str | None, info: ValidationInfo) -> Any:
@@ -94,4 +96,4 @@ class Settings(BaseSettings, case_sensitive=True):
     # USERS_OPEN_REGISTRATION: bool = False
 
 
-settings = Settings() # type: ignore
+settings = Settings()  # type: ignore

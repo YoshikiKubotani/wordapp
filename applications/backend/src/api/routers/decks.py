@@ -61,12 +61,11 @@ async def read_deck_items(
     async_session: AsyncSessionDep,
 ) -> Any:
     """Get all the items in a deck."""
-    items = [ItemResponse(
-        item_id=1,
-        english="dummy_english",
-        japanese="dummy_japanese",
-        grade=1
-    )]
+    items = [
+        ItemResponse(
+            item_id=1, english="dummy_english", japanese="dummy_japanese", grade=1
+        )
+    ]
     return items
 
 
@@ -79,10 +78,7 @@ async def create_deck_item(
 ) -> Any:
     """Create a new item in a deck."""
     return ItemResponse(
-        item_id=1,
-        english="dummy_english",
-        japanese="dummy_japanese",
-        grade=1
+        item_id=1, english="dummy_english", japanese="dummy_japanese", grade=1
     )
 
 

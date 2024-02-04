@@ -15,7 +15,9 @@ from .config import settings
 def custom_generate_unique_id(route: APIRoute):
     return f"{route.tags[0]}-{route.name}"
 
+
 AsyncSessionFactory: async_sessionmaker[AsyncSession] | None = None
+
 
 # This is the lifespan context manager, which is called once before/after the server starts/stops.
 @asynccontextmanager
@@ -26,7 +28,10 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     # Create a new async engine instance, which offers a session environment to manage a database.
     engine = create_async_engine(settings.SQLALCHEMY_DATABASE_URI.unicode_string())
     # Create a factiry that returns a new AsyncSession instance.
-    AsyncSessionFactory = cast(async_sessionmaker[AsyncSession], async_sessionmaker(engine, expire_on_commit=False))
+    AsyncSessionFactory = cast(
+        async_sessionmaker[AsyncSession],
+        async_sessionmaker(engine, expire_on_commit=False),
+    )
     # Yield the app instance.
     yield
 
@@ -34,11 +39,12 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     # Close the engine instance as a clean-up operation.
     await engine.dispose()
 
+
 app = FastAPI(
     debug=True,
     title=settings.PROJECT_NAME,
     generate_unique_id_function=custom_generate_unique_id,
-    lifespan=lifespan
+    lifespan=lifespan,
 )
 
 # Set all CORS enabled origins

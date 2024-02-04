@@ -35,12 +35,14 @@ class TestUnsolvedResponse(TestMetaDataResponse):
 class TestCheckedResponse(TestMetaDataResponse):
     test_items: list[TestItemCheckedResponse]
 
+
 class TestSchema(BaseModel):
     _id: int
     user_id: int
     deck_id: int
     test_type: str
     test_timestamp: PastDatetime
+
 
 class TestItemSchema(BaseModel):
     _id: int

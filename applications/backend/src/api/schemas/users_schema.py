@@ -8,11 +8,13 @@ class CreateUserRequest(BaseModel):
     full_name: str | None = None
     password: str
 
+
 class UpdateUserRequest(BaseModel):
     user_name: str
     email: str
     full_name: str | None = None
     password: str
+
 
 class UserResponse(BaseModel):
     user_id: int
@@ -44,6 +46,7 @@ class UserSchema(BaseModel):
     is_superuser: bool
     created_at: PastDatetime
     updated_at: PastDatetime
+
 
 class UserLoginHistorySchema(BaseModel):
     _id: int

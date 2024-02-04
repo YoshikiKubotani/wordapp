@@ -14,12 +14,11 @@ async def search_items(
     async_session: AsyncSessionDep,
 ) -> Any:
     """Search for items."""
-    items = [ItemResponse(
-        item_id=1,
-        english="dummy_english",
-        japanese="dummy_japanese",
-        grade=1
-    )]
+    items = [
+        ItemResponse(
+            item_id=1, english="dummy_english", japanese="dummy_japanese", grade=1
+        )
+    ]
     return items
 
 
@@ -31,10 +30,7 @@ async def create_item(
 ) -> Any:
     """Create a new item."""
     return ItemResponse(
-        item_id=1,
-        english="dummy_english",
-        japanese="dummy_japanese",
-        grade=1
+        item_id=1, english="dummy_english", japanese="dummy_japanese", grade=1
     )
 
 
@@ -46,10 +42,7 @@ async def read_item(
 ) -> Any:
     """Get the details of an item."""
     return ItemResponse(
-        item_id=item_id,
-        english="dummy_english",
-        japanese="dummy_japanese",
-        grade=1
+        item_id=item_id, english="dummy_english", japanese="dummy_japanese", grade=1
     )
 
 
@@ -62,10 +55,7 @@ async def update_item(
 ) -> Any:
     """Update the details of an item."""
     return ItemResponse(
-        item_id=item_id,
-        english="dummy_english",
-        japanese="dummy_japanese",
-        grade=1
+        item_id=item_id, english="dummy_english", japanese="dummy_japanese", grade=1
     )
 
 
