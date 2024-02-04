@@ -2,9 +2,9 @@ import datetime
 
 from sqlalchemy import Column, ForeignKey, Table
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
+from sqlalchemy.ext.asyncio import AsyncAttrs
 
-
-class Base(DeclarativeBase):
+class Base(DeclarativeBase, AsyncAttrs):
   pass
 
 item_genre_mapper_table = Table(
