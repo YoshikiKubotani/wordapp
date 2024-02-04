@@ -12,7 +12,7 @@ pytestmark = pytest.mark.anyio
 #     assert response.status_code == 200
 #     assert response.json() == {"message": "Tomato"}
 
-@pytest.mark.usefixtures("async_client")
+@pytest.mark.usefixtures("assingn_authenticated_async_test_client_to_class")
 class TestDeckRoutes:
     fixture_overridden_attribute_names: list[str] | None = ["client"]
 
