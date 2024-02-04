@@ -10,8 +10,8 @@ from psycopg2.extras import DictCursor
 from psycopg2.sql import SQL, Identifier
 from pydantic import PositiveInt
 
-from src.adapter.gateway import RDBRepositoryGateway
-from src.utils import get_my_logger
+from old_src.adapter.gateway import RDBRepositoryGateway
+from old_src.utils import get_my_logger
 
 logger = get_my_logger(__name__)
 

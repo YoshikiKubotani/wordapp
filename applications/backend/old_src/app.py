@@ -6,9 +6,9 @@ import fastapi
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from src import routers
-from src.frameworks import PostgreSQL, get_db, postgres
-from src.utils import get_my_logger, initialize_all
+from old_src import routers
+from old_src.frameworks import PostgreSQL, get_db, postgres
+from old_src.utils import get_my_logger, initialize_all
 
 logger = get_my_logger(__name__)
 

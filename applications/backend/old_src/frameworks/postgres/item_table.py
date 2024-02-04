@@ -2,8 +2,8 @@ from typing import Any
 
 from psycopg2.extensions import connection
 
-from src.domain.entity import ItemEntity
-from src.frameworks import PostgreSQL
+from old_src.domain.entity import ItemEntity
+from old_src.frameworks import PostgreSQL
 
 
 class ItemTable(PostgreSQL):

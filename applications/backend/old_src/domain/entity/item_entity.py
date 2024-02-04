@@ -1,7 +1,7 @@
 from pydantic import Field
 from pydantic.dataclasses import dataclass
 
-from src.domain import EntityConfig
+from old_src.domain import EntityConfig
 
 
 @dataclass(config=EntityConfig)

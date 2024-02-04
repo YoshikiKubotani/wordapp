@@ -4,10 +4,10 @@ import fastapi
 from fastapi.responses import ORJSONResponse
 from pydantic import UUID4
 
-from src.adapter.controller import TestController
-from src.domain.dto import TestItemAnswerDTO, TestItemQuestionDTO
-from src.frameworks import get_db
-from src.frameworks.postgres import ItemTable
+from old_src.adapter.controller import TestController
+from old_src.domain.dto import TestItemAnswerDTO, TestItemQuestionDTO
+from old_src.frameworks import get_db
+from old_src.frameworks.postgres import ItemTable
 
 router: Final = fastapi.APIRouter(default_response_class=ORJSONResponse)
 

@@ -2,9 +2,9 @@ from typing import Any
 
 from pydantic import UUID4
 
-from src.adapter.gateway import RDBRepositoryGateway
-from src.domain.dto import TestItemAnswerDTO, TestItemQuestionDTO
-from src.usecase.interactor import DeckUsecase, TestUsecase
+from old_src.adapter.gateway import RDBRepositoryGateway
+from old_src.domain.dto import TestItemAnswerDTO, TestItemQuestionDTO
+from old_src.usecase.interactor import DeckUsecase, TestUsecase
 
 
 class TestController:

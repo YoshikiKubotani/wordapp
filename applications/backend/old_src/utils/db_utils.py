@@ -1,6 +1,6 @@
 import networkx as nx
 
-from src.adapter.gateway import RDBRepositoryGateway
+from old_src.adapter.gateway import RDBRepositoryGateway
 
 from .logger_utils import get_my_logger
 

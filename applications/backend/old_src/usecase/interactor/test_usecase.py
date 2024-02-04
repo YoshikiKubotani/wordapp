@@ -6,10 +6,10 @@ from typing import Any
 import redis
 from pydantic import UUID4
 
-from src.adapter.gateway import RDBRepositoryGateway
-from src.domain.dto import TestItemAnswerDTO, TestItemDTO, TestItemQuestionDTO
-from src.domain.entity import ItemEntity
-from src.utils import get_my_logger
+from old_src.adapter.gateway import RDBRepositoryGateway
+from old_src.domain.dto import TestItemAnswerDTO, TestItemDTO, TestItemQuestionDTO
+from old_src.domain.entity import ItemEntity
+from old_src.utils import get_my_logger
 
 logger = get_my_logger(__name__)
 

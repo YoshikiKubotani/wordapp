@@ -1,4 +1,4 @@
-from src.adapter.gateway import RDBRepositoryGateway
+from old_src.adapter.gateway import RDBRepositoryGateway
 
 
 class DeckUsecase:
