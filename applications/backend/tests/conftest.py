@@ -65,21 +65,3 @@ async def assingn_authenticated_async_test_client_to_class(request, authenticate
     if "client" in unfound_attributes:
         raise ValueError('The test class must have "fixture_overridden_attribute_names" attribute which contains "client" to assign authenticated async test client.')
     yield
-
-
-@pytest.fixture(scope="class")
-async def async_client(request):
-    """Generate an async client for testing with lifespan manager.
-
-    This ensures the lifespan manager to provide the database session factory before the test,
-    and then close the engine after the test.
-    """
-    async with LifespanManager(app) as manager:
-      async with AsyncClient(app=manager.app, base_url=server_url) as client:
-        # If the test class has attrubutes to override, do it here.
-        if hasattr(request.cls, "fixture_overridden_attribute_names"):
-            # Only override the client attribute.
-            for attr in request.cls.fixture_overridden_attribute_names:
-                if attr == "client":
-                  setattr(request.cls, attr, client)
-                  yield client
