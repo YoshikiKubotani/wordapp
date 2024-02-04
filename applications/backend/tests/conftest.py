@@ -5,6 +5,10 @@ from asgi_lifespan import LifespanManager
 from src.core.main import app
 from src.core.config import settings
 
+@pytest.fixture
+def anyio_backend():
+    return 'asyncio'
+
 @pytest.fixture(scope="class")
 async def async_client(request):
     """Generate an async client for testing with lifespan manager.
