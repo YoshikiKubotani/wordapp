@@ -9,6 +9,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.api.schemas import DummyUser, TokenPayload, User
 from src.core.config import settings
 
+# Create a callable object that will look for and parse the request for the `Authorization` header
+# Note that the `tokenUrl` parameter is only used for the OpenAPI documentation, not for the authentication itself
 reusable_oauth2 = OAuth2PasswordBearer(tokenUrl=f"{settings.API_V1_STR}/login/access-token")
 
 async def get_db_session() -> AsyncGenerator[AsyncSession, None]:
@@ -26,6 +28,9 @@ async def get_current_user(
 ) -> User:
     try:
         print(f"Received a request with authentication header of token {token}.")
+        # Decode the received token and extract the payload.  Note that the payload will not be
+        # correctly retrieved unless the jwt is encrypted with the secret key and algorithm
+        # used during authentication (login)
         payload = jwt.decode(
             token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
         )
