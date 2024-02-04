@@ -2,8 +2,8 @@ from typing import Generic, Type, TypeVar
 
 from pydantic import BaseModel
 
-from new_src.api.dependencies import AsyncSessionDep
-from new_src.db.data_models import (
+from src.api.dependencies import AsyncSessionDep
+from src.db.data_models import (
   Deck,
   Genre,
   Item,

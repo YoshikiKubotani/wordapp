@@ -1,8 +1,8 @@
 import pytest
 from httpx import AsyncClient
 
-from new_src.api.routers.decks import router
-from new_src.core.config import settings
+from src.api.routers.decks import router
+from src.core.config import settings
 
 pytestmark = pytest.mark.anyio
 

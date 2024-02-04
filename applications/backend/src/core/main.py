@@ -7,7 +7,7 @@ from fastapi.routing import APIRoute
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from starlette.middleware.cors import CORSMiddleware
 
-from new_src.api.routers import decks, items, login, tests, users
+from src.api.routers import decks, items, login, tests, users
 
 from .config import settings
 
@@ -25,10 +25,10 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     engine = create_async_engine(settings.SQLALCHEMY_DATABASE_URI.unicode_string())
     # Create a factiry that returns a new AsyncSession instance.
     AsyncSessionFactory = cast(async_sessionmaker[AsyncSession], async_sessionmaker(engine, expire_on_commit=False))
-    
+
     # Yield the app instance.
     yield
-    
+
     # Close the engine instance as a clean-up operation.
     await engine.dispose()
 

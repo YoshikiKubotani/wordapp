@@ -1,14 +1,14 @@
 from sqlalchemy import select
 
-from new_src.api.schemas import ItemSchema
-from new_src.db.data_models import Item
-from new_src.db.repositories.base_repository import AsyncSessionDep, BaseRepository
+from src.api.schemas import ItemSchema
+from src.db.data_models import Item
+from src.db.repositories.base_repository import AsyncSessionDep, BaseRepository
 
 
 class ItemRepository(BaseRepository[Item, ItemSchema]):
   def __init__(self) -> None:
     super().__init__(data_model=Item)
-      
+
   async def read_by_user_id(self, async_session: AsyncSessionDep, user_id: int) -> list[ItemSchema]:
     # This context automatically calls session.close() when the code block is exited.
     async with async_session() as session:

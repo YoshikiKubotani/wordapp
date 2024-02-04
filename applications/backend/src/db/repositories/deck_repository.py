@@ -1,8 +1,8 @@
 from sqlalchemy import select
 
-from new_src.api.schemas import DeckSchema
-from new_src.db.data_models import Deck
-from new_src.db.repositories.base_repository import AsyncSessionDep, BaseRepository
+from src.api.schemas import DeckSchema
+from src.db.data_models import Deck
+from src.db.repositories.base_repository import AsyncSessionDep, BaseRepository
 
 
 class DeckRepository(BaseRepository[Deck, DeckSchema]):
@@ -17,7 +17,7 @@ class DeckRepository(BaseRepository[Deck, DeckSchema]):
       async with session.begin():
         decks = await session.execute(select(self.data_model))
         return decks.scalars().all()
-      
+
   async def read_by_user_id(self, async_session: AsyncSessionDep, user_id: int) -> list[DeckSchema]:
     # This context automatically calls session.close() when the code block is exited.
     async with async_session() as session:

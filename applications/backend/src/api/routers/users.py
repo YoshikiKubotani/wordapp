@@ -2,12 +2,12 @@ from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException
 
-from new_src.api.dependencies import (
+from src.api.dependencies import (
     AsyncSessionDep,
     CurrentUserDep,
     get_current_active_superuser,
 )
-from new_src.api.schemas import CreateUserRequest, UpdateUserRequest, UserResponse
+from src.api.schemas import CreateUserRequest, UpdateUserRequest, UserResponse
 
 router = APIRouter()
 

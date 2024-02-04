@@ -2,8 +2,8 @@ from typing import Any
 
 from fastapi import APIRouter, HTTPException
 
-from new_src.api.dependencies import AsyncSessionDep, CurrentUserDep
-from new_src.api.schemas import CreateItemRequest, ItemResponse, UpdateItemRequest
+from src.api.dependencies import AsyncSessionDep, CurrentUserDep
+from src.api.schemas import CreateItemRequest, ItemResponse, UpdateItemRequest
 
 router = APIRouter()
 

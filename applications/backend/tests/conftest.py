@@ -2,8 +2,8 @@ import pytest
 from httpx import AsyncClient
 from asgi_lifespan import LifespanManager
 
-from new_src.core.main import app
-from new_src.core.config import settings
+from src.core.main import app
+from src.core.config import settings
 
 @pytest.fixture(scope="class")
 async def async_client(request):

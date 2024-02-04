@@ -3,9 +3,9 @@ from datetime import datetime, timedelta, timezone
 from jose import jwt
 from passlib.context import CryptContext
 
-from new_src.api.dependencies import AsyncSessionDep
-from new_src.api.schemas import DummyUser, User
-from new_src.core.config import settings
+from src.api.dependencies import AsyncSessionDep
+from src.api.schemas import DummyUser, User
+from src.core.config import settings
 
 password_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
