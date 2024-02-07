@@ -3,13 +3,13 @@ GUNICORN_TIMEOUT := 6000
 LOGLEVEL := info
 
 
+.PHONY: old-run-backend
+old-run-backend:
+	poetry run gunicorn 'old_src.app:main' -k uvicorn.workers.UvicornWorker -b 0.0.0.0:$(APPLICATION_PORT) -t $(GUNICORN_TIMEOUT) --log-level $(LOGLEVEL)
+
 .PHONY: run-backend
 run-backend:
-	poetry run gunicorn 'src.app:main' -k uvicorn.workers.UvicornWorker -b 0.0.0.0:$(APPLICATION_PORT) -t $(GUNICORN_TIMEOUT) --log-level $(LOGLEVEL)
-
-.PHONY: new-run-backend
-new-run-backend:
-	poetry run gunicorn 'new_src.core.main:app' -k uvicorn.workers.UvicornWorker -b 0.0.0.0:$(APPLICATION_PORT) -t $(GUNICORN_TIMEOUT) --log-level $(LOGLEVEL)
+	poetry run gunicorn 'src.core.main:app' -k uvicorn.workers.UvicornWorker -b 0.0.0.0:$(APPLICATION_PORT) -t $(GUNICORN_TIMEOUT) --log-level $(LOGLEVEL)
 
 .PHONY: black-check
 black-check:
