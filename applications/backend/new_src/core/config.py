@@ -1,8 +1,16 @@
 import secrets
 from typing import Any
 
-from pydantic import AnyHttpUrl, EmailStr, HttpUrl, PostgresDsn, field_validator, ValidationInfo
+from pydantic import (
+    AnyHttpUrl,
+    EmailStr,
+    HttpUrl,
+    PostgresDsn,
+    ValidationInfo,
+    field_validator,
+)
 from pydantic_settings import BaseSettings
+
 
 class Settings(BaseSettings, case_sensitive=True):
     PROJECT_NAME: str = "Word App"
@@ -47,11 +55,11 @@ class Settings(BaseSettings, case_sensitive=True):
         if isinstance(v, str):
             return v
         return PostgresDsn.build(
-            scheme="postgresql+psycopg",
+            scheme="postgresql+asyncpg",
             username=info.data.get("POSTGRES_USER"),
             password=info.data.get("POSTGRES_PASSWORD"),
-            host=info.data.get("POSTGRES_SERVER"),
-            path=f"/{info.data.get('POSTGRES_DB') or ''}",
+            host="postgresql",
+            path=f"{info.data.get('POSTGRES_DB') or ''}",
         )
 
     # SMTP_TLS: bool = True

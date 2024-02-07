@@ -7,7 +7,7 @@ LOGLEVEL := info
 run-backend:
 	poetry run gunicorn 'src.app:main' -k uvicorn.workers.UvicornWorker -b 0.0.0.0:$(APPLICATION_PORT) -t $(GUNICORN_TIMEOUT) --log-level $(LOGLEVEL)
 
-.PHONY: new_run-backend
+.PHONY: new-run-backend
 new-run-backend:
 	poetry run gunicorn 'new_src.core.main:app' -k uvicorn.workers.UvicornWorker -b 0.0.0.0:$(APPLICATION_PORT) -t $(GUNICORN_TIMEOUT) --log-level $(LOGLEVEL)
 

@@ -3,7 +3,7 @@ from typing import Any
 
 from fastapi import APIRouter, HTTPException
 
-from new_src.api.dependencies import CurrentUser # , SessionDep
+from new_src.api.dependencies import AsyncSessionDep, CurrentUserDep
 from new_src.api.schemas import (
     TestCheckedResponse,
     TestItemAfterAttemptRequest,
@@ -17,9 +17,9 @@ router = APIRouter()
 
 
 @router.get("/", response_model=list[TestMetaDataResponse])
-def read_all_tests(
-    # current_user: User = Depends(get_current_user),
-    # session: Session = Depends(get_session),
+async def read_all_tests(
+    current_user: CurrentUserDep,
+    async_session: AsyncSessionDep,
 ) -> Any:
     """Read all the tests attempted by a user."""
     tests = [
@@ -32,9 +32,9 @@ def read_all_tests(
 
 
 @router.post("/", response_model=TestUnsolvedResponse)
-def create_test(
-    # current_user: User = Depends(get_current_user),
-    # session: Session = Depends(get_session),
+async def create_test(
+    current_user: CurrentUserDep,
+    async_session: AsyncSessionDep,
 ) -> Any:
     """Create a new test."""
     return TestUnsolvedResponse(
@@ -64,11 +64,11 @@ def create_test(
 
 
 @router.post("/{test_id}", response_model=TestCheckedResponse)
-def answer_test(
+async def answer_test(
     test_id: int,
     # solved_items: list[TestItemAfterAttemptRequest],
-    # current_user: User = Depends(get_current_user),
-    # session: Session = Depends(get_session),
+    current_user: CurrentUserDep,
+    async_session: AsyncSessionDep,
 ) -> Any:
     """Answer a test."""
     return TestCheckedResponse(
@@ -104,10 +104,10 @@ def answer_test(
 
 
 @router.get("/{test_id}/items", response_model=list[TestItemCheckedResponse])
-def read_test_items(
+async def read_test_items(
     test_id: int,
-    # current_user: User = Depends(get_current_user),
-    # session: Session = Depends(get_session),
+    current_user: CurrentUserDep,
+    async_session: AsyncSessionDep,
 ) -> Any:
     """Get all the items in a test."""
     return [

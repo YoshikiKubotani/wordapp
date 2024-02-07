@@ -2,16 +2,16 @@ from typing import Any
 
 from fastapi import APIRouter, HTTPException
 
-from new_src.api.dependencies import CurrentUser #, SessionDep
+from new_src.api.dependencies import AsyncSessionDep, CurrentUserDep
 from new_src.api.schemas import CreateItemRequest, ItemResponse, UpdateItemRequest
 
 router = APIRouter()
 
 
 @router.get("/", response_model=list[ItemResponse])
-def search_items(
-    # current_user: User = Depends(get_current_user),
-    # session: Session = Depends(get_session),
+async def search_items(
+    current_user: CurrentUserDep,
+    async_session: AsyncSessionDep,
 ) -> Any:
     """Search for items."""
     items = [ItemResponse(
@@ -24,10 +24,10 @@ def search_items(
 
 
 @router.post("/", response_model=ItemResponse)
-def create_item(
+async def create_item(
     # item: CreateItemRequest,
-    # current_user: User = Depends(get_current_user),
-    # session: Session = Depends(get_session),
+    current_user: CurrentUserDep,
+    async_session: AsyncSessionDep,
 ) -> Any:
     """Create a new item."""
     return ItemResponse(
@@ -39,10 +39,10 @@ def create_item(
 
 
 @router.get("/{item_id}", response_model=ItemResponse)
-def read_item(
+async def read_item(
     item_id: int,
-    # current_user: User = Depends(get_current_user),
-    # session: Session = Depends(get_session),
+    current_user: CurrentUserDep,
+    async_session: AsyncSessionDep,
 ) -> Any:
     """Get the details of an item."""
     return ItemResponse(
@@ -54,11 +54,11 @@ def read_item(
 
 
 @router.put("/{item_id}", response_model=ItemResponse)
-def update_item(
+async def update_item(
     item_id: int,
     # item: UpdateItemRequest,
-    # current_user: User = Depends(get_current_user),
-    # session: Session = Depends(get_session),
+    current_user: CurrentUserDep,
+    async_session: AsyncSessionDep,
 ) -> Any:
     """Update the details of an item."""
     return ItemResponse(
@@ -70,10 +70,10 @@ def update_item(
 
 
 @router.delete("/{item_id}")
-def delete_item(
+async def delete_item(
     item_id: int,
-    # current_user: User = Depends(get_current_user),
-    # session: Session = Depends(get_session),
+    current_user: CurrentUserDep,
+    async_session: AsyncSessionDep,
 ) -> bool:
     """Delete an item."""
     return True
