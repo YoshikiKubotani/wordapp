@@ -32,5 +32,3 @@ class TestUnsolvedResponse(TestMetaDataResponse):
 
 class TestCheckedResponse(TestMetaDataResponse):
     test_items: list[TestItemCheckedResponse]
-
-

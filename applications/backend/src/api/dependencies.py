@@ -1,4 +1,5 @@
 from typing import Annotated, AsyncGenerator
+from datetime import datetime, timezone
 
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
@@ -7,8 +8,8 @@ from pydantic import ValidationError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.api.schemas import TokenPayload
-from src.domain.models import User
 from src.core.config import settings
+from src.domain.models import User
 
 # Create a callable object that will look for and parse the request for the `Authorization` header
 # Note that the `tokenUrl` parameter is only used for the OpenAPI documentation, not for the authentication itself

@@ -1,5 +1,6 @@
 from pydantic import BaseModel, PastDatetime
 
+
 class Test(BaseModel):
     _id: int
     user_id: int
