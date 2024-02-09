@@ -4,7 +4,7 @@ from jose import jwt
 from passlib.context import CryptContext
 
 from src.api.dependencies import AsyncSessionDep
-from src.api.schemas import DummyUser, User
+from src.domain.models import User
 from src.core.config import settings
 
 password_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -21,18 +21,20 @@ async def authenticate_user(
 ) -> User | None:
     # user_dict = session.get(User, user_name)
     # user = UserInDB(**user_dict)
-    user = DummyUser(
+    user = User(
         user_id=1,
         user_name=user_name,
         email="dummy@gmail.com",
+        password="$2y$10$p8UIk5H4aim92irVURglF.M4A7kkCEELzZV6I2xyEN9GRIKVu5PMy",
         full_name="dummy user",
         is_active=True,
         is_superuser=True,
-        hashed_password="$2y$10$p8UIk5H4aim92irVURglF.M4A7kkCEELzZV6I2xyEN9GRIKVu5PMy",
+        created_at=datetime.now(timezone.utc),
+        updated_at=datetime.now(timezone.utc),
     )
     if user is None:
         return None
-    if not verify_password(password, user.hashed_password):
+    if not verify_password(password, user.password):
         return None
     return user
 

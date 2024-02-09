@@ -52,10 +52,12 @@ async def get_current_user(
         user_id=1,
         user_name=token_data.sub,
         email="dummy@gmail.com",
+        password="$2b$12$gjLw4vccsNb41k/eHJeGtemKhjzw3aKxW6ANle2ZXzJTfhiRyvgNy",
         full_name="dummy user",
         is_active=True,
         is_superuser=True,
-        password="$2b$12$gjLw4vccsNb41k/eHJeGtemKhjzw3aKxW6ANle2ZXzJTfhiRyvgNy",
+        created_at=datetime.now(timezone.utc),
+        updated_at=datetime.now(timezone.utc),
     )
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
