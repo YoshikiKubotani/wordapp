@@ -1,16 +1,16 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.api.schemas import DeckSchema
-from src.db.data_models import Deck
+from src.domain.models import Deck
+from src.db.data_models import SQLAlchemyDeck
 from src.db.repositories.base_repository import BaseRepository
 
 
-class DeckRepository(BaseRepository[Deck, DeckSchema]):
+class DeckRepository(BaseRepository[SQLAlchemyDeck, Deck]):
     def __init__(self) -> None:
-        super().__init__(data_model=Deck)
+        super().__init__(data_model=SQLAlchemyDeck)
 
-    async def read_all(self, async_session: AsyncSession) -> list[DeckSchema]:
+    async def read_all(self, async_session: AsyncSession) -> list[Deck]:
         # This context automatically calls session.close() when the code block is exited.
         async with async_session() as session:
             # This context automatically calls session.commit() if no exceptions are raised.
@@ -21,7 +21,7 @@ class DeckRepository(BaseRepository[Deck, DeckSchema]):
 
     async def read_by_user_id(
         self, async_session: AsyncSession, user_id: int
-    ) -> list[DeckSchema]:
+    ) -> list[Deck]:
         # This context automatically calls session.close() when the code block is exited.
         async with async_session() as session:
             # This context automatically calls session.commit() if no exceptions are raised.

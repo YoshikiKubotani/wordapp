@@ -4,17 +4,17 @@ from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.db.data_models import (
-    Deck,
-    Genre,
-    Item,
-    Test,
-    TestItem,
-    User,
-    UserLoginHistory,
+    SQLAlchemyDeck,
+    SQLAlchemyGenre,
+    SQLAlchemyItem,
+    SQLAlchemyTest,
+    SQLAlchemyTestItem,
+    SQLAlchemyUser,
+    SQLAlchemyUserLoginHistory,
 )
 
 DataModelType = TypeVar(
-    "DataModelType", User, Item, Genre, Deck, Test, TestItem, UserLoginHistory
+    "DataModelType", SQLAlchemyUser, SQLAlchemyUserLoginHistory, SQLAlchemyDeck, SQLAlchemyGenre, SQLAlchemyItem, SQLAlchemyTest, SQLAlchemyTestItem
 )
 DomainModelType = TypeVar("DomainModelType", BaseModel)
 

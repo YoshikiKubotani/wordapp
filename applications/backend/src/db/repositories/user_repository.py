@@ -1,18 +1,18 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.api.schemas import UserLoginHistorySchema, UserSchema
-from src.db.data_models import User, UserLoginHistory
+from src.domain.models import UserLoginHistory, User
+from src.db.data_models import SQLAlchemyUser, SQLAlchemyUserLoginHistory
 from src.db.repositories.base_repository import BaseRepository
 
 
-class UserRepository(BaseRepository[User, UserSchema]):
+class UserRepository(BaseRepository[SQLAlchemyUser, User]):
     def __init__(self) -> None:
-        super().__init__(data_model=User)
+        super().__init__(data_model=SQLAlchemyUser)
 
     async def read_by_username(
         self, async_session: AsyncSession, user_name: str
-    ) -> UserSchema | None:
+    ) -> User | None:
         # This context automatically calls session.close() when the code block is exited.
         async with async_session() as session:
             # This context automatically calls session.commit() if no exceptions are raised.
@@ -27,14 +27,14 @@ class UserRepository(BaseRepository[User, UserSchema]):
 
 
 class UserLoginHistoryRepository(
-    BaseRepository[UserLoginHistory, UserLoginHistorySchema]
+    BaseRepository[SQLAlchemyUserLoginHistory, UserLoginHistory]
 ):
     def __init__(self) -> None:
-        super().__init__(data_model=UserLoginHistory)
+        super().__init__(data_model=SQLAlchemyUserLoginHistory)
 
     async def read_by_user_id(
         self, async_session: AsyncSession, user_id: int
-    ) -> list[UserLoginHistorySchema]:
+    ) -> list[UserLoginHistory]:
         # This context automatically calls session.close() when the code block is exited.
         async with async_session() as session:
             # This context automatically calls session.commit() if no exceptions are raised.

@@ -1,18 +1,18 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.api.schemas import TestSchema
-from src.db.data_models import Test
+from src.domain.models import Test
+from src.db.data_models import SQLAlchemyTest
 from src.db.repositories.base_repository import BaseRepository
 
 
-class TestRepository(BaseRepository[Test, TestSchema]):
+class TestRepository(BaseRepository[SQLAlchemyTest, Test]):
     def __init__(self) -> None:
-        super().__init__(data_model=Test)
+        super().__init__(data_model=SQLAlchemyTest)
 
     async def read_by_user_id(
         self, async_session: AsyncSession, user_id: int
-    ) -> list[TestSchema]:
+    ) -> list[Test]:
         # This context automatically calls session.close() when the code block is exited.
         async with async_session() as session:
             # This context automatically calls session.commit() if no exceptions are raised.
@@ -25,7 +25,7 @@ class TestRepository(BaseRepository[Test, TestSchema]):
 
     async def read_by_deck_id(
         self, async_session: AsyncSession, deck_id: int
-    ) -> list[TestSchema]:
+    ) -> list[Test]:
         # This context automatically calls session.close() when the code block is exited.
         async with async_session() as session:
             # This context automatically calls session.commit() if no exceptions are raised.
