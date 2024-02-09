@@ -6,7 +6,8 @@ from jose import jwt
 from pydantic import ValidationError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.api.schemas import DummyUser, TokenPayload, User
+from src.api.schemas import TokenPayload
+from src.domain.models import User
 from src.core.config import settings
 
 # Create a callable object that will look for and parse the request for the `Authorization` header
@@ -47,14 +48,14 @@ async def get_current_user(
             headers={"WWW-Authenticate": "Bearer"},
         )
     # user = session.get(User, token_data.sub)
-    user = DummyUser(
+    user = User(
         user_id=1,
         user_name=token_data.sub,
         email="dummy@gmail.com",
         full_name="dummy user",
         is_active=True,
         is_superuser=True,
-        hashed_password="$2b$12$gjLw4vccsNb41k/eHJeGtemKhjzw3aKxW6ANle2ZXzJTfhiRyvgNy",
+        password="$2b$12$gjLw4vccsNb41k/eHJeGtemKhjzw3aKxW6ANle2ZXzJTfhiRyvgNy",
     )
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")

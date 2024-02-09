@@ -15,9 +15,7 @@ from .tests_schema import (
 )
 from .users_schema import (
     CreateUserRequest,
-    DummyUser,
     UpdateUserRequest,
-    User,
     UserResponse,
 )
 
@@ -32,8 +30,6 @@ __all__ = [
     "CreateUserRequest",
     "UpdateUserRequest",
     "UserResponse",
-    "User",
-    "DummyUser",
     "TestItemAfterAttemptRequest",
     "TestItemBeforeAttemptResponse",
     "TestItemCheckedResponse",
