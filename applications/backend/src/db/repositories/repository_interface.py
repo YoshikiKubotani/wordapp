@@ -9,7 +9,7 @@ DomainModelType = TypeVar("DomainModelType", BaseModel)
 AsyncSessionType = TypeVar("AsyncSessionType", AsyncSession)
 
 
-class IRepository(ABC, Generic[AsyncSessionType]):
+class IRepository(ABC, Generic[AsyncSessionType, DomainModelType]):
     @abstractmethod
     async def create(
         self, async_session: AsyncSessionType, domain_entity: DomainModelType

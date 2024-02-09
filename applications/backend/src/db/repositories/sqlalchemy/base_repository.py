@@ -28,7 +28,7 @@ DomainModelType = TypeVar("DomainModelType", BaseModel)
 
 
 class BaseRepository(
-    Generic[DataModelType, DomainModelType], IRepository[AsyncSession]
+    Generic[DataModelType, DomainModelType], IRepository[AsyncSession, DomainModelType]
 ):
     def __init__(self, data_model: Type[DataModelType]) -> None:
         self.data_model = data_model
