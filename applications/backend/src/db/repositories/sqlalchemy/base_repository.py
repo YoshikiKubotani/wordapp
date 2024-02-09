@@ -12,14 +12,24 @@ from src.db.data_models import (
     SQLAlchemyUser,
     SQLAlchemyUserLoginHistory,
 )
+from src.db.repositories.repository_interface import IRepository
 
 DataModelType = TypeVar(
-    "DataModelType", SQLAlchemyUser, SQLAlchemyUserLoginHistory, SQLAlchemyDeck, SQLAlchemyGenre, SQLAlchemyItem, SQLAlchemyTest, SQLAlchemyTestItem
+    "DataModelType",
+    SQLAlchemyUser,
+    SQLAlchemyUserLoginHistory,
+    SQLAlchemyDeck,
+    SQLAlchemyGenre,
+    SQLAlchemyItem,
+    SQLAlchemyTest,
+    SQLAlchemyTestItem,
 )
 DomainModelType = TypeVar("DomainModelType", BaseModel)
 
 
-class BaseRepository(Generic[DataModelType, DomainModelType]):
+class BaseRepository(
+    Generic[DataModelType, DomainModelType], IRepository[AsyncSession]
+):
     def __init__(self, data_model: Type[DataModelType]) -> None:
         self.data_model = data_model
 

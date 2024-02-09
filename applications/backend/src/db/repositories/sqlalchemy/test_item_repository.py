@@ -1,9 +1,10 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.domain.models import TestItem
 from src.db.data_models import SQLAlchemyTestItem
-from src.db.repositories.base_repository import BaseRepository
+from src.domain.models import TestItem
+
+from .base_repository import BaseRepository
 
 
 class TestItemRepository(BaseRepository[SQLAlchemyTestItem, TestItem]):

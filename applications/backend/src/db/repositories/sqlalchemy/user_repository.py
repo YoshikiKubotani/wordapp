@@ -1,33 +1,47 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.domain.models import Deck
-from src.db.data_models import SQLAlchemyDeck
-from src.db.repositories.base_repository import BaseRepository
+from src.db.data_models import SQLAlchemyUser, SQLAlchemyUserLoginHistory
+from src.domain.models import User, UserLoginHistory
+
+from .base_repository import BaseRepository
 
 
-class DeckRepository(BaseRepository[SQLAlchemyDeck, Deck]):
+class UserRepository(BaseRepository[SQLAlchemyUser, User]):
     def __init__(self) -> None:
-        super().__init__(data_model=SQLAlchemyDeck)
+        super().__init__(data_model=SQLAlchemyUser)
 
-    async def read_all(self, async_session: AsyncSession) -> list[Deck]:
+    async def read_by_username(
+        self, async_session: AsyncSession, user_name: str
+    ) -> User | None:
         # This context automatically calls session.close() when the code block is exited.
         async with async_session() as session:
             # This context automatically calls session.commit() if no exceptions are raised.
             # If an exception is raised, it automatically calls session.rollback().
             async with session.begin():
-                decks = await session.execute(select(self.data_model))
-                return decks.scalars().all()
+                user = await session.execute(
+                    select(self.data_model).where(
+                        self.data_model.user_name == user_name
+                    )
+                )
+                return user.scalars().one_or_none()
+
+
+class UserLoginHistoryRepository(
+    BaseRepository[SQLAlchemyUserLoginHistory, UserLoginHistory]
+):
+    def __init__(self) -> None:
+        super().__init__(data_model=SQLAlchemyUserLoginHistory)
 
     async def read_by_user_id(
         self, async_session: AsyncSession, user_id: int
-    ) -> list[Deck]:
+    ) -> list[UserLoginHistory]:
         # This context automatically calls session.close() when the code block is exited.
         async with async_session() as session:
             # This context automatically calls session.commit() if no exceptions are raised.
             # If an exception is raised, it automatically calls session.rollback().
             async with session.begin():
-                decks = await session.execute(
+                user_login_histories = await session.execute(
                     select(self.data_model).where(self.data_model.user_id == user_id)
                 )
-                return decks.scalars().all()
+                return user_login_histories.scalars().all()
