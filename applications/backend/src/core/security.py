@@ -4,8 +4,8 @@ from jose import jwt
 from passlib.context import CryptContext
 
 from src.api.dependencies import AsyncSessionDep
-from src.domain.models import User
 from src.core.config import settings
+from src.domain.models import User
 
 password_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
