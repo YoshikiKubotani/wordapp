@@ -24,7 +24,7 @@ DataModelType = TypeVar(
     SQLAlchemyTest,
     SQLAlchemyTestItem,
 )
-DomainModelType = TypeVar("DomainModelType", BaseModel)
+DomainModelType = TypeVar("DomainModelType", bound=BaseModel)
 
 
 class BaseRepository(
