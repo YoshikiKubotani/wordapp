@@ -1,7 +1,7 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.db.data_models import SQLAlchemyItem
+from db.sqlalchemy_data_models import SQLAlchemyItem
 from src.domain.models import Item
 
 from .base_repository import BaseRepository
