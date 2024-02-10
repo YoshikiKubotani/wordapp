@@ -1,12 +1,15 @@
 import datetime
 
-from sqlalchemy import Column, ForeignKey, Table
+from sqlalchemy import JSON, Column, ForeignKey, Table
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.ext.asyncio import AsyncAttrs
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 
 class Base(DeclarativeBase, AsyncAttrs):
-    pass
+    type_annotation_map = {
+        list[str]: JSON().with_variant(JSONB(), "postgresql"),
+    }
 
 
 item_genre_mapper_table = Table(
@@ -131,7 +134,7 @@ class SQLAlchemyTestItem(Base):
     test_id: Mapped[int] = mapped_column(ForeignKey("tests.test_id"))
     item_id: Mapped[int] = mapped_column(ForeignKey("items.item_id"))
     question_number: Mapped[int]
-    choice_item_ids: Mapped[list[int]]
+    choice_item_ids: Mapped[list[str]]
     correct_answer: Mapped[int]
     user_answer: Mapped[int]
     answer_time: Mapped[int]
