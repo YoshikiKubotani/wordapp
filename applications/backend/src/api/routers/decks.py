@@ -9,7 +9,6 @@ from src.api.schemas import (
     DeckResponse,
     ItemResponse,
 )
-
 from src.db.repositories.sqlalchemy.deck_repository import DeckRepository
 from src.domain.models import Deck
 

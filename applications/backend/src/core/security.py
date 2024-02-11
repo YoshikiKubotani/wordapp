@@ -5,8 +5,8 @@ from passlib.context import CryptContext
 
 from src.api.dependencies import AsyncSessionDep
 from src.core.config import settings
-from src.domain.models import User
 from src.db.repositories.sqlalchemy.user_repository import UserRepository
+from src.domain.models import User
 
 password_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -14,8 +14,10 @@ password_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     return password_context.verify(plain_password, hashed_password)
 
+
 def get_password_hash(password: str) -> str:
     return password_context.hash(password)
+
 
 async def authenticate_user(
     async_session: AsyncSessionDep,

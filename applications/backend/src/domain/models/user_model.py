@@ -1,6 +1,8 @@
+from datetime import datetime
+
 from pydantic import BaseModel, PastDatetime
 from pydantic.networks import IPvAnyAddress
-from datetime import datetime
+
 
 class User(BaseModel):
     _id: int

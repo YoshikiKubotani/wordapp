@@ -1,21 +1,21 @@
 from collections.abc import AsyncIterator
 from typing import Any
-from sqlalchemy.ext.asyncio import AsyncSession
 
 import pytest
 from asgi_lifespan import LifespanManager
 from httpx import AsyncClient
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.core.config import settings
 from src.core.main import app
 from src.db.sqlalchemy_data_models import Base
-
-from tests.src.utils import random_email, create_random_test_user, create_test_superuser
+from tests.src.utils import create_random_test_user, create_test_superuser, random_email
 
 server_url = f"http://localhost:8000{settings.API_V1_STR}/"
 
 settings.POSTGRES_SCHEMA = "test"
 settings.TEST_USER_EMAIL = random_email()
+
 
 @pytest.fixture(scope="session")
 def anyio_backend() -> None:
@@ -47,7 +47,9 @@ async def async_test_client(lifespan_manager) -> AsyncClient:
     Yields:
         AsyncClient: An asynchronous test client.
     """
-    async with AsyncClient(app=lifespan_manager.app, base_url=server_url) as async_client:
+    async with AsyncClient(
+        app=lifespan_manager.app, base_url=server_url
+    ) as async_client:
         yield async_client
 
 
@@ -76,12 +78,17 @@ async def normal_async_test_client(async_test_client) -> AsyncIterator[AsyncClie
     # This context automatically calls async_session.close() when the code block is exited.
     async with AsyncSessionFactory() as async_session:
         # Create a normal user for testing if it does not exist.
-        normal_test_user = await create_random_test_user(async_session, settings.TEST_USER_EMAIL)
+        normal_test_user = await create_random_test_user(
+            async_session, settings.TEST_USER_EMAIL
+        )
 
     # Log in as the normal user.
     response = await async_test_client.post(
         "/login/access-token",
-        data={"username": normal_test_user.user_name, "password": normal_test_user.password},
+        data={
+            "username": normal_test_user.user_name,
+            "password": normal_test_user.password,
+        },
     )
 
     token = response.json()["access_token"]
@@ -125,7 +132,10 @@ async def admin_async_test_client(async_test_client) -> AsyncIterator[AsyncClien
     # Log in as the admin user.
     response = await async_test_client.post(
         "/login/access-token",
-        data={"username": settings.FIRST_SUPERUSER, "password": settings.FIRST_SUPERUSER_PASSWORD},
+        data={
+            "username": settings.FIRST_SUPERUSER,
+            "password": settings.FIRST_SUPERUSER_PASSWORD,
+        },
     )
     token = response.json()["access_token"]
     token_type = response.json()["token_type"]
@@ -140,7 +150,9 @@ async def admin_async_test_client(async_test_client) -> AsyncIterator[AsyncClien
 
 
 @pytest.fixture(scope="function")
-async def async_db_session(lifespan_manager: LifespanManager) -> AsyncIterator[AsyncSession]:
+async def async_db_session(
+    lifespan_manager: LifespanManager,
+) -> AsyncIterator[AsyncSession]:
     """Provide an asynchronous database session.
 
     This fixture is used for testing which does not require an asynchronous test client.

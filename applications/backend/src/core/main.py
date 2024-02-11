@@ -4,7 +4,12 @@ from typing import cast
 
 from fastapi import APIRouter, FastAPI
 from fastapi.routing import APIRoute
-from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker, create_async_engine
+from sqlalchemy.ext.asyncio import (
+    AsyncEngine,
+    AsyncSession,
+    async_sessionmaker,
+    create_async_engine,
+)
 from starlette.middleware.cors import CORSMiddleware
 
 from src.api.routers import decks, items, login, tests, users
@@ -19,6 +24,7 @@ def custom_generate_unique_id(route: APIRoute):
 
 AsyncSessionFactory: async_sessionmaker[AsyncSession] | None = None
 engine: AsyncEngine | None = None
+
 
 # This is the lifespan context manager, which is called once before/after the server starts/stops.
 @asynccontextmanager

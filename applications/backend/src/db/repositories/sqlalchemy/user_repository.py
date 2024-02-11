@@ -1,7 +1,11 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.db.sqlalchemy_data_models import SQLAlchemyUser, SQLAlchemyUserLoginHistory, orm_object_to_dict
+from src.db.sqlalchemy_data_models import (
+    SQLAlchemyUser,
+    SQLAlchemyUserLoginHistory,
+    orm_object_to_dict,
+)
 from src.domain.models import User, UserLoginHistory
 
 from .base_repository import BaseRepository
@@ -18,9 +22,7 @@ class UserRepository(BaseRepository[SQLAlchemyUser, User]):
         # If an exception is raised, it automatically calls async_session.rollback().
         async with async_session.begin():
             results = await async_session.execute(
-                select(self.data_model).where(
-                    self.data_model.user_name == user_name
-                )
+                select(self.data_model).where(self.data_model.user_name == user_name)
             )
             user = results.scalars().one_or_none()
         if user is not None:
@@ -34,9 +36,7 @@ class UserRepository(BaseRepository[SQLAlchemyUser, User]):
         # If an exception is raised, it automatically calls async_session.rollback().
         async with async_session.begin():
             results = await async_session.execute(
-                select(self.data_model).where(
-                    self.data_model.email == email
-                )
+                select(self.data_model).where(self.data_model.email == email)
             )
             user = results.scalars().one_or_none()
         if user is not None:
@@ -48,7 +48,9 @@ class UserLoginHistoryRepository(
     BaseRepository[SQLAlchemyUserLoginHistory, UserLoginHistory]
 ):
     def __init__(self) -> None:
-        super().__init__(data_model=SQLAlchemyUserLoginHistory, domain_model=UserLoginHistory)
+        super().__init__(
+            data_model=SQLAlchemyUserLoginHistory, domain_model=UserLoginHistory
+        )
 
     async def read_by_user_id(
         self, async_session: AsyncSession, user_id: int
