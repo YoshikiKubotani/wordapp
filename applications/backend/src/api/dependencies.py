@@ -21,8 +21,9 @@ reusable_oauth2 = OAuth2PasswordBearer(
 async def get_db_session() -> AsyncGenerator[AsyncSession, None]:
     from src.core.main import AsyncSessionFactory
 
-    async with AsyncSessionFactory() as session:
-        yield session
+    # This context automatically calls async_session.close() when the code block is exited.
+    async with AsyncSessionFactory() as async_session:
+        yield async_session
 
 
 AsyncSessionDep = Annotated[AsyncSession, Depends(get_db_session)]
