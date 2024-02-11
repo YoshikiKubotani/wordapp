@@ -9,7 +9,7 @@ from .base_repository import BaseRepository
 
 class DeckRepository(BaseRepository[SQLAlchemyDeck, Deck]):
     def __init__(self) -> None:
-        super().__init__(data_model=SQLAlchemyDeck)
+        super().__init__(data_model=SQLAlchemyDeck, domain_model=Deck)
 
     async def read_all(self, async_session: AsyncSession) -> list[Deck]:
         # This context automatically calls async_session.close() when the code block is exited.

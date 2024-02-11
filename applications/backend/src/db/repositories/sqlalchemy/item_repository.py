@@ -9,7 +9,7 @@ from .base_repository import BaseRepository
 
 class ItemRepository(BaseRepository[SQLAlchemyItem, Item]):
     def __init__(self) -> None:
-        super().__init__(data_model=SQLAlchemyItem)
+        super().__init__(data_model=SQLAlchemyItem, domain_model=Item)
 
     async def read_by_user_id(
         self, async_session: AsyncSession, user_id: int

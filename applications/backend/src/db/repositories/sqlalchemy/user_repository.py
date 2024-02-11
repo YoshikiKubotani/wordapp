@@ -48,7 +48,7 @@ class UserLoginHistoryRepository(
     BaseRepository[SQLAlchemyUserLoginHistory, UserLoginHistory]
 ):
     def __init__(self) -> None:
-        super().__init__(data_model=SQLAlchemyUserLoginHistory)
+        super().__init__(data_model=SQLAlchemyUserLoginHistory, domain_model=UserLoginHistory)
 
     async def read_by_user_id(
         self, async_session: AsyncSession, user_id: int
