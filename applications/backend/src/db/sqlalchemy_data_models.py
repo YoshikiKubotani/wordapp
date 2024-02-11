@@ -7,7 +7,14 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 from src.core.config import settings
 
+from sqlalchemy.inspection import inspect
+
+def orm_object_to_dict(model):
+    return {c.key: getattr(model, c.key)
+            for c in inspect(model).mapper.column_attrs}
+
 metadata_obj = MetaData(schema=settings.POSTGRES_SCHEMA)
+
 
 class Base(DeclarativeBase, AsyncAttrs):
     type_annotation_map = {
