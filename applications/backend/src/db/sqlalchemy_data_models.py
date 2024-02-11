@@ -1,3 +1,4 @@
+from typing import Optional
 import datetime
 
 from sqlalchemy import JSON, Column, ForeignKey, Table, MetaData
@@ -45,7 +46,7 @@ class SQLAlchemyUser(Base):
     user_name: Mapped[str] = mapped_column(unique=True, index=True)
     email: Mapped[str] = mapped_column(unique=True, index=True)
     password: Mapped[str]
-    full_name: Mapped[str]
+    full_name: Mapped[Optional[str]]
     is_active: Mapped[bool] = mapped_column(default=True)
     is_superuser: Mapped[bool] = mapped_column(default=False)
     created_at: Mapped[datetime.datetime] = mapped_column(default=datetime.datetime.now)
