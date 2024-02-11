@@ -28,10 +28,11 @@ DomainModelType = TypeVar("DomainModelType", bound=BaseModel)
 
 
 class BaseRepository(
-    Generic[DataModelType, DomainModelType], IRepository[AsyncSession, DomainModelType]
+   IRepository[AsyncSession, DomainModelType], Generic[DataModelType, DomainModelType]
 ):
-    def __init__(self, data_model: Type[DataModelType]) -> None:
+    def __init__(self, data_model: Type[DataModelType], domain_model: Type[DomainModelType]) -> None:
         self.data_model = data_model
+        self.domain_model = domain_model
 
     async def create(
         self, async_session: AsyncSession, domain_entity: DomainModelType
@@ -45,7 +46,7 @@ class BaseRepository(
             async_session.add(data_entity)
             await async_session.flush()
             await async_session.refresh(data_entity)
-        created_domain_entity = DomainModelType.model_validate(data_entity)
+        created_domain_entity = self.domain_model.model_validate(data_entity)
         return created_domain_entity
 
     async def read(self, async_session: AsyncSession, id: int) -> DomainModelType:
