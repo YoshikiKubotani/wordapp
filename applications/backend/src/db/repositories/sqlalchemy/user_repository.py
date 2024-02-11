@@ -1,7 +1,7 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.db.sqlalchemy_data_models import SQLAlchemyUser, SQLAlchemyUserLoginHistory
+from src.db.sqlalchemy_data_models import SQLAlchemyUser, SQLAlchemyUserLoginHistory, orm_object_to_dict
 from src.domain.models import User, UserLoginHistory
 
 from .base_repository import BaseRepository
@@ -14,23 +14,24 @@ class UserRepository(BaseRepository[SQLAlchemyUser, User]):
     async def read_by_username(
         self, async_session: AsyncSession, user_name: str
     ) -> User | None:
-        # This context automatically calls session.close() when the code block is exited.
-        async with async_session() as session:
-            # This context automatically calls session.commit() if no exceptions are raised.
-            # If an exception is raised, it automatically calls session.rollback().
-            async with session.begin():
-                user = await session.execute(
-                    select(self.data_model).where(
-                        self.data_model.user_name == user_name
-                    )
+        # This context automatically calls async_session.commit() if no exceptions are raised.
+        # If an exception is raised, it automatically calls async_session.rollback().
+        async with async_session.begin():
+            results = await async_session.execute(
+                select(self.data_model).where(
+                    self.data_model.user_name == user_name
                 )
-                return user.scalars().one_or_none()
+            )
+            user = results.scalars().one_or_none()
+        if user is not None:
+            user = User.model_validate(orm_object_to_dict(user))
+        return user
 
     async def read_by_email(
         self, async_session: AsyncSession, email: str
     ) -> User | None:
-        # This context automatically calls session.commit() if no exceptions are raised.
-        # If an exception is raised, it automatically calls session.rollback().
+        # This context automatically calls async_session.commit() if no exceptions are raised.
+        # If an exception is raised, it automatically calls async_session.rollback().
         async with async_session.begin():
             results = await async_session.execute(
                 select(self.data_model).where(
@@ -39,17 +40,7 @@ class UserRepository(BaseRepository[SQLAlchemyUser, User]):
             )
             user = results.scalars().one_or_none()
         if user is not None:
-            user = User(
-                _id=user.user_id,
-                user_name=user.user_name,
-                email=user.email,
-                password=user.password,
-                full_name=user.full_name,
-                is_active=user.is_active,
-                is_superuser=user.is_superuser,
-                created_at=user.created_at,
-                updated_at=user.updated_at
-            )
+            user = User.model_validate(orm_object_to_dict(user))
         return user
 
 
