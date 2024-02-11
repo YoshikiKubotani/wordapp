@@ -47,6 +47,7 @@ class Settings(BaseSettings, case_sensitive=True):
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str
     POSTGRES_DB: str
+    POSTGRES_SCHEMA: str = "public"
 
     # TODO: 設定対象ごとに別のSettingクラスを作る場合、ここはmodel_validatorにする
     SQLALCHEMY_DATABASE_URI: PostgresDsn | None = None
