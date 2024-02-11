@@ -8,6 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_asyn
 from starlette.middleware.cors import CORSMiddleware
 
 from src.api.routers import decks, items, login, tests, users
+from src.db.sqlalchemy_data_models import Base
 
 from .config import settings
 
@@ -32,6 +33,11 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         async_sessionmaker[AsyncSession],
         async_sessionmaker(engine, expire_on_commit=False),
     )
+
+    # Create all tables defined as data models under `src/db` if they do not exist.
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+
     # Yield the app instance.
     yield
 
