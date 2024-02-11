@@ -1,17 +1,17 @@
 from pydantic import BaseModel, PastDatetime
 from pydantic.networks import IPvAnyAddress
-
+from datetime import datetime
 
 class User(BaseModel):
     _id: int
     user_name: str
     email: str
     password: str
-    full_name: str
-    is_active: bool
-    is_superuser: bool
-    created_at: PastDatetime
-    updated_at: PastDatetime
+    full_name: str | None = None
+    is_active: bool = True
+    is_superuser: bool = False
+    created_at: PastDatetime = datetime.now()
+    updated_at: PastDatetime = datetime.now()
 
 
 class UserLoginHistory(BaseModel):

@@ -40,7 +40,7 @@ gunicorn = "^21.2.0"
 uvicorn = "^0.23.2"
 orjson = "^3.9.5"
 psycopg2-binary = "^2.9.7"
-pydantic = "^2.3.0"
+pydantic = {extras = ["email"], version = "^2.6.1"}
 networkx = "^3.1"
 websockets = "^11.0.3"
 redis = "^5.0.0"
