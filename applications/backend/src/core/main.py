@@ -4,7 +4,7 @@ from typing import cast
 
 from fastapi import APIRouter, FastAPI
 from fastapi.routing import APIRoute
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker, create_async_engine
 from starlette.middleware.cors import CORSMiddleware
 
 from src.api.routers import decks, items, login, tests, users
@@ -18,13 +18,14 @@ def custom_generate_unique_id(route: APIRoute):
 
 
 AsyncSessionFactory: async_sessionmaker[AsyncSession] | None = None
-
+engine: AsyncEngine | None = None
 
 # This is the lifespan context manager, which is called once before/after the server starts/stops.
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     print("Running startup lifespan events ...")
 
+    global engine
     global AsyncSessionFactory
     # Create a new async engine instance, which offers a session environment to manage a database.
     engine = create_async_engine(settings.SQLALCHEMY_DATABASE_URI.unicode_string())
@@ -39,7 +40,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         await conn.run_sync(Base.metadata.create_all)
 
     # Yield the app instance.
-    yield {"engine": engine}
+    yield
 
     print("Running shutdown lifespan events ...")
     # Close the engine instance as a clean-up operation.

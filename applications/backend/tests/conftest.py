@@ -9,15 +9,13 @@ from httpx import AsyncClient
 from src.core.config import settings
 from src.core.main import app
 from src.db.sqlalchemy_data_models import Base
-from src.scripts.init_db import create_first_superuser
 
-from tests.src.utils import random_email, create_random_test_user
+from tests.src.utils import random_email, create_random_test_user, create_test_superuser
 
 server_url = f"http://localhost:8000{settings.API_V1_STR}/"
 
 settings.POSTGRES_SCHEMA = "test"
 settings.TEST_USER_EMAIL = random_email()
-
 # def setup_class_attributes(target_cls: Any, config: dict[str, str]) -> set[str]:
 #     found_attributes: set = set()
 #     if hasattr(target_cls, "fixture_overridden_attribute_names"):
@@ -27,14 +25,6 @@ settings.TEST_USER_EMAIL = random_email()
 #                 found_attributes.add(attribute)
 #     unfound_attributes = set(config.keys()) - found_attributes
 #     return unfound_attributes
-
-from starlette.datastructures import State
-from typing import TypedDict
-
-class Resource(TypedDict):
-    """Define a resource type for the `resources` fixture."""
-    async_client: AsyncClient
-    app_state: State
 
 @pytest.fixture(scope="session")
 def anyio_backend() -> None:
@@ -60,19 +50,18 @@ async def lifespan_manager() -> AsyncIterator[LifespanManager]:
 
 
 @pytest.fixture(scope="class")
-async def resource(lifespan_manager) -> AsyncIterator[Resource]:
+async def async_test_client(lifespan_manager) -> AsyncClient:
     """Create an asynchronous test client.
 
     Yields:
         AsyncClient: An asynchronous test client.
     """
     async with AsyncClient(app=lifespan_manager.app, base_url=server_url) as async_client:
-        print(lifespan_manager.app)
-        yield {"async_client": async_client, "app_state": lifespan_manager.app.state}
+        yield async_client
 
 
 @pytest.fixture(scope="class")
-async def normal_async_test_client(resource) -> AsyncIterator[AsyncClient]:
+async def normal_async_test_client(async_test_client) -> AsyncIterator[AsyncClient]:
     """Create a normal asynchronous test client with table startup/cleanup events.
 
     Each test must be independent, necessitating the initialization of database tables for every test.
@@ -85,16 +74,18 @@ async def normal_async_test_client(resource) -> AsyncIterator[AsyncClient]:
     Yields:
         AsyncClient: An asynchronous test client which is authorized as a normal user.
     """
-    engine = resource["app_state"].engine
-    async_test_client = resource["async_client"]
+    # Import `engine` here to make sure the lifespan manager is executed before creating the session.
+    from src.core.main import AsyncSessionFactory, engine
 
     # Create all tables defined as data models under `src/db` if they do not exist.
     async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.drop_all)
         await conn.run_sync(Base.metadata.create_all)
 
-    # Create a normal user for testing if it does not exist.
-    normal_test_user = await create_random_test_user(settings.TEST_USER_EMAIL, async_test_client)
-
+    # This context automatically calls async_session.close() when the code block is exited.
+    async with AsyncSessionFactory() as async_session:
+        # Create a normal user for testing if it does not exist.
+        normal_test_user = await create_random_test_user(async_session, settings.TEST_USER_EMAIL)
     # Log in as the normal user.
     response = await async_test_client.post(
         "/login/access-token",
@@ -141,7 +132,7 @@ async def normal_async_test_client(resource) -> AsyncIterator[AsyncClient]:
 
 
 @pytest.fixture(scope="function")
-async def admin_async_test_client(resource) -> AsyncIterator[AsyncClient]:
+async def admin_async_test_client(async_test_client) -> AsyncIterator[AsyncClient]:
     """Create an admin asynchronous test client with table startup/cleanup events.
 
     Each test must be independent, necessitating the initialization of database tables for every test.
@@ -154,15 +145,17 @@ async def admin_async_test_client(resource) -> AsyncIterator[AsyncClient]:
     Yields:
         AsyncClient: An asynchronous test client which is authorized as a superuser.
     """
-    engine = resource["app_state"].engine
-    async_test_client = resource["async_client"]
+    # Import `engine` here to make sure the lifespan manager is executed before creating the session.
+    from src.core.main import AsyncSessionFactory, engine
 
     # Create all tables defined as data models under `src/db` if they do not exist.
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 
-    # Create the first superuser if it does not exist.
-    await create_first_superuser(async_test_client)
+    # This context automatically calls async_session.close() when the code block is exited.
+    async with AsyncSessionFactory() as async_session:
+        # Create the first superuser if it does not exist.
+        await create_test_superuser(async_session)
 
     # Log in as the admin user.
     response = await async_test_client.post(
@@ -190,10 +183,8 @@ async def async_db_session(lifespan_manager: LifespanManager) -> AsyncIterator[A
     Yields:
         AsyncSession: An asynchronous database session.
     """
-    # Import `AsyncSessionFactory` here to make sure the lifespan manager is executed before creating the session.
-    from src.core.main import AsyncSessionFactory
-
-    engine = lifespan_manager.app.state.engine
+    # Import `AsyncSessionFactory` and `engine` here to make sure the lifespan manager is executed before creating the session.
+    from src.core.main import AsyncSessionFactory, engine
 
     # Create all tables defined as data models under `src/db` if they do not exist.
     async with engine.begin() as conn:
