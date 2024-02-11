@@ -5,6 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.db.repositories.sqlalchemy.user_repository import UserRepository
 from src.domain.models import User
 from src.core.config import settings
+from src.core.security import get_password_hash
 
 def random_lower_string() -> str:
     return "".join(random.choices(string.ascii_lowercase, k=32))
@@ -35,9 +36,12 @@ async def create_random_test_user(async_session: AsyncSession, email: str) -> Us
         user_in = User(
             user_name=email,
             email=email,
-            password=password,
+            password=get_password_hash(password),
         )
         user = await user_repository.create(async_session, user_in)
+
+        # For system-related reasons, it is necessary to revert the password back to its original, unhashed value.
+        user.password = password
     return user
 
 async def create_test_superuser(async_session: AsyncSession) -> User:
@@ -59,8 +63,11 @@ async def create_test_superuser(async_session: AsyncSession) -> User:
         user_in = User(
             user_name=settings.FIRST_SUPERUSER,
             email=settings.FIRST_SUPERUSER_EMAIL,
-            password=settings.FIRST_SUPERUSER_PASSWORD,
+            password=get_password_hash(settings.FIRST_SUPERUSER_PASSWORD),
             is_superuser=True
         )
         user = await user_repository.create(async_session, user_in)
+
+        # For system-related reasons, it is necessary to revert the password back to its original, unhashed value.
+        user.password = settings.FIRST_SUPERUSER_PASSWORD
     return user

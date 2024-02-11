@@ -4,6 +4,7 @@ from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from src.db.repositories.sqlalchemy.user_repository import UserRepository
 from src.domain.models import User
 from src.core.config import settings
+from src.core.security import get_password_hash
 
 
 async def create_first_superuser() -> None:
@@ -24,7 +25,7 @@ async def create_first_superuser() -> None:
             user_in = User(
                 user_name=settings.FIRST_SUPERUSER,
                 email=settings.FIRST_SUPERUSER_EMAIL,
-                password=settings.FIRST_SUPERUSER_PASSWORD,
+                password=get_password_hash(settings.FIRST_SUPERUSER_PASSWORD),
                 is_superuser=True
             )
             await user_repository.create(async_session, user_in)
