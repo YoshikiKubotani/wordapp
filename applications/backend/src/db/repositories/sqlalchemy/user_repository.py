@@ -53,12 +53,10 @@ class UserLoginHistoryRepository(
     async def read_by_user_id(
         self, async_session: AsyncSession, user_id: int
     ) -> list[UserLoginHistory]:
-        # This context automatically calls session.close() when the code block is exited.
-        async with async_session() as session:
-            # This context automatically calls session.commit() if no exceptions are raised.
-            # If an exception is raised, it automatically calls session.rollback().
-            async with session.begin():
-                user_login_histories = await session.execute(
-                    select(self.data_model).where(self.data_model.user_id == user_id)
-                )
-                return user_login_histories.scalars().all()
+        # This context automatically calls async_session.commit() if no exceptions are raised.
+        # If an exception is raised, it automatically calls session.rollback().
+        async with async_session.begin():
+            user_login_histories = await async_session.execute(
+                select(self.data_model).where(self.data_model.user_id == user_id)
+            )
+            return user_login_histories.scalars().all()

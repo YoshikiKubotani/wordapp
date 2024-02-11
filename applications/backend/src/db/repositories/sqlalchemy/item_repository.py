@@ -14,12 +14,10 @@ class ItemRepository(BaseRepository[SQLAlchemyItem, Item]):
     async def read_by_user_id(
         self, async_session: AsyncSession, user_id: int
     ) -> list[Item]:
-        # This context automatically calls session.close() when the code block is exited.
-        async with async_session() as session:
-            # This context automatically calls session.commit() if no exceptions are raised.
-            # If an exception is raised, it automatically calls session.rollback().
-            async with session.begin():
-                items = await session.execute(
-                    select(self.data_model).where(self.data_model.user_id == user_id)
-                )
-                return items.scalars().all()
+        # This context automatically calls async_session.commit() if no exceptions are raised.
+        # If an exception is raised, it automatically calls async_session.rollback().
+        async with async_session.begin():
+            items = await async_session.execute(
+                select(self.data_model).where(self.data_model.user_id == user_id)
+            )
+            return items.scalars().all()
