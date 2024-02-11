@@ -10,6 +10,9 @@ from src.api.schemas import (
     ItemResponse,
 )
 
+from src.db.repositories.sqlalchemy.deck_repository import DeckRepository
+from src.domain.models import Deck
+
 router = APIRouter()
 
 
@@ -25,12 +28,16 @@ async def read_all_decks(
 
 @router.post("/", response_model=DeckResponse)
 async def create_deck(
-    # deck: CreateDeckRequest,
+    deck: CreateDeckRequest,
     current_user: CurrentUserDep,
     async_session: AsyncSessionDep,
 ) -> Any:
     """Create a new deck."""
-    return DeckResponse(deck_id=1, deck_name="dummy_deck")
+    entity = Deck(user_id=1, deck_name=deck.deck_name)
+    repo = DeckRepository()
+    created_deck = await repo.create(async_session, entity)
+    # return DeckResponse(deck_id=1, deck_name="dummy_deck")
+    return created_deck
 
 
 @router.put("/{deck_id}", response_model=DeckResponse)

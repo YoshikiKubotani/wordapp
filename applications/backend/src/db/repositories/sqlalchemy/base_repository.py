@@ -36,17 +36,17 @@ class BaseRepository(
     async def create(
         self, async_session: AsyncSession, domain_entity: DomainModelType
     ) -> DomainModelType:
-        # This context automatically calls session.close() when the code block is exited.
-        async with async_session() as session:
-            # This context automatically calls session.commit() if no exceptions are raised.
-            # If an exception is raised, it automatically calls session.rollback().
-            async with session.begin():
-                data_entity = self.data_model(**domain_entity.model_dump())
-                session.add(data_entity)
-                await session.flush()
-                await session.refresh(data_entity)
-            created_domain_entity = DomainModelType.model_validate(data_entity)
-            return created_domain_entity
+        # # This context automatically calls session.close() when the code block is exited.
+        # async with async_session() as session:
+        # This context automatically calls session.commit() if no exceptions are raised.
+        # If an exception is raised, it automatically calls session.rollback().
+        async with async_session.begin():
+            data_entity = self.data_model(**domain_entity.model_dump())
+            async_session.add(data_entity)
+            await async_session.flush()
+            await async_session.refresh(data_entity)
+        created_domain_entity = DomainModelType.model_validate(data_entity)
+        return created_domain_entity
 
     async def read(self, async_session: AsyncSession, id: int) -> DomainModelType:
         # This context automatically calls session.close() when the code block is exited.
