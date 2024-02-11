@@ -3,7 +3,7 @@ from typing import Generic, Type, TypeVar
 from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from db.sqlalchemy_data_models import (
+from src.db.sqlalchemy_data_models import (
     SQLAlchemyDeck,
     SQLAlchemyGenre,
     SQLAlchemyItem,

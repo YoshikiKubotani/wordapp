@@ -1,7 +1,7 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from db.sqlalchemy_data_models import SQLAlchemyUser, SQLAlchemyUserLoginHistory
+from src.db.sqlalchemy_data_models import SQLAlchemyUser, SQLAlchemyUserLoginHistory
 from src.domain.models import User, UserLoginHistory
 
 from .base_repository import BaseRepository
