@@ -1,15 +1,19 @@
 import datetime
 
-from sqlalchemy import JSON, Column, ForeignKey, Table
+from sqlalchemy import JSON, Column, ForeignKey, Table, MetaData
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.ext.asyncio import AsyncAttrs
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
+from src.core.config import settings
+
+metadata_obj = MetaData(schema=settings.POSTGRES_SCHEMA)
 
 class Base(DeclarativeBase, AsyncAttrs):
     type_annotation_map = {
         list[str]: JSON().with_variant(JSONB(), "postgresql"),
     }
+    metadata = metadata_obj
 
 
 item_genre_mapper_table = Table(
