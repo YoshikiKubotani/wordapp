@@ -39,7 +39,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         await conn.run_sync(Base.metadata.create_all)
 
     # Yield the app instance.
-    yield
+    yield {"engine": engine}
 
     print("Running shutdown lifespan events ...")
     # Close the engine instance as a clean-up operation.
