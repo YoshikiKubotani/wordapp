@@ -45,16 +45,15 @@ class BaseRepository(
             async_session.add(data_entity)
             await async_session.flush()
             await async_session.refresh(data_entity)
-        data_entity_dict = orm_object_to_dict(data_entity)
-        created_domain_entity = self.domain_model.model_validate(data_entity_dict)
-        return created_domain_entity
+        return domain_entity
 
     async def read(self, async_session: AsyncSession, id: int) -> DomainModelType:
         # This context automatically calls async_session.commit() if no exceptions are raised.
         # If an exception is raised, it automatically calls async_session.rollback().
         async with async_session.begin():
             data_entity = await async_session.get(self.data_model, id)
-        read_domain_entity = DomainModelType.model_validate(data_entity)
+        data_entity_dict = orm_object_to_dict(data_entity)
+        read_domain_entity = self.domain_model.model_validate(data_entity_dict)
         return read_domain_entity
 
     async def update(
@@ -70,8 +69,7 @@ class BaseRepository(
             async_session.add(data_entity)
             await async_session.flush()
             await async_session.refresh(data_entity)
-        updated_domain_entity = DomainModelType.model_validate(data_entity)
-        return updated_domain_entity
+        return domain_entity
 
     async def delete(self, async_session: AsyncSession, id: int) -> DomainModelType:
         # This context automatically calls async_session.commit() if no exceptions are raised.
@@ -79,5 +77,6 @@ class BaseRepository(
         async with async_session.begin():
             data_entity = await async_session.get(self.data_model, id)
             async_session.delete(data_entity)
-        deleted_domain_entity = DomainModelType.model_validate(data_entity)
+        data_entity_dict = orm_object_to_dict(data_entity)
+        deleted_domain_entity = self.domain_model.model_validate(data_entity_dict)
         return deleted_domain_entity
