@@ -1,12 +1,15 @@
 import datetime
 
-from sqlalchemy import Column, ForeignKey, Table
+from sqlalchemy import JSON, Column, ForeignKey, Table
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.ext.asyncio import AsyncAttrs
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 
 class Base(DeclarativeBase, AsyncAttrs):
-    pass
+    type_annotation_map = {
+        list[str]: JSON().with_variant(JSONB(), "postgresql"),
+    }
 
 
 item_genre_mapper_table = Table(
@@ -24,7 +27,7 @@ item_deck_mapper_table = Table(
 )
 
 
-class User(Base):
+class SQLAlchemyUser(Base):
     __tablename__ = "users"
 
     user_id: Mapped[int] = mapped_column(primary_key=True)
@@ -38,18 +41,18 @@ class User(Base):
     updated_at: Mapped[datetime.datetime] = mapped_column(default=datetime.datetime.now)
 
     # One-to-many relationship with UserLoginHistory
-    user_login_history: Mapped[list["UserLoginHistory"]] = relationship(
+    user_login_history: Mapped[list["SQLAlchemyUserLoginHistory"]] = relationship(
         back_populates="user"
     )
     # One-to-many relationship with Item
-    items: Mapped[list["Item"]] = relationship(back_populates="user")
+    items: Mapped[list["SQLAlchemyItem"]] = relationship(back_populates="user")
     # One-to-many relationship with Deck
-    decks: Mapped[list["Deck"]] = relationship(back_populates="user")
+    decks: Mapped[list["SQLAlchemyDeck"]] = relationship(back_populates="user")
     # One-to-many relationship with Test
-    tests: Mapped[list["Test"]] = relationship(back_populates="user")
+    tests: Mapped[list["SQLAlchemyTest"]] = relationship(back_populates="user")
 
 
-class UserLoginHistory(Base):
+class SQLAlchemyUserLoginHistory(Base):
     __tablename__ = "user_login_history"
 
     user_login_history_id: Mapped[int] = mapped_column(primary_key=True)
@@ -63,10 +66,10 @@ class UserLoginHistory(Base):
     ip_address: Mapped[str]
 
     # Many-to-one relationship with User
-    user: Mapped[User] = relationship(back_populates="user_login_history")
+    user: Mapped[SQLAlchemyUser] = relationship(back_populates="user_login_history")
 
 
-class Item(Base):
+class SQLAlchemyItem(Base):
     __tablename__ = "items"
 
     item_id: Mapped[int] = mapped_column(primary_key=True)
@@ -78,35 +81,35 @@ class Item(Base):
     updated_at: Mapped[datetime.datetime] = mapped_column(default=datetime.datetime.now)
 
     # Many-to-one relationship with User
-    user: Mapped[User] = relationship(back_populates="items")
+    user: Mapped[SQLAlchemyUser] = relationship(back_populates="items")
     # Many-to-many relationship with Genre
-    genres: Mapped[list["Genre"]] = relationship(
+    genres: Mapped[list["SQLAlchemyGenre"]] = relationship(
         secondary=item_genre_mapper_table,
         back_populates="items",
     )
     # Many-to-many relationship with Deck
-    decks: Mapped[list["Deck"]] = relationship(
+    decks: Mapped[list["SQLAlchemyDeck"]] = relationship(
         secondary=item_deck_mapper_table,
         back_populates="items",
     )
     # One-to-many relationship with TestItem
-    test_items: Mapped[list["TestItem"]] = relationship(back_populates="item")
+    test_items: Mapped[list["SQLAlchemyTestItem"]] = relationship(back_populates="item")
 
 
-class Genre(Base):
+class SQLAlchemyGenre(Base):
     __tablename__ = "genres"
 
     genre_id: Mapped[int] = mapped_column(primary_key=True)
     genre_name: Mapped[str] = mapped_column(unique=True, index=True)
 
     # Many-to-many relationship with Item
-    items: Mapped[list[Item]] = relationship(
+    items: Mapped[list[SQLAlchemyItem]] = relationship(
         secondary=item_genre_mapper_table,
         back_populates="genres",
     )
 
 
-class Deck(Base):
+class SQLAlchemyDeck(Base):
     __tablename__ = "decks"
 
     deck_id: Mapped[int] = mapped_column(primary_key=True)
@@ -114,35 +117,35 @@ class Deck(Base):
     deck_name: Mapped[str]
 
     # Many-to-many relationship with Item
-    items: Mapped[list[Item]] = relationship(
+    items: Mapped[list[SQLAlchemyItem]] = relationship(
         secondary=item_deck_mapper_table,
         back_populates="decks",
     )
     # Many-to-one relationship with User
-    user: Mapped[User] = relationship(back_populates="decks")
+    user: Mapped[SQLAlchemyUser] = relationship(back_populates="decks")
     # One-to-many relationship with Test
-    tests: Mapped[list["Test"]] = relationship(back_populates="deck")
+    tests: Mapped[list["SQLAlchemyTest"]] = relationship(back_populates="deck")
 
 
-class TestItem(Base):
+class SQLAlchemyTestItem(Base):
     __tablename__ = "test_items"
 
     test_item_id: Mapped[int] = mapped_column(primary_key=True)
     test_id: Mapped[int] = mapped_column(ForeignKey("tests.test_id"))
     item_id: Mapped[int] = mapped_column(ForeignKey("items.item_id"))
     question_number: Mapped[int]
-    choice_item_ids: Mapped[list[int]]
+    choice_item_ids: Mapped[list[str]]
     correct_answer: Mapped[int]
     user_answer: Mapped[int]
     answer_time: Mapped[int]
 
     # Many-to-one relationship with Test
-    test: Mapped["Test"] = relationship(back_populates="test_items")
+    test: Mapped["SQLAlchemyTest"] = relationship(back_populates="test_items")
     # Many-to-one relationship with Item
-    item: Mapped[Item] = relationship(back_populates="test_items")
+    item: Mapped[SQLAlchemyItem] = relationship(back_populates="test_items")
 
 
-class Test(Base):
+class SQLAlchemyTest(Base):
     __tablename__ = "tests"
 
     test_id: Mapped[int] = mapped_column(primary_key=True)
@@ -154,8 +157,8 @@ class Test(Base):
     )
 
     # One-to-many relationship with TestItem
-    test_items: Mapped[list[TestItem]] = relationship(back_populates="test")
+    test_items: Mapped[list[SQLAlchemyTestItem]] = relationship(back_populates="test")
     # Many-to-one relationship with User
-    user: Mapped[User] = relationship(back_populates="tests")
+    user: Mapped[SQLAlchemyUser] = relationship(back_populates="tests")
     # Many-to-one relationship with Deck
-    deck: Mapped[Deck] = relationship(back_populates="tests")
+    deck: Mapped[SQLAlchemyDeck] = relationship(back_populates="tests")

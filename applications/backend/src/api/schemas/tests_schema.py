@@ -1,5 +1,3 @@
-import datetime
-
 from pydantic import BaseModel, PastDatetime
 
 
@@ -34,22 +32,3 @@ class TestUnsolvedResponse(TestMetaDataResponse):
 
 class TestCheckedResponse(TestMetaDataResponse):
     test_items: list[TestItemCheckedResponse]
-
-
-class TestSchema(BaseModel):
-    _id: int
-    user_id: int
-    deck_id: int
-    test_type: str
-    test_timestamp: PastDatetime
-
-
-class TestItemSchema(BaseModel):
-    _id: int
-    test_id: int
-    item_id: int
-    question_number: int
-    choice_item_ids: list[int]
-    correct_answer: int
-    user_answer: int
-    answer_time: int

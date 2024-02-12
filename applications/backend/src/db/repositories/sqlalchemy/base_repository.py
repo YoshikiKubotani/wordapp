@@ -3,23 +3,33 @@ from typing import Generic, Type, TypeVar
 from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.db.data_models import (
-    Deck,
-    Genre,
-    Item,
-    Test,
-    TestItem,
-    User,
-    UserLoginHistory,
+from src.db.sqlalchemy_data_models import (
+    SQLAlchemyDeck,
+    SQLAlchemyGenre,
+    SQLAlchemyItem,
+    SQLAlchemyTest,
+    SQLAlchemyTestItem,
+    SQLAlchemyUser,
+    SQLAlchemyUserLoginHistory,
 )
+from src.db.repositories.repository_interface import IRepository
 
 DataModelType = TypeVar(
-    "DataModelType", User, Item, Genre, Deck, Test, TestItem, UserLoginHistory
+    "DataModelType",
+    SQLAlchemyUser,
+    SQLAlchemyUserLoginHistory,
+    SQLAlchemyDeck,
+    SQLAlchemyGenre,
+    SQLAlchemyItem,
+    SQLAlchemyTest,
+    SQLAlchemyTestItem,
 )
-DomainModelType = TypeVar("DomainModelType", BaseModel)
+DomainModelType = TypeVar("DomainModelType", bound=BaseModel)
 
 
-class BaseRepository(Generic[DataModelType, DomainModelType]):
+class BaseRepository(
+    Generic[DataModelType, DomainModelType], IRepository[AsyncSession, DomainModelType]
+):
     def __init__(self, data_model: Type[DataModelType]) -> None:
         self.data_model = data_model
 

@@ -1,3 +1,4 @@
+from datetime import datetime, timezone
 from typing import Annotated, AsyncGenerator
 
 from fastapi import Depends, HTTPException, status
@@ -6,8 +7,9 @@ from jose import jwt
 from pydantic import ValidationError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.api.schemas import DummyUser, TokenPayload, User
+from src.api.schemas import TokenPayload
 from src.core.config import settings
+from src.domain.models import User
 
 # Create a callable object that will look for and parse the request for the `Authorization` header
 # Note that the `tokenUrl` parameter is only used for the OpenAPI documentation, not for the authentication itself
@@ -47,14 +49,16 @@ async def get_current_user(
             headers={"WWW-Authenticate": "Bearer"},
         )
     # user = session.get(User, token_data.sub)
-    user = DummyUser(
+    user = User(
         user_id=1,
         user_name=token_data.sub,
         email="dummy@gmail.com",
+        password="$2b$12$gjLw4vccsNb41k/eHJeGtemKhjzw3aKxW6ANle2ZXzJTfhiRyvgNy",
         full_name="dummy user",
         is_active=True,
         is_superuser=True,
-        hashed_password="$2b$12$gjLw4vccsNb41k/eHJeGtemKhjzw3aKxW6ANle2ZXzJTfhiRyvgNy",
+        created_at=datetime.now(timezone.utc),
+        updated_at=datetime.now(timezone.utc),
     )
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
