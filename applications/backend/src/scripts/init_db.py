@@ -39,6 +39,7 @@ async def create_first_superuser() -> None:
         else:
             print("First superuser already exists!")
 
+    print("First superuser has successfully been created!")
 
 if __name__ == "__main__":
     import asyncio
