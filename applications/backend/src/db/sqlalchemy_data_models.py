@@ -13,15 +13,11 @@ from src.core.config import settings
 def orm_object_to_dict(model):
     return {c.key: getattr(model, c.key) for c in inspect(model).mapper.column_attrs}
 
-
-metadata_obj = MetaData(schema=settings.POSTGRES_SCHEMA)
-
-
 class Base(DeclarativeBase, AsyncAttrs):
     type_annotation_map = {
         list[str]: JSON().with_variant(JSONB(), "postgresql"),
     }
-    metadata = metadata_obj
+    metadata = MetaData(schema=settings.POSTGRES_SCHEMA)
 
 
 item_genre_mapper_table = Table(

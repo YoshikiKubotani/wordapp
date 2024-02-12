@@ -61,14 +61,14 @@ async def normal_async_test_client(async_test_client) -> AsyncIterator[AsyncClie
     Although the database is initialized within the lifespan event called by the lifespan manager
     at the startup of the FastAPI application, this is achieved through a session-scoped fixture,
     requiring redefinition at the function scope as well. The reason the lifespan event must also be used
-    in tests is that the AsyncSessionFactory created within the lifespan event is utilized in the test target
+    in tests is that the async_session_factory created within the lifespan event is utilized in the test target
     FastAPI endpoints through dependency injection.
 
     Yields:
         AsyncClient: An asynchronous test client which is authorized as a normal user.
     """
     # Import `engine` here to make sure the lifespan manager is executed before creating the session.
-    from src.core.main import AsyncSessionFactory, engine
+    from src.core.main import async_session_factory, engine
 
     # Drop and create all tables defined as data models under `src/db`.
     async with engine.begin() as conn:
@@ -76,7 +76,7 @@ async def normal_async_test_client(async_test_client) -> AsyncIterator[AsyncClie
         await conn.run_sync(Base.metadata.create_all)
 
     # This context automatically calls async_session.close() when the code block is exited.
-    async with AsyncSessionFactory() as async_session:
+    async with async_session_factory() as async_session:
         # Create a normal user for testing if it does not exist.
         normal_test_user = await create_random_test_user(
             async_session, settings.TEST_USER_EMAIL
@@ -107,14 +107,14 @@ async def admin_async_test_client(async_test_client) -> AsyncIterator[AsyncClien
     Although the database is initialized within the lifespan event called by the lifespan manager
     at the startup of the FastAPI application, this is achieved through a session-scoped fixture,
     requiring redefinition at the function scope as well. The reason the lifespan event must also be used
-    in tests is that the AsyncSessionFactory created within the lifespan event is utilized in the test target
+    in tests is that the async_session_factory created within the lifespan event is utilized in the test target
     FastAPI endpoints through dependency injection.
 
     Yields:
         AsyncClient: An asynchronous test client which is authorized as a superuser.
     """
     # Import `engine` here to make sure the lifespan manager is executed before creating the session.
-    from src.core.main import AsyncSessionFactory, engine
+    from src.core.main import async_session_factory, engine
 
     # Drop and create all tables defined as data models under `src/db`.
     async with engine.begin() as conn:
@@ -122,7 +122,7 @@ async def admin_async_test_client(async_test_client) -> AsyncIterator[AsyncClien
         await conn.run_sync(Base.metadata.create_all)
 
     # This context automatically calls async_session.close() when the code block is exited.
-    async with AsyncSessionFactory() as async_session:
+    async with async_session_factory() as async_session:
         # Create the first superuser if it does not exist.
         await create_test_superuser(async_session)
 
@@ -153,8 +153,8 @@ async def async_db_session(
     Yields:
         AsyncSession: An asynchronous database session.
     """
-    # Import `AsyncSessionFactory` and `engine` here to make sure the lifespan manager is executed before creating the session.
-    from src.core.main import AsyncSessionFactory, engine
+    # Import `async_session_factory` and `engine` here to make sure the lifespan manager is executed before creating the session.
+    from src.core.main import async_session_factory, engine
 
     # Drop and create all tables defined as data models under `src/db`.
     async with engine.begin() as conn:
@@ -162,5 +162,5 @@ async def async_db_session(
         await conn.run_sync(Base.metadata.create_all)
 
     # This context automatically calls async_session.close() when the code block is exited.
-    async with AsyncSessionFactory() as async_session:
+    async with async_session_factory() as async_session:
         yield async_session

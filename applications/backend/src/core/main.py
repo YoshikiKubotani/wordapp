@@ -22,7 +22,7 @@ def custom_generate_unique_id(route: APIRoute):
     return f"{route.tags[0]}-{route.name}"
 
 
-AsyncSessionFactory: async_sessionmaker[AsyncSession] | None = None
+async_session_factory: async_sessionmaker[AsyncSession] | None = None
 engine: AsyncEngine | None = None
 
 
@@ -32,11 +32,11 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     print("Running startup lifespan events ...")
 
     global engine
-    global AsyncSessionFactory
+    global async_session_factory
     # Create a new async engine instance, which offers a session environment to manage a database.
     engine = create_async_engine(settings.SQLALCHEMY_DATABASE_URI.unicode_string())
     # Create a factiry that returns a new AsyncSession instance.
-    AsyncSessionFactory = cast(
+    async_session_factory = cast(
         async_sessionmaker[AsyncSession],
         async_sessionmaker(engine, expire_on_commit=False),
     )
