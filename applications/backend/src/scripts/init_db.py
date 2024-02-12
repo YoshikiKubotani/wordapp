@@ -15,7 +15,7 @@ async def create_first_superuser() -> None:
     async_session_maker = async_sessionmaker(engine, expire_on_commit=False)
 
     # This context automatically calls async_session.close() when the code block is exited.
-    async with async_session_maker as async_session:
+    async with async_session_maker() as async_session:
         user_repository = UserRepository()
         # Check if the user already exists.
         user = await user_repository.read_by_email(
