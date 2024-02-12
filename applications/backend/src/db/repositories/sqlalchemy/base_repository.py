@@ -47,6 +47,8 @@ class BaseRepository(
             async_session.add(data_entity)
             await async_session.flush()
             await async_session.refresh(data_entity)
+        data_entity_dict = orm_object_to_dict(data_entity)
+        domain_entity = self.domain_model.model_validate(data_entity_dict)
         return domain_entity
 
     async def read(self, async_session: AsyncSession, id: int) -> DomainModelType:
