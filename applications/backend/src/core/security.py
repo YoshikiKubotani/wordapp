@@ -3,8 +3,9 @@ from datetime import datetime, timedelta, timezone
 from jose import jwt
 from passlib.context import CryptContext
 
-from src.api.dependencies import AsyncSessionDep
+from src.api.dependencies import async_session_dependency
 from src.core.config import settings
+from src.db.repositories.sqlalchemy.user_repository import UserRepository
 from src.domain.models import User
 
 password_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -14,24 +15,20 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
     return password_context.verify(plain_password, hashed_password)
 
 
+def get_password_hash(password: str) -> str:
+    return password_context.hash(password)
+
+
 async def authenticate_user(
-    async_session: AsyncSessionDep,
+    async_session: async_session_dependency,
     user_name: str,
     password: str,
 ) -> User | None:
-    # user_dict = session.get(User, user_name)
-    # user = UserInDB(**user_dict)
-    user = User(
-        user_id=1,
-        user_name=user_name,
-        email="dummy@gmail.com",
-        password="$2y$10$p8UIk5H4aim92irVURglF.M4A7kkCEELzZV6I2xyEN9GRIKVu5PMy",
-        full_name="dummy user",
-        is_active=True,
-        is_superuser=True,
-        created_at=datetime.now(timezone.utc),
-        updated_at=datetime.now(timezone.utc),
-    )
+    user_repository = UserRepository(async_session)
+
+    # Check if the incoming user exists.
+    user = await user_repository.read_by_username(user_name)
+
     if user is None:
         return None
     if not verify_password(password, user.password):

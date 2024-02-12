@@ -33,7 +33,7 @@ mypy:
 
 .PHONY: test
 test:
-	poetry run pytest tests --cov=src --cov-report term-missing --durations 5
+	POSTGRES_SCHEMA=test poetry run pytest tests --cov=src --cov-report term-missing --durations 5
 
 .PHONY: format
 format:

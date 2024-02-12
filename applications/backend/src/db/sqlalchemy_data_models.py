@@ -1,15 +1,23 @@
 import datetime
+from typing import Optional
 
-from sqlalchemy import JSON, Column, ForeignKey, Table
+from sqlalchemy import JSON, Column, ForeignKey, MetaData, Table
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.ext.asyncio import AsyncAttrs
+from sqlalchemy.inspection import inspect
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
+from src.core.config import settings
+
+
+def orm_object_to_dict(model):
+    return {c.key: getattr(model, c.key) for c in inspect(model).mapper.column_attrs}
 
 class Base(DeclarativeBase, AsyncAttrs):
     type_annotation_map = {
         list[str]: JSON().with_variant(JSONB(), "postgresql"),
     }
+    metadata = MetaData(schema=settings.POSTGRES_SCHEMA)
 
 
 item_genre_mapper_table = Table(
@@ -34,7 +42,7 @@ class SQLAlchemyUser(Base):
     user_name: Mapped[str] = mapped_column(unique=True, index=True)
     email: Mapped[str] = mapped_column(unique=True, index=True)
     password: Mapped[str]
-    full_name: Mapped[str]
+    full_name: Mapped[Optional[str]]
     is_active: Mapped[bool] = mapped_column(default=True)
     is_superuser: Mapped[bool] = mapped_column(default=False)
     created_at: Mapped[datetime.datetime] = mapped_column(default=datetime.datetime.now)

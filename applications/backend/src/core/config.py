@@ -47,6 +47,7 @@ class Settings(BaseSettings, case_sensitive=True):
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str
     POSTGRES_DB: str
+    POSTGRES_SCHEMA: str = "public"
 
     # TODO: 設定対象ごとに別のSettingクラスを作る場合、ここはmodel_validatorにする
     SQLALCHEMY_DATABASE_URI: PostgresDsn | None = None
@@ -90,9 +91,10 @@ class Settings(BaseSettings, case_sensitive=True):
     #         and values.get("EMAILS_FROM_EMAIL")
     #     )
 
-    # EMAIL_TEST_USER: EmailStr = "test@example.com"  # type: ignore
-    # FIRST_SUPERUSER: EmailStr
-    # FIRST_SUPERUSER_PASSWORD: str
+    TEST_USER_EMAIL: EmailStr = "test@gmail.com"
+    FIRST_SUPERUSER: str
+    FIRST_SUPERUSER_EMAIL: EmailStr
+    FIRST_SUPERUSER_PASSWORD: str
     # USERS_OPEN_REGISTRATION: bool = False
 
 

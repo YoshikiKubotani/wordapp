@@ -2,21 +2,23 @@ from typing import Any
 
 from fastapi import APIRouter, HTTPException
 
-from src.api.dependencies import AsyncSessionDep, CurrentUserDep
+from src.api.dependencies import async_session_dependency, current_user_dependency
 from src.api.schemas import (
     CreateDeckRequest,
     CreateItemRequest,
     DeckResponse,
     ItemResponse,
 )
+from src.db.repositories.sqlalchemy.deck_repository import DeckRepository
+from src.domain.models import Deck
 
 router = APIRouter()
 
 
 @router.get("/", response_model=list[DeckResponse])
 async def read_all_decks(
-    current_user: CurrentUserDep,
-    async_session: AsyncSessionDep,
+    current_user: current_user_dependency,
+    async_session: async_session_dependency,
 ) -> Any:
     """Read all the decks registered by a user."""
     decks = [DeckResponse(deck_id=1, deck_name="dummy_deck")]
@@ -25,20 +27,23 @@ async def read_all_decks(
 
 @router.post("/", response_model=DeckResponse)
 async def create_deck(
-    # deck: CreateDeckRequest,
-    current_user: CurrentUserDep,
-    async_session: AsyncSessionDep,
+    deck: CreateDeckRequest,
+    current_user: current_user_dependency,
+    async_session: async_session_dependency,
 ) -> Any:
     """Create a new deck."""
-    return DeckResponse(deck_id=1, deck_name="dummy_deck")
+    entity = Deck(user_id=1, deck_name=deck.deck_name)
+    repo = DeckRepository(async_session)
+    created_deck = await repo.create(entity)
+    return DeckResponse(deck_id=created_deck.deck_id, deck_name=created_deck.deck_name)
 
 
 @router.put("/{deck_id}", response_model=DeckResponse)
 async def update_deck(
     deck_id: int,
     # deck: CreateDeckRequest,
-    current_user: CurrentUserDep,
-    async_session: AsyncSessionDep,
+    current_user: current_user_dependency,
+    async_session: async_session_dependency,
 ) -> Any:
     """Update the details of a deck."""
     return DeckResponse(deck_id=deck_id, deck_name="dummy_deck")
@@ -47,8 +52,8 @@ async def update_deck(
 @router.delete("/{deck_id}")
 async def delete_deck(
     deck_id: int,
-    current_user: CurrentUserDep,
-    async_session: AsyncSessionDep,
+    current_user: current_user_dependency,
+    async_session: async_session_dependency,
 ) -> bool:
     """Delete a deck."""
     return True
@@ -57,8 +62,8 @@ async def delete_deck(
 @router.get("/{deck_id}/items", response_model=list[ItemResponse])
 async def read_deck_items(
     deck_id: int,
-    current_user: CurrentUserDep,
-    async_session: AsyncSessionDep,
+    current_user: current_user_dependency,
+    async_session: async_session_dependency,
 ) -> Any:
     """Get all the items in a deck."""
     items = [
@@ -73,8 +78,8 @@ async def read_deck_items(
 async def create_deck_item(
     deck_id: int,
     # item: CreateItemRequest,
-    current_user: CurrentUserDep,
-    async_session: AsyncSessionDep,
+    current_user: current_user_dependency,
+    async_session: async_session_dependency,
 ) -> Any:
     """Create a new item in a deck."""
     return ItemResponse(
@@ -86,8 +91,8 @@ async def create_deck_item(
 async def delete_deck_item(
     deck_id: int,
     item_id: int,
-    current_user: CurrentUserDep,
-    async_session: AsyncSessionDep,
+    current_user: current_user_dependency,
+    async_session: async_session_dependency,
 ) -> bool:
     """Delete an item from a deck."""
     return True

@@ -2,7 +2,7 @@ from typing import Any
 
 from fastapi import APIRouter, HTTPException
 
-from src.api.dependencies import AsyncSessionDep, CurrentUserDep
+from src.api.dependencies import async_session_dependency, current_user_dependency
 from src.api.schemas import CreateItemRequest, ItemResponse, UpdateItemRequest
 
 router = APIRouter()
@@ -10,8 +10,8 @@ router = APIRouter()
 
 @router.get("/", response_model=list[ItemResponse])
 async def search_items(
-    current_user: CurrentUserDep,
-    async_session: AsyncSessionDep,
+    current_user: current_user_dependency,
+    async_session: async_session_dependency,
 ) -> Any:
     """Search for items."""
     items = [
@@ -25,8 +25,8 @@ async def search_items(
 @router.post("/", response_model=ItemResponse)
 async def create_item(
     # item: CreateItemRequest,
-    current_user: CurrentUserDep,
-    async_session: AsyncSessionDep,
+    current_user: current_user_dependency,
+    async_session: async_session_dependency,
 ) -> Any:
     """Create a new item."""
     return ItemResponse(
@@ -37,8 +37,8 @@ async def create_item(
 @router.get("/{item_id}", response_model=ItemResponse)
 async def read_item(
     item_id: int,
-    current_user: CurrentUserDep,
-    async_session: AsyncSessionDep,
+    current_user: current_user_dependency,
+    async_session: async_session_dependency,
 ) -> Any:
     """Get the details of an item."""
     return ItemResponse(
@@ -50,8 +50,8 @@ async def read_item(
 async def update_item(
     item_id: int,
     # item: UpdateItemRequest,
-    current_user: CurrentUserDep,
-    async_session: AsyncSessionDep,
+    current_user: current_user_dependency,
+    async_session: async_session_dependency,
 ) -> Any:
     """Update the details of an item."""
     return ItemResponse(
@@ -62,8 +62,8 @@ async def update_item(
 @router.delete("/{item_id}")
 async def delete_item(
     item_id: int,
-    current_user: CurrentUserDep,
-    async_session: AsyncSessionDep,
+    current_user: current_user_dependency,
+    async_session: async_session_dependency,
 ) -> bool:
     """Delete an item."""
     return True

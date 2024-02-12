@@ -4,10 +4,16 @@ from typing import cast
 
 from fastapi import APIRouter, FastAPI
 from fastapi.routing import APIRoute
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+from sqlalchemy.ext.asyncio import (
+    AsyncEngine,
+    AsyncSession,
+    async_sessionmaker,
+    create_async_engine,
+)
 from starlette.middleware.cors import CORSMiddleware
 
 from src.api.routers import decks, items, login, tests, users
+from src.db.sqlalchemy_data_models import Base
 
 from .config import settings
 
@@ -16,7 +22,8 @@ def custom_generate_unique_id(route: APIRoute):
     return f"{route.tags[0]}-{route.name}"
 
 
-AsyncSessionFactory: async_sessionmaker[AsyncSession] | None = None
+async_session_factory: async_sessionmaker[AsyncSession] | None = None
+engine: AsyncEngine | None = None
 
 
 # This is the lifespan context manager, which is called once before/after the server starts/stops.
@@ -24,14 +31,20 @@ AsyncSessionFactory: async_sessionmaker[AsyncSession] | None = None
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     print("Running startup lifespan events ...")
 
-    global AsyncSessionFactory
+    global engine
+    global async_session_factory
     # Create a new async engine instance, which offers a session environment to manage a database.
     engine = create_async_engine(settings.SQLALCHEMY_DATABASE_URI.unicode_string())
     # Create a factiry that returns a new AsyncSession instance.
-    AsyncSessionFactory = cast(
+    async_session_factory = cast(
         async_sessionmaker[AsyncSession],
         async_sessionmaker(engine, expire_on_commit=False),
     )
+
+    # Create all tables defined as data models under `src/db` if they do not exist.
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+
     # Yield the app instance.
     yield
 

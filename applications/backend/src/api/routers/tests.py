@@ -3,7 +3,7 @@ from typing import Any
 
 from fastapi import APIRouter, HTTPException
 
-from src.api.dependencies import AsyncSessionDep, CurrentUserDep
+from src.api.dependencies import async_session_dependency, current_user_dependency
 from src.api.schemas import (
     TestCheckedResponse,
     TestItemAfterAttemptRequest,
@@ -18,8 +18,8 @@ router = APIRouter()
 
 @router.get("/", response_model=list[TestMetaDataResponse])
 async def read_all_tests(
-    current_user: CurrentUserDep,
-    async_session: AsyncSessionDep,
+    current_user: current_user_dependency,
+    async_session: async_session_dependency,
 ) -> Any:
     """Read all the tests attempted by a user."""
     tests = [
@@ -33,8 +33,8 @@ async def read_all_tests(
 
 @router.post("/", response_model=TestUnsolvedResponse)
 async def create_test(
-    current_user: CurrentUserDep,
-    async_session: AsyncSessionDep,
+    current_user: current_user_dependency,
+    async_session: async_session_dependency,
 ) -> Any:
     """Create a new test."""
     return TestUnsolvedResponse(
@@ -67,8 +67,8 @@ async def create_test(
 async def answer_test(
     test_id: int,
     # solved_items: list[TestItemAfterAttemptRequest],
-    current_user: CurrentUserDep,
-    async_session: AsyncSessionDep,
+    current_user: current_user_dependency,
+    async_session: async_session_dependency,
 ) -> Any:
     """Answer a test."""
     return TestCheckedResponse(
@@ -106,8 +106,8 @@ async def answer_test(
 @router.get("/{test_id}/items", response_model=list[TestItemCheckedResponse])
 async def read_test_items(
     test_id: int,
-    current_user: CurrentUserDep,
-    async_session: AsyncSessionDep,
+    current_user: current_user_dependency,
+    async_session: async_session_dependency,
 ) -> Any:
     """Get all the items in a test."""
     return [

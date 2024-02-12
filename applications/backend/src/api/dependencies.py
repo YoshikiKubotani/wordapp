@@ -19,19 +19,20 @@ reusable_oauth2 = OAuth2PasswordBearer(
 
 
 async def get_db_session() -> AsyncGenerator[AsyncSession, None]:
-    from src.core.main import AsyncSessionFactory
+    from src.core.main import async_session_factory
 
-    async with AsyncSessionFactory() as session:
-        yield session
+    # This context automatically calls async_session.close() when the code block is exited.
+    async with async_session_factory() as async_session:
+        yield async_session
 
 
-AsyncSessionDep = Annotated[AsyncSession, Depends(get_db_session)]
-TokenDep = Annotated[str, Depends(reusable_oauth2)]
+async_session_dependency = Annotated[AsyncSession, Depends(get_db_session)]
+token_dependency = Annotated[str, Depends(reusable_oauth2)]
 
 
 async def get_current_user(
-    async_session: AsyncSessionDep,
-    token: TokenDep,
+    async_session: async_session_dependency,
+    token: token_dependency,
 ) -> User:
     try:
         print(f"Received a request with authentication header of token {token}.")
@@ -69,10 +70,10 @@ async def get_current_user(
     return user
 
 
-CurrentUserDep = Annotated[User, Depends(get_current_user)]
+current_user_dependency = Annotated[User, Depends(get_current_user)]
 
 
-def get_current_active_superuser(current_user: CurrentUserDep) -> User:
+def get_current_active_superuser(current_user: current_user_dependency) -> User:
     if not current_user.is_superuser:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
