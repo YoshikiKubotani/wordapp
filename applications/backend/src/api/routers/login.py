@@ -4,7 +4,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 
-from src.api.dependencies import AsyncSessionDep
+from src.api.dependencies import async_session_dependency
 from src.api.schemas import Token
 from src.core.config import settings
 from src.core.security import (
@@ -17,7 +17,7 @@ router = APIRouter()
 
 @router.post("/login/access-token")
 async def login(
-    async_session: AsyncSessionDep,
+    async_session: async_session_dependency,
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
 ) -> Token:
     user = await authenticate_user(

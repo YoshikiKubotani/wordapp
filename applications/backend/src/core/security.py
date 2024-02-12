@@ -3,7 +3,7 @@ from datetime import datetime, timedelta, timezone
 from jose import jwt
 from passlib.context import CryptContext
 
-from src.api.dependencies import AsyncSessionDep
+from src.api.dependencies import async_session_dependency
 from src.core.config import settings
 from src.db.repositories.sqlalchemy.user_repository import UserRepository
 from src.domain.models import User
@@ -20,7 +20,7 @@ def get_password_hash(password: str) -> str:
 
 
 async def authenticate_user(
-    async_session: AsyncSessionDep,
+    async_session: async_session_dependency,
     user_name: str,
     password: str,
 ) -> User | None:
