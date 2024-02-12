@@ -2,7 +2,7 @@ from pydantic import BaseModel, PastDatetime
 
 
 class Item(BaseModel):
-    _id: int
+    self_id: int
     user_id: int
     english: str
     japanese: str

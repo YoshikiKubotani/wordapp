@@ -5,7 +5,7 @@ from pydantic.networks import IPvAnyAddress
 
 
 class User(BaseModel):
-    _id: int
+    self_id: int
     user_name: str
     email: str
     password: str
@@ -17,7 +17,7 @@ class User(BaseModel):
 
 
 class UserLoginHistory(BaseModel):
-    _id: int
+    self_id: int
     user_id: int
     login_timestamp: PastDatetime
     logout_timestamp: PastDatetime

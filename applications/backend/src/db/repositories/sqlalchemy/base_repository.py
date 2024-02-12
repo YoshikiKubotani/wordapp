@@ -64,7 +64,7 @@ class BaseRepository(
         # This context automatically calls async_session.commit() if no exceptions are raised.
         # If an exception is raised, it automatically calls async_session.rollback().
         async with async_session.begin():
-            data_entity = await async_session.get(self.data_model, domain_entity._id)
+            data_entity = await async_session.get(self.data_model, domain_entity.self_id)
             domain_entity_dict = domain_entity.model_dump(exlude_none=True)
             for key, value in domain_entity_dict.items():
                 setattr(data_entity, key, value)

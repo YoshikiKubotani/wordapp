@@ -32,11 +32,10 @@ async def create_deck(
     async_session: AsyncSessionDep,
 ) -> Any:
     """Create a new deck."""
-    entity = Deck(user_id=1, deck_name=deck.deck_name)
+    entity = Deck(self_id=1, user_id=1, deck_name=deck.deck_name)
     repo = DeckRepository()
     created_deck = await repo.create(async_session, entity)
-    # return DeckResponse(deck_id=1, deck_name="dummy_deck")
-    return created_deck
+    return DeckResponse(deck_id=created_deck.self_id, deck_name=created_deck.deck_name)
 
 
 @router.put("/{deck_id}", response_model=DeckResponse)
