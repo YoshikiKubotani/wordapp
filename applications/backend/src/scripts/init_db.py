@@ -5,7 +5,7 @@ from src.core.config import settings
 from src.core.security import get_password_hash
 from src.db.repositories.sqlalchemy.user_repository import UserRepository
 from src.domain.models import User
-
+from src.db.sqlalchemy_data_models import Base
 
 async def create_first_superuser() -> None:
     # Create a new async engine instance, which offers a session environment to manage a database.
@@ -13,6 +13,11 @@ async def create_first_superuser() -> None:
 
     # Create a factiry that returns a new AsyncSession instance.
     async_session_maker = async_sessionmaker(engine, expire_on_commit=False)
+
+    # Drop and create all tables defined as data models under `src/db`.
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.drop_all)
+        await conn.run_sync(Base.metadata.create_all)
 
     # This context automatically calls async_session.close() when the code block is exited.
     async with async_session_maker() as async_session:
