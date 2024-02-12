@@ -70,7 +70,7 @@ async def normal_async_test_client(async_test_client) -> AsyncIterator[AsyncClie
     # Import `engine` here to make sure the lifespan manager is executed before creating the session.
     from src.core.main import AsyncSessionFactory, engine
 
-    # Create all tables defined as data models under `src/db` if they do not exist.
+    # Drop and create all tables defined as data models under `src/db`.
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)
         await conn.run_sync(Base.metadata.create_all)
@@ -98,10 +98,6 @@ async def normal_async_test_client(async_test_client) -> AsyncIterator[AsyncClie
     # Yield the test client.
     yield async_test_client
 
-    # Drop all tables defined as data models under `src/db` after the test is done.
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.drop_all)
-
 
 @pytest.fixture(scope="function")
 async def admin_async_test_client(async_test_client) -> AsyncIterator[AsyncClient]:
@@ -120,8 +116,9 @@ async def admin_async_test_client(async_test_client) -> AsyncIterator[AsyncClien
     # Import `engine` here to make sure the lifespan manager is executed before creating the session.
     from src.core.main import AsyncSessionFactory, engine
 
-    # Create all tables defined as data models under `src/db` if they do not exist.
+    # Drop and create all tables defined as data models under `src/db`.
     async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.drop_all)
         await conn.run_sync(Base.metadata.create_all)
 
     # This context automatically calls async_session.close() when the code block is exited.
@@ -144,10 +141,6 @@ async def admin_async_test_client(async_test_client) -> AsyncIterator[AsyncClien
     # Yield the test client.
     yield async_test_client
 
-    # Drop all tables defined as data models under `src/db` after the test is done.
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.drop_all)
-
 
 @pytest.fixture(scope="function")
 async def async_db_session(
@@ -163,14 +156,11 @@ async def async_db_session(
     # Import `AsyncSessionFactory` and `engine` here to make sure the lifespan manager is executed before creating the session.
     from src.core.main import AsyncSessionFactory, engine
 
-    # Create all tables defined as data models under `src/db` if they do not exist.
+    # Drop and create all tables defined as data models under `src/db`.
     async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.drop_all)
         await conn.run_sync(Base.metadata.create_all)
 
     # This context automatically calls async_session.close() when the code block is exited.
     async with AsyncSessionFactory() as async_session:
         yield async_session
-
-    # Drop all tables defined as data models under `src/db` after the test is done.
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.drop_all)
