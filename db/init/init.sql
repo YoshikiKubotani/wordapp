@@ -1,5 +1,7 @@
 -- dev スキーマが存在しない場合に作成
 CREATE SCHEMA IF NOT EXISTS dev;
+-- test スキーマが存在しない場合に作成
+CREATE SCHEMA IF NOT EXISTS test;
 
 -- item テーブルが存在しない場合に作成
 CREATE TABLE IF NOT EXISTS dev.item (
