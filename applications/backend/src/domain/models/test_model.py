@@ -1,8 +1,8 @@
-from pydantic import BaseModel, PastDatetime
+from pydantic import BaseModel, PastDatetime, Field, AliasChoices
 
 
 class Test(BaseModel):
-    self_id: int
+    test_id: int | None = Field(default=None, validation_alias=AliasChoices("test_id", "self_id"))
     user_id: int
     deck_id: int
     test_type: str
@@ -10,7 +10,7 @@ class Test(BaseModel):
 
 
 class TestItem(BaseModel):
-    self_id: int
+    test_item_id: int | None = Field(default=None, validation_alias=AliasChoices("test_item_id", "self_id"))
     test_id: int
     item_id: int
     question_number: int

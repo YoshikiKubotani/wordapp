@@ -1,8 +1,8 @@
-from pydantic import BaseModel, PastDatetime
+from pydantic import BaseModel, PastDatetime, Field, AliasChoices
 
 
 class Item(BaseModel):
-    self_id: int
+    item_id: int | None = Field(default=None, validation_alias=AliasChoices("item_id", "self_id"))
     user_id: int
     english: str
     japanese: str

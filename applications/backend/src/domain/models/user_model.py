@@ -17,7 +17,7 @@ class User(BaseModel):
 
 
 class UserLoginHistory(BaseModel):
-    self_id: int
+    user_login_history_id: int | None = Field(default=None, validation_alias=AliasChoices("user_login_history_id", "self_id"))
     user_id: int
     login_timestamp: PastDatetime
     logout_timestamp: PastDatetime
