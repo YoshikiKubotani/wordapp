@@ -27,10 +27,10 @@ async def create_random_test_user(async_session: AsyncSession, email: str) -> Us
     Returns:
         User: The user that was created.
     """
-    user_repository = UserRepository()
+    user_repository = UserRepository(async_session)
 
     # Check if the user already exists.
-    user = await user_repository.read_by_email(async_session, email)
+    user = await user_repository.read_by_email(email)
     # Create a random user if it doesn't exist.
     if user is None:
         print("Creating a normal user for testing.")
@@ -41,7 +41,7 @@ async def create_random_test_user(async_session: AsyncSession, email: str) -> Us
             email=email,
             password=get_password_hash(password),
         )
-        user = await user_repository.create(async_session, user_in)
+        user = await user_repository.create(user_in)
 
         # For system-related reasons, it is necessary to revert the password back to its original, unhashed value.
         user.password = password
@@ -57,12 +57,10 @@ async def create_test_superuser(async_session: AsyncSession) -> User:
     Returns:
         User: The superuser that was created.
     """
-    user_repository = UserRepository()
+    user_repository = UserRepository(async_session)
 
     # Check if the user already exists.
-    user = await user_repository.read_by_email(
-        async_session, email=settings.FIRST_SUPERUSER_EMAIL
-    )
+    user = await user_repository.read_by_email(settings.FIRST_SUPERUSER_EMAIL)
     # Create a superuser if it doesn't exist.
     if user is None:
         print("Creating a superuser for testing.")
@@ -72,7 +70,7 @@ async def create_test_superuser(async_session: AsyncSession) -> User:
             password=get_password_hash(settings.FIRST_SUPERUSER_PASSWORD),
             is_superuser=True,
         )
-        user = await user_repository.create(async_session, user_in)
+        user = await user_repository.create(user_in)
 
         # For system-related reasons, it is necessary to revert the password back to its original, unhashed value.
         user.password = settings.FIRST_SUPERUSER_PASSWORD

@@ -21,11 +21,9 @@ async def create_first_superuser() -> None:
 
     # This context automatically calls async_session.close() when the code block is exited.
     async with async_session_maker() as async_session:
-        user_repository = UserRepository()
+        user_repository = UserRepository(async_session)
         # Check if the user already exists.
-        user = await user_repository.read_by_email(
-            async_session, settings.FIRST_SUPERUSER_EMAIL
-        )
+        user = await user_repository.read_by_email(settings.FIRST_SUPERUSER_EMAIL)
         # Create the first superuser if it doesn't exist.
         if user is None:
             print("Creating first superuser")
@@ -35,7 +33,7 @@ async def create_first_superuser() -> None:
                 password=get_password_hash(settings.FIRST_SUPERUSER_PASSWORD),
                 is_superuser=True,
             )
-            await user_repository.create(async_session, user_in)
+            await user_repository.create(user_in)
         else:
             print("First superuser already exists!")
 

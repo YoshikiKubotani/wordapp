@@ -33,8 +33,8 @@ async def create_deck(
 ) -> Any:
     """Create a new deck."""
     entity = Deck(user_id=1, deck_name=deck.deck_name)
-    repo = DeckRepository()
-    created_deck = await repo.create(async_session, entity)
+    repo = DeckRepository(async_session)
+    created_deck = await repo.create(entity)
     return DeckResponse(deck_id=created_deck.deck_id, deck_name=created_deck.deck_name)
 
 

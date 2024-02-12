@@ -24,10 +24,10 @@ async def authenticate_user(
     user_name: str,
     password: str,
 ) -> User | None:
-    user_repository = UserRepository()
+    user_repository = UserRepository(async_session)
 
     # Check if the incoming user exists.
-    user = await user_repository.read_by_username(async_session, user_name)
+    user = await user_repository.read_by_username(user_name)
 
     if user is None:
         return None
