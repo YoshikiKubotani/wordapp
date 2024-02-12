@@ -92,9 +92,9 @@ class Settings(BaseSettings, case_sensitive=True):
     #     )
 
     TEST_USER_EMAIL: EmailStr = "test@gmail.com"
-    FIRST_SUPERUSER: str = "test"
-    FIRST_SUPERUSER_EMAIL: EmailStr = "test@gmail.com"
-    FIRST_SUPERUSER_PASSWORD: str = "test"
+    FIRST_SUPERUSER: str
+    FIRST_SUPERUSER_EMAIL: EmailStr
+    FIRST_SUPERUSER_PASSWORD: str
     # USERS_OPEN_REGISTRATION: bool = False
 
 
