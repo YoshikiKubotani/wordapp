@@ -1,11 +1,11 @@
 from datetime import datetime
 
-from pydantic import BaseModel, PastDatetime
+from pydantic import BaseModel, PastDatetime, Field, AliasChoices
 from pydantic.networks import IPvAnyAddress
 
 
 class User(BaseModel):
-    self_id: int
+    user_id: int | None = Field(default=None, validation_alias=AliasChoices("user_id", "self_id"))
     user_name: str
     email: str
     password: str
