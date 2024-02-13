@@ -5,7 +5,7 @@ import pytest
 from asgi_lifespan import LifespanManager
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.db.sqlalchemy_data_models import Base
+from src.db.repositories.sqlalchemy.data_models import Base
 
 from src.core.config import settings
 from src.core.main import app

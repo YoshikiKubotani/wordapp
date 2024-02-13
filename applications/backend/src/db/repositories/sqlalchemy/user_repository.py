@@ -1,7 +1,7 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.db.sqlalchemy_data_models import (
+from src.db.repositories.sqlalchemy.data_models import (
     SQLAlchemyUser,
     SQLAlchemyUserLoginHistory,
     orm_object_to_dict,

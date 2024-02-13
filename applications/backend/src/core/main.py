@@ -13,7 +13,7 @@ from sqlalchemy.ext.asyncio import (
 from starlette.middleware.cors import CORSMiddleware
 
 from src.api.routers import decks, items, login, tests, users
-from src.db.sqlalchemy_data_models import Base
+from src.db.repositories.sqlalchemy.data_models import Base
 
 from .config import settings
 
