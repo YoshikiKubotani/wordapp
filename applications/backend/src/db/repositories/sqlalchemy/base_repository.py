@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.db.repositories.repository_interface import IRepository
-from src.db.repositories.sqlalchemy.data_models import (
+from db.models.sqlalchemy_data_models import (
     SQLAlchemyDeck,
     SQLAlchemyGenre,
     SQLAlchemyItem,
