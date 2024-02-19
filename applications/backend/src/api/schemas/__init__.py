@@ -5,13 +5,13 @@ from .items_schema import (
     UpdateItemRequest,
 )
 from .login_schema import Token, TokenPayload
-from .tests_schema import (
-    TestCheckedResponse,
-    TestItemAfterAttemptRequest,
-    TestItemBeforeAttemptResponse,
-    TestItemCheckedResponse,
-    TestMetaDataResponse,
-    TestUnsolvedResponse,
+from .quizzes_schema import (
+    QuizCheckedResponse,
+    QuizItemAfterAttemptRequest,
+    QuizItemBeforeAttemptResponse,
+    QuizItemCheckedResponse,
+    QuizMetaDataResponse,
+    QuizUnsolvedResponse,
 )
 from .users_schema import (
     CreateUserRequest,
@@ -30,10 +30,10 @@ __all__ = [
     "CreateUserRequest",
     "UpdateUserRequest",
     "UserResponse",
-    "TestItemAfterAttemptRequest",
-    "TestItemBeforeAttemptResponse",
-    "TestItemCheckedResponse",
-    "TestMetaDataResponse",
-    "TestUnsolvedResponse",
-    "TestCheckedResponse",
+    "QuizItemAfterAttemptRequest",
+    "QuizItemBeforeAttemptResponse",
+    "QuizItemCheckedResponse",
+    "QuizMetaDataResponse",
+    "QuizUnsolvedResponse",
+    "QuizCheckedResponse",
 ]

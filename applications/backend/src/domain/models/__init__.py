@@ -1,13 +1,13 @@
 from .deck_model import Deck
 from .item_model import Item
-from .test_model import Test, TestItem
+from .quiz_model import Quiz, QuizItem
 from .user_model import User, UserLoginHistory
 
 __all__ = [
     "Deck",
     "Item",
-    "Test",
-    "TestItem",
+    "Quiz",
+    "QuizItem",
     "User",
     "UserLoginHistory",
 ]

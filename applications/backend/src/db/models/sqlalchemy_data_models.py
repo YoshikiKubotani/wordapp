@@ -56,8 +56,8 @@ class SQLAlchemyUser(Base):
     items: Mapped[list["SQLAlchemyItem"]] = relationship(back_populates="user")
     # One-to-many relationship with Deck
     decks: Mapped[list["SQLAlchemyDeck"]] = relationship(back_populates="user")
-    # One-to-many relationship with Test
-    tests: Mapped[list["SQLAlchemyTest"]] = relationship(back_populates="user")
+    # One-to-many relationship with Quiz
+    quizzes: Mapped[list["SQLAlchemyQuiz"]] = relationship(back_populates="user")
 
 
 class SQLAlchemyUserLoginHistory(Base):
@@ -100,8 +100,8 @@ class SQLAlchemyItem(Base):
         secondary=item_deck_mapper_table,
         back_populates="items",
     )
-    # One-to-many relationship with TestItem
-    test_items: Mapped[list["SQLAlchemyTestItem"]] = relationship(back_populates="item")
+    # One-to-many relationship with QuizItem
+    quiz_items: Mapped[list["SQLAlchemyQuizItem"]] = relationship(back_populates="item")
 
 
 class SQLAlchemyGenre(Base):
@@ -131,15 +131,15 @@ class SQLAlchemyDeck(Base):
     )
     # Many-to-one relationship with User
     user: Mapped[SQLAlchemyUser] = relationship(back_populates="decks")
-    # One-to-many relationship with Test
-    tests: Mapped[list["SQLAlchemyTest"]] = relationship(back_populates="deck")
+    # One-to-many relationship with Quiz
+    quizzes: Mapped[list["SQLAlchemyQuiz"]] = relationship(back_populates="deck")
 
 
-class SQLAlchemyTestItem(Base):
-    __tablename__ = "test_items"
+class SQLAlchemyQuizItem(Base):
+    __tablename__ = "quiz_items"
 
-    test_item_id: Mapped[int] = mapped_column(primary_key=True)
-    test_id: Mapped[int] = mapped_column(ForeignKey("tests.test_id"))
+    quiz_item_id: Mapped[int] = mapped_column(primary_key=True)
+    quiz_id: Mapped[int] = mapped_column(ForeignKey("quizzes.quiz_id"))
     item_id: Mapped[int] = mapped_column(ForeignKey("items.item_id"))
     question_number: Mapped[int]
     choice_item_ids: Mapped[list[str]]
@@ -147,26 +147,26 @@ class SQLAlchemyTestItem(Base):
     user_answer: Mapped[int]
     answer_time: Mapped[int]
 
-    # Many-to-one relationship with Test
-    test: Mapped["SQLAlchemyTest"] = relationship(back_populates="test_items")
+    # Many-to-one relationship with Quiz
+    quiz: Mapped["SQLAlchemyQuiz"] = relationship(back_populates="quiz_items")
     # Many-to-one relationship with Item
-    item: Mapped[SQLAlchemyItem] = relationship(back_populates="test_items")
+    item: Mapped[SQLAlchemyItem] = relationship(back_populates="quiz_items")
 
 
-class SQLAlchemyTest(Base):
-    __tablename__ = "tests"
+class SQLAlchemyQuiz(Base):
+    __tablename__ = "quizzes"
 
-    test_id: Mapped[int] = mapped_column(primary_key=True)
+    quiz_id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.user_id"))
     deck_id: Mapped[int] = mapped_column(ForeignKey("decks.deck_id"))
-    test_type: Mapped[str]
-    test_timestamp: Mapped[datetime.datetime] = mapped_column(
+    quiz_type: Mapped[str]
+    quiz_timestamp: Mapped[datetime.datetime] = mapped_column(
         default=datetime.datetime.now
     )
 
-    # One-to-many relationship with TestItem
-    test_items: Mapped[list[SQLAlchemyTestItem]] = relationship(back_populates="test")
+    # One-to-many relationship with QuizItem
+    quiz_items: Mapped[list[SQLAlchemyQuizItem]] = relationship(back_populates="quiz")
     # Many-to-one relationship with User
-    user: Mapped[SQLAlchemyUser] = relationship(back_populates="tests")
+    user: Mapped[SQLAlchemyUser] = relationship(back_populates="quizzes")
     # Many-to-one relationship with Deck
-    deck: Mapped[SQLAlchemyDeck] = relationship(back_populates="tests")
+    deck: Mapped[SQLAlchemyDeck] = relationship(back_populates="quizzes")

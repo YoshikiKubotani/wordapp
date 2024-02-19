@@ -12,7 +12,7 @@ from sqlalchemy.ext.asyncio import (
 )
 from starlette.middleware.cors import CORSMiddleware
 
-from src.api.routers import decks, items, login, tests, users
+from src.api.routers import decks, items, login, quizzes, users
 from db.models.sqlalchemy_data_models import Base
 
 from .config import settings
@@ -74,7 +74,7 @@ api_router = APIRouter()
 api_router.include_router(login.router, tags=["login"])
 api_router.include_router(decks.router, prefix="/decks", tags=["decks"])
 api_router.include_router(items.router, prefix="/items", tags=["items"])
-api_router.include_router(tests.router, prefix="/tests", tags=["tests"])
+api_router.include_router(quizzes.router, prefix="/quizzes", tags=["quizzes"])
 api_router.include_router(users.router, prefix="/users", tags=["users"])
 
 app.include_router(api_router, prefix=settings.API_V1_STR)

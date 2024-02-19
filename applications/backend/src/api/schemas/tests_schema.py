@@ -1,19 +1,19 @@
 from pydantic import BaseModel, PastDatetime
 
 
-class TestItemAfterAttemptRequest(BaseModel):
+class QuizItemAfterAttemptRequest(BaseModel):
     question_number: int
     choices: list[str]
     user_answer: int
     answer_time: int
 
 
-class TestItemBeforeAttemptResponse(BaseModel):
+class QuizItemBeforeAttemptResponse(BaseModel):
     question_number: int
     choices: list[str]
 
 
-class TestItemCheckedResponse(BaseModel):
+class QuizItemCheckedResponse(BaseModel):
     question_number: int
     choices: list[str]
     user_answer: int
@@ -21,14 +21,14 @@ class TestItemCheckedResponse(BaseModel):
     answer_time: int
 
 
-class TestMetaDataResponse(BaseModel):
-    test_id: int
+class QuizMetaDataResponse(BaseModel):
+    quiz_id: int
     timestamp: PastDatetime
 
 
-class TestUnsolvedResponse(TestMetaDataResponse):
-    test_items: list[TestItemBeforeAttemptResponse]
+class QuizUnsolvedResponse(QuizMetaDataResponse):
+    quiz_items: list[QuizItemBeforeAttemptResponse]
 
 
-class TestCheckedResponse(TestMetaDataResponse):
-    test_items: list[TestItemCheckedResponse]
+class QuizCheckedResponse(QuizMetaDataResponse):
+    quiz_items: list[QuizItemCheckedResponse]

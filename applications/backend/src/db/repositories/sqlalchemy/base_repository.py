@@ -8,8 +8,8 @@ from db.models.sqlalchemy_data_models import (
     SQLAlchemyDeck,
     SQLAlchemyGenre,
     SQLAlchemyItem,
-    SQLAlchemyTest,
-    SQLAlchemyTestItem,
+    SQLAlchemyQuiz,
+    SQLAlchemyQuizItem,
     SQLAlchemyUser,
     SQLAlchemyUserLoginHistory,
     orm_object_to_dict,
@@ -22,8 +22,8 @@ DataModelType = TypeVar(
     SQLAlchemyDeck,
     SQLAlchemyGenre,
     SQLAlchemyItem,
-    SQLAlchemyTest,
-    SQLAlchemyTestItem,
+    SQLAlchemyQuiz,
+    SQLAlchemyQuizItem,
 )
 DomainModelType = TypeVar("DomainModelType", bound=BaseModel)
 

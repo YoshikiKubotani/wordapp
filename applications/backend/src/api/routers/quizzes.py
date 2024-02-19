@@ -5,42 +5,42 @@ from fastapi import APIRouter, HTTPException
 
 from src.api.dependencies import async_session_dependency, current_user_dependency
 from src.api.schemas import (
-    TestCheckedResponse,
-    TestItemAfterAttemptRequest,
-    TestItemBeforeAttemptResponse,
-    TestItemCheckedResponse,
-    TestMetaDataResponse,
-    TestUnsolvedResponse,
+    QuizCheckedResponse,
+    QuizItemAfterAttemptRequest,
+    QuizItemBeforeAttemptResponse,
+    QuizItemCheckedResponse,
+    QuizMetaDataResponse,
+    QuizUnsolvedResponse,
 )
 
 router = APIRouter()
 
 
-@router.get("/", response_model=list[TestMetaDataResponse])
-async def read_all_tests(
+@router.get("/", response_model=list[QuizMetaDataResponse])
+async def read_all_quizzes(
     current_user: current_user_dependency,
     async_session: async_session_dependency,
 ) -> Any:
-    """Read all the tests attempted by a user."""
-    tests = [
-        TestMetaDataResponse(
-            test_id=1,
+    """Read all the quizzes attempted by a user."""
+    quizzes = [
+        QuizMetaDataResponse(
+            quiz_id=1,
             timestamp=datetime.datetime.now(),
         )
     ]
-    return tests
+    return quizzes
 
 
-@router.post("/", response_model=TestUnsolvedResponse)
-async def create_test(
+@router.post("/", response_model=QuizUnsolvedResponse)
+async def create_quiz(
     current_user: current_user_dependency,
     async_session: async_session_dependency,
 ) -> Any:
-    """Create a new test."""
-    return TestUnsolvedResponse(
-        test_id=1,
-        test_items=[
-            TestItemBeforeAttemptResponse(
+    """Create a new quiz."""
+    return QuizUnsolvedResponse(
+        quiz_id=1,
+        quiz_items=[
+            QuizItemBeforeAttemptResponse(
                 question_number=1,
                 choices=[
                     "dummy_choice_1",
@@ -49,7 +49,7 @@ async def create_test(
                     "dummy_choice_4",
                 ],
             ),
-            TestItemBeforeAttemptResponse(
+            QuizItemBeforeAttemptResponse(
                 question_number=2,
                 choices=[
                     "dummy_choice_1",
@@ -63,18 +63,18 @@ async def create_test(
     )
 
 
-@router.post("/{test_id}", response_model=TestCheckedResponse)
-async def answer_test(
-    test_id: int,
-    # solved_items: list[TestItemAfterAttemptRequest],
+@router.post("/{quiz_id}", response_model=QuizCheckedResponse)
+async def answer_quiz(
+    quiz_id: int,
+    # solved_items: list[QuizItemAfterAttemptRequest],
     current_user: current_user_dependency,
     async_session: async_session_dependency,
 ) -> Any:
-    """Answer a test."""
-    return TestCheckedResponse(
-        test_id=test_id,
-        test_items=[
-            TestItemCheckedResponse(
+    """Answer a quiz."""
+    return QuizCheckedResponse(
+        quiz_id=quiz_id,
+        quiz_items=[
+            QuizItemCheckedResponse(
                 question_number=1,
                 choices=[
                     "dummy_choice_1",
@@ -86,7 +86,7 @@ async def answer_test(
                 correct_answer=1,
                 answer_time=1000,
             ),
-            TestItemCheckedResponse(
+            QuizItemCheckedResponse(
                 question_number=2,
                 choices=[
                     "dummy_choice_1",
@@ -103,15 +103,15 @@ async def answer_test(
     )
 
 
-@router.get("/{test_id}/items", response_model=list[TestItemCheckedResponse])
-async def read_test_items(
-    test_id: int,
+@router.get("/{quiz_id}/items", response_model=list[QuizItemCheckedResponse])
+async def read_quiz_items(
+    quiz_id: int,
     current_user: current_user_dependency,
     async_session: async_session_dependency,
 ) -> Any:
-    """Get all the items in a test."""
+    """Get all the items in a quiz."""
     return [
-        TestItemCheckedResponse(
+        QuizItemCheckedResponse(
             question_number=1,
             choices=[
                 "dummy_choice_1",
@@ -123,7 +123,7 @@ async def read_test_items(
             correct_answer=1,
             answer_time=1000,
         ),
-        TestItemCheckedResponse(
+        QuizItemCheckedResponse(
             question_number=2,
             choices=[
                 "dummy_choice_1",
