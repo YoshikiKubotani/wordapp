@@ -1,5 +1,5 @@
 from collections.abc import AsyncIterator
-from typing import Any
+from typing import Any, Callable
 
 import pytest
 from asgi_lifespan import LifespanManager
@@ -17,13 +17,13 @@ settings.TEST_USER_EMAIL = random_email()
 
 
 @pytest.fixture(scope="session")
-def anyio_backend() -> None:
+def anyio_backend() -> str:
     """Use the asyncio backend for asynchronous testing. This is necessary to avoid processing all the tests twice."""
     return "asyncio"
 
 
 @pytest.fixture(scope="session")
-async def lifespan_manager() -> AsyncIterator[LifespanManager]:
+async def lifespan_manager() -> LifespanManager:
     """Provide a LifespanManager instance to manage the FastAPI lifespan under asynchronous testing.
 
     As asynchronous test clients do not execute lifespan events by default, the LifespanManager
@@ -40,20 +40,20 @@ async def lifespan_manager() -> AsyncIterator[LifespanManager]:
 
 
 @pytest.fixture(scope="class")
-async def async_test_client(lifespan_manager) -> AsyncClient:
+async def async_test_client(lifespan_manager: LifespanManager) -> AsyncClient:
     """Create an asynchronous test client.
 
     Yields:
         AsyncClient: An asynchronous test client.
     """
     async with AsyncClient(
-        app=lifespan_manager.app, base_url=server_url
+        app=lifespan_manager.app, base_url=server_url  # type: ignore
     ) as async_client:
         yield async_client
 
 
 @pytest.fixture(scope="class")
-async def normal_async_test_client(async_test_client) -> AsyncIterator[AsyncClient]:
+async def normal_async_test_client(async_test_client: AsyncClient) -> AsyncClient:
     """Create a normal asynchronous test client with table startup/cleanup events.
 
     Each test must be independent, necessitating the initialization of database tables for every test.
@@ -99,7 +99,7 @@ async def normal_async_test_client(async_test_client) -> AsyncIterator[AsyncClie
 
 
 @pytest.fixture(scope="function")
-async def admin_async_test_client(async_test_client) -> AsyncIterator[AsyncClient]:
+async def admin_async_test_client(async_test_client: AsyncClient) -> AsyncClient:
     """Create an admin asynchronous test client with table startup/cleanup events.
 
     Each test must be independent, necessitating the initialization of database tables for every test.
@@ -144,7 +144,7 @@ async def admin_async_test_client(async_test_client) -> AsyncIterator[AsyncClien
 @pytest.fixture(scope="function")
 async def async_db_session(
     lifespan_manager: LifespanManager,
-) -> AsyncIterator[AsyncSession]:
+) -> AsyncSession:
     """Provide an asynchronous database session.
 
     This fixture is used for testing which does not require an asynchronous test client.
