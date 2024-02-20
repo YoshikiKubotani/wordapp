@@ -1,7 +1,7 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from db.models.sqlalchemy_data_models import SQLAlchemyDeck
+from src.db.models.sqlalchemy_data_models import SQLAlchemyDeck, orm_object_to_dict
 from src.domain.models import Deck
 
 from .base_repository import BaseRepository
