@@ -20,10 +20,15 @@ class QuizItemRepository(BaseRepository[SQLAlchemyQuizItem, QuizItem]):
         # If an exception is raised, it automatically calls async_session.rollback().
         async with self.async_session.begin():
             results = await self.async_session.execute(
-                select(self.data_model).where(self.data_model.quiz_id == quiz_id).order_by(self.data_model.quiz_item_id)
+                select(self.data_model)
+                .where(self.data_model.quiz_id == quiz_id)
+                .order_by(self.data_model.quiz_item_id)
             )
             quiz_items = results.scalars().all()
-        quiz_items = [QuizItem.model_validate(orm_object_to_dict(quiz_item)) for quiz_item in quiz_items]
+        quiz_items = [
+            QuizItem.model_validate(orm_object_to_dict(quiz_item))
+            for quiz_item in quiz_items
+        ]
         return quiz_items
 
     async def read_by_item_id(self, item_id: int) -> list[QuizItem]:
@@ -31,8 +36,13 @@ class QuizItemRepository(BaseRepository[SQLAlchemyQuizItem, QuizItem]):
         # If an exception is raised, it automatically calls async_session.rollback().
         async with self.async_session.begin():
             quiz_items = await self.async_session.execute(
-                select(self.data_model).where(self.data_model.item_id == item_id).order_by(self.data_model.quiz_item_id)
+                select(self.data_model)
+                .where(self.data_model.item_id == item_id)
+                .order_by(self.data_model.quiz_item_id)
             )
             quiz_items = quiz_items.scalars().all()
-        quiz_items = [QuizItem.model_validate(orm_object_to_dict(quiz_item)) for quiz_item in quiz_items]
+        quiz_items = [
+            QuizItem.model_validate(orm_object_to_dict(quiz_item))
+            for quiz_item in quiz_items
+        ]
         return quiz_items

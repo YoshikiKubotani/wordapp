@@ -1,9 +1,15 @@
 import pytest
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.db.models.sqlalchemy_data_models import SQLAlchemyItem, SQLAlchemyUser,SQLAlchemyDeck, SQLAlchemyQuiz, SQLAlchemyQuizItem
+from src.db.models.sqlalchemy_data_models import (
+    SQLAlchemyDeck,
+    SQLAlchemyItem,
+    SQLAlchemyQuiz,
+    SQLAlchemyQuizItem,
+    SQLAlchemyUser,
+)
 from src.db.repositories.sqlalchemy.quiz_item_repository import QuizItemRepository
-from src.domain.models import Item, Deck, User, Quiz, QuizItem
+from src.domain.models import Deck, Item, Quiz, QuizItem, User
 
 pytestmark = pytest.mark.anyio
 

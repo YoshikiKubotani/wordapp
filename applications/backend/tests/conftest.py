@@ -6,9 +6,9 @@ from asgi_lifespan import LifespanManager
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.db.models.sqlalchemy_data_models import Base
 from src.core.config import settings
 from src.core.main import app
+from src.db.models.sqlalchemy_data_models import Base
 from tests.src.utils import create_random_test_user, create_test_superuser, random_email
 
 server_url = f"http://localhost:8000{settings.API_V1_STR}/"

@@ -1,11 +1,12 @@
 # This is necessary to ensure the models are all imported and registered.
+from db.models.sqlalchemy_data_models import Base
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
 from src.core.config import settings
 from src.core.security import get_password_hash
 from src.db.repositories.sqlalchemy.user_repository import UserRepository
 from src.domain.models import User
-from db.models.sqlalchemy_data_models import Base
+
 
 async def create_first_superuser() -> None:
     # Create a new async engine instance, which offers a session environment to manage a database.
@@ -38,6 +39,7 @@ async def create_first_superuser() -> None:
             print("First superuser already exists!")
 
     print("First superuser has successfully been created!")
+
 
 if __name__ == "__main__":
     import asyncio

@@ -3,7 +3,6 @@ from typing import Generic, Type, TypeVar
 from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.db.repositories.repository_interface import IRepository
 from src.db.models.sqlalchemy_data_models import (
     SQLAlchemyDeck,
     SQLAlchemyGenre,
@@ -14,6 +13,7 @@ from src.db.models.sqlalchemy_data_models import (
     SQLAlchemyUserLoginHistory,
     orm_object_to_dict,
 )
+from src.db.repositories.repository_interface import IRepository
 
 DataModelType = TypeVar(
     "DataModelType",
@@ -32,7 +32,10 @@ class BaseRepository(
     IRepository[DomainModelType], Generic[DataModelType, DomainModelType]
 ):
     def __init__(
-        self, data_model: Type[DataModelType], domain_model: Type[DomainModelType], async_seesoon: AsyncSession
+        self,
+        data_model: Type[DataModelType],
+        domain_model: Type[DomainModelType],
+        async_seesoon: AsyncSession,
     ) -> None:
         self.data_model = data_model
         self.domain_model = domain_model
@@ -63,7 +66,9 @@ class BaseRepository(
         # This context automatically calls async_session.commit() if no exceptions are raised.
         # If an exception is raised, it automatically calls async_session.rollback().
         async with self.async_session.begin():
-            data_entity = await self.async_session.get(self.data_model, domain_entity.self_id)
+            data_entity = await self.async_session.get(
+                self.data_model, domain_entity.self_id
+            )
             domain_entity_dict = domain_entity.model_dump(exlude_none=True)
             for key, value in domain_entity_dict.items():
                 setattr(data_entity, key, value)

@@ -13,7 +13,9 @@ from .base_repository import BaseRepository
 
 class UserRepository(BaseRepository[SQLAlchemyUser, User]):
     def __init__(self, async_session: AsyncSession) -> None:
-        super().__init__(data_model=SQLAlchemyUser, domain_model=User, async_seesoon=async_session)
+        super().__init__(
+            data_model=SQLAlchemyUser, domain_model=User, async_seesoon=async_session
+        )
 
     async def read_by_username(self, user_name: str) -> User | None:
         # This context automatically calls async_session.commit() if no exceptions are raised.
@@ -45,7 +47,9 @@ class UserLoginHistoryRepository(
 ):
     def __init__(self, async_session: AsyncSession) -> None:
         super().__init__(
-            data_model=SQLAlchemyUserLoginHistory, domain_model=UserLoginHistory, async_seesoon=async_session
+            data_model=SQLAlchemyUserLoginHistory,
+            domain_model=UserLoginHistory,
+            async_seesoon=async_session,
         )
 
     async def read_by_user_id(self, user_id: int) -> list[UserLoginHistory]:
