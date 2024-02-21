@@ -13,6 +13,7 @@ from src.core.config import settings
 def orm_object_to_dict(model):
     return {c.key: getattr(model, c.key) for c in inspect(model).mapper.column_attrs}
 
+
 class Base(DeclarativeBase, AsyncAttrs):
     type_annotation_map = {
         list[str]: JSON().with_variant(JSONB(), "postgresql"),
@@ -144,8 +145,8 @@ class SQLAlchemyQuizItem(Base):
     question_number: Mapped[int]
     choice_item_ids: Mapped[list[str]]
     correct_answer: Mapped[int]
-    user_answer: Mapped[int]
-    answer_time: Mapped[int]
+    user_answer: Mapped[Optional[int]]
+    answer_time: Mapped[Optional[int]]
 
     # Many-to-one relationship with Quiz
     quiz: Mapped["SQLAlchemyQuiz"] = relationship(back_populates="quiz_items")
