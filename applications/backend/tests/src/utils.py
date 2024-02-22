@@ -17,61 +17,69 @@ def random_email() -> str:
     return f"{random_lower_string()}@{random_lower_string()}.com"
 
 
-async def create_random_test_user(async_session: AsyncSession, email: str) -> User:
+async def create_random_test_user(async_session: AsyncSession) -> dict[str, str]:
     """Create a random normal user in the database for testing.
 
     Args:
         async_session (AsyncSession): The SQLAlchemy async session.
-        email (str): The dummy email of the test user.
 
     Returns:
-        User: The user that was created.
+        dict[str, str]: The request form to log in as the created user.
     """
     user_repository = UserRepository(async_session)
 
+    # Generate a random password.
+    password = random_lower_string()
+
     # Check if the user already exists.
-    user = await user_repository.read_by_email(email)
+    user = await user_repository.read_by_email(settings.TEST_USER_EMAIL)
     # Create a random user if it doesn't exist.
+    user_in = User(
+        user_name=settings.TEST_USER_EMAIL,
+        email=settings.TEST_USER_EMAIL,
+        password=get_password_hash(password),
+    )
     if user is None:
         print("Creating a normal user for testing.")
-        # Generate a random password.
-        password = random_lower_string()
-        user_in = User(
-            user_name=email,
-            email=email,
-            password=get_password_hash(password),
-        )
         user = await user_repository.create(user_in)
+    else:
+        print("Updating the password of the existing user for testing.")
+        user = await user_repository.update(user_in)
 
-        # For system-related reasons, it is necessary to revert the password back to its original, unhashed value.
-        user.password = password
-    return user
+    return {
+        "username": settings.TEST_USER_EMAIL,
+        "password": password,
+    }
 
 
-async def create_test_superuser(async_session: AsyncSession) -> User:
+async def create_test_superuser(async_session: AsyncSession) -> dict[str, str]:
     """Create a superuser in the database for testing.
 
     Args:
         async_session (AsyncSession): The SQLAlchemy async session.
 
     Returns:
-        User: The superuser that was created.
+        dict[str, str]: The request form to log in as the created superuser.
     """
     user_repository = UserRepository(async_session)
 
     # Check if the user already exists.
     user = await user_repository.read_by_email(settings.FIRST_SUPERUSER_EMAIL)
     # Create a superuser if it doesn't exist.
+    user_in = User(
+        user_name=settings.FIRST_SUPERUSER,
+        email=settings.FIRST_SUPERUSER_EMAIL,
+        password=get_password_hash(settings.FIRST_SUPERUSER_PASSWORD),
+        is_superuser=True,
+    )
     if user is None:
         print("Creating a superuser for testing.")
-        user_in = User(
-            user_name=settings.FIRST_SUPERUSER,
-            email=settings.FIRST_SUPERUSER_EMAIL,
-            password=get_password_hash(settings.FIRST_SUPERUSER_PASSWORD),
-            is_superuser=True,
-        )
         user = await user_repository.create(user_in)
+    else:
+        print("Updating the password of the existing superuser for testing.")
+        user = await user_repository.update(user_in)
 
-        # For system-related reasons, it is necessary to revert the password back to its original, unhashed value.
-        user.password = settings.FIRST_SUPERUSER_PASSWORD
-    return user
+    return {
+        "username": settings.FIRST_SUPERUSER,
+        "password": settings.FIRST_SUPERUSER_PASSWORD,
+    }

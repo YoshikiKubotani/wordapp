@@ -77,17 +77,14 @@ async def normal_async_test_client(async_test_client: AsyncClient) -> AsyncClien
     # This context automatically calls async_session.close() when the code block is exited.
     async with async_session_factory() as async_session:
         # Create a normal user for testing if it does not exist.
-        normal_test_user = await create_random_test_user(
-            async_session, settings.TEST_USER_EMAIL
+        request_form = await create_random_test_user(
+            async_session
         )
 
     # Log in as the normal user.
     response = await async_test_client.post(
         "/login/access-token",
-        data={
-            "username": normal_test_user.user_name,
-            "password": normal_test_user.password,
-        },
+        data=request_form,
     )
 
     token = response.json()["access_token"]
@@ -123,15 +120,12 @@ async def admin_async_test_client(async_test_client: AsyncClient) -> AsyncClient
     # This context automatically calls async_session.close() when the code block is exited.
     async with async_session_factory() as async_session:
         # Create the first superuser if it does not exist.
-        await create_test_superuser(async_session)
+        request_form = await create_test_superuser(async_session)
 
     # Log in as the admin user.
     response = await async_test_client.post(
         "/login/access-token",
-        data={
-            "username": settings.FIRST_SUPERUSER,
-            "password": settings.FIRST_SUPERUSER_PASSWORD,
-        },
+        data=request_form,
     )
     token = response.json()["access_token"]
     token_type = response.json()["token_type"]
