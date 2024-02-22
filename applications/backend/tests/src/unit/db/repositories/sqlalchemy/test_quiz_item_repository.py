@@ -159,7 +159,7 @@ async def test_read_by_item_id(async_db_session: AsyncSession) -> None:
     Args:
         async_db_session (AsyncSession): An asynchronous database session.
     """
-    # Create a user, a deck, two quizzes, four items, and four quiz items for testing.
+    # Create a user, a deck, two quizzes, four items, and five quiz items for testing.
     user_domain_model = User(
         user_id=1,
         user_name="dummy_user",
