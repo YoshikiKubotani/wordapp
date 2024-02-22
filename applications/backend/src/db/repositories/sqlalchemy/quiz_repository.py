@@ -18,7 +18,9 @@ class QuizRepository(BaseRepository[SQLAlchemyQuiz, Quiz]):
         # If an exception is raised, it automatically calls async_session.rollback().
         async with self.async_session.begin():
             results = await self.async_session.execute(
-                select(self.data_model).where(self.data_model.user_id == user_id).order_by(self.data_model.quiz_id)
+                select(self.data_model)
+                .where(self.data_model.user_id == user_id)
+                .order_by(self.data_model.quiz_id)
             )
             quizzes = results.scalars().all()
         quizzes = [Quiz.model_validate(orm_object_to_dict(quiz)) for quiz in quizzes]
@@ -29,7 +31,9 @@ class QuizRepository(BaseRepository[SQLAlchemyQuiz, Quiz]):
         # If an exception is raised, it automatically calls async_session.rollback().
         async with self.async_session.begin():
             results = await self.async_session.execute(
-                select(self.data_model).where(self.data_model.deck_id == deck_id).order_by(self.data_model.quiz_id)
+                select(self.data_model)
+                .where(self.data_model.deck_id == deck_id)
+                .order_by(self.data_model.quiz_id)
             )
             quizzes = results.scalars().all()
         quizzes = [Quiz.model_validate(orm_object_to_dict(quiz)) for quiz in quizzes]

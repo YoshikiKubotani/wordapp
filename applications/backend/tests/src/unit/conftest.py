@@ -1,7 +1,6 @@
 import pytest
-
-from sqlalchemy.ext.asyncio import AsyncSession
 from asgi_lifespan import LifespanManager
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.db.models.sqlalchemy_data_models import Base
 

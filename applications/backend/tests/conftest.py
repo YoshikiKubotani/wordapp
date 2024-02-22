@@ -77,9 +77,7 @@ async def normal_async_test_client(async_test_client: AsyncClient) -> AsyncClien
     # This context automatically calls async_session.close() when the code block is exited.
     async with async_session_factory() as async_session:
         # Create a normal user for testing if it does not exist.
-        request_form = await create_random_test_user(
-            async_session
-        )
+        request_form = await create_random_test_user(async_session)
 
     # Log in as the normal user.
     response = await async_test_client.post(

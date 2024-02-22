@@ -11,6 +11,7 @@ from src.domain.models import Deck, Quiz, User
 
 pytestmark = pytest.mark.anyio
 
+
 async def test_read_by_username(async_db_session: AsyncSession) -> None:
     """Test the `UserRepository.read_by_username` method.
 
@@ -35,6 +36,7 @@ async def test_read_by_username(async_db_session: AsyncSession) -> None:
     user = await user_repository.read_by_username("dummy_user")
     # Test if the returned user is correct (i.e. equals to the one created above).
     assert user == user_domain_model
+
 
 async def test_read_by_email(async_db_session: AsyncSession) -> None:
     """Test the `UserRepository.read_by_email` method.
