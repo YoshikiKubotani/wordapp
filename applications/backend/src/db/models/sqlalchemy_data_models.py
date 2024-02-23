@@ -1,18 +1,19 @@
 import datetime
-from typing import Optional
+from typing import Optional, Any
 
 from sqlalchemy import JSON, Column, ForeignKey, MetaData, Table
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.ext.asyncio import AsyncAttrs
 from sqlalchemy.inspection import inspect
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship, validates
 
+from pydantic.networks import IPvAnyAddress
+from ipaddress import IPv4Address, IPv6Address
 from src.core.config import settings
 
 
-def orm_object_to_dict(model):
+def orm_object_to_dict(model: "Base") -> dict[str, Any]:
     return {c.key: getattr(model, c.key) for c in inspect(model).mapper.column_attrs}
-
 
 class Base(DeclarativeBase, AsyncAttrs):
     type_annotation_map = {
@@ -77,6 +78,17 @@ class SQLAlchemyUserLoginHistory(Base):
     # Many-to-one relationship with User
     user: Mapped[SQLAlchemyUser] = relationship(back_populates="user_login_history")
 
+    @validates('ip_address')
+    def validate_ip_address(self, key: str, ip_address: str | IPvAnyAddress) -> str:
+        if isinstance(ip_address, (IPv4Address, IPv6Address)):
+            return str(ip_address)
+        elif isinstance(ip_address, str):
+            return ip_address
+        else:
+            raise ValueError(
+                f"Invalid ip_address! The incomming ip_address type should be \
+                either `str` or `IPvAnyAddress`, but it is {type(ip_address)}."
+            )
 
 class SQLAlchemyItem(Base):
     __tablename__ = "items"
