@@ -22,7 +22,9 @@ class UserRepository(BaseRepository[SQLAlchemyUser, User]):
         # If an exception is raised, it automatically calls async_session.rollback().
         async with self.async_session.begin():
             results = await self.async_session.execute(
-                select(self.data_model).where(self.data_model.user_name == user_name).order_by(self.data_model.user_id)
+                select(self.data_model)
+                .where(self.data_model.user_name == user_name)
+                .order_by(self.data_model.user_id)
             )
             user = results.scalars().one_or_none()
         if user is not None:
@@ -34,7 +36,9 @@ class UserRepository(BaseRepository[SQLAlchemyUser, User]):
         # If an exception is raised, it automatically calls async_session.rollback().
         async with self.async_session.begin():
             results = await self.async_session.execute(
-                select(self.data_model).where(self.data_model.email == email).order_by(self.data_model.user_id)
+                select(self.data_model)
+                .where(self.data_model.email == email)
+                .order_by(self.data_model.user_id)
             )
             user = results.scalars().one_or_none()
         if user is not None:
@@ -57,7 +61,9 @@ class UserLoginHistoryRepository(
         # If an exception is raised, it automatically calls session.rollback().
         async with self.async_session.begin():
             results = await self.async_session.execute(
-                select(self.data_model).where(self.data_model.user_id == user_id).order_by(self.data_model.user_login_history_id)
+                select(self.data_model)
+                .where(self.data_model.user_id == user_id)
+                .order_by(self.data_model.user_login_history_id)
             )
             user_login_histories = results.scalars().all()
         user_login_histories = [
