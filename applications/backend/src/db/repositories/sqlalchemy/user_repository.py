@@ -22,7 +22,7 @@ class UserRepository(BaseRepository[SQLAlchemyUser, User]):
         # If an exception is raised, it automatically calls async_session.rollback().
         async with self.async_session.begin():
             results = await self.async_session.execute(
-                select(self.data_model).where(self.data_model.user_name == user_name)
+                select(self.data_model).where(self.data_model.user_name == user_name).order_by(self.data_model.user_id)
             )
             user = results.scalars().one_or_none()
         if user is not None:
@@ -34,7 +34,7 @@ class UserRepository(BaseRepository[SQLAlchemyUser, User]):
         # If an exception is raised, it automatically calls async_session.rollback().
         async with self.async_session.begin():
             results = await self.async_session.execute(
-                select(self.data_model).where(self.data_model.email == email)
+                select(self.data_model).where(self.data_model.email == email).order_by(self.data_model.user_id)
             )
             user = results.scalars().one_or_none()
         if user is not None:
@@ -56,7 +56,12 @@ class UserLoginHistoryRepository(
         # This context automatically calls async_session.commit() if no exceptions are raised.
         # If an exception is raised, it automatically calls session.rollback().
         async with self.async_session.begin():
-            user_login_histories = await self.async_session.execute(
-                select(self.data_model).where(self.data_model.user_id == user_id)
+            results = await self.async_session.execute(
+                select(self.data_model).where(self.data_model.user_id == user_id).order_by(self.data_model.user_login_history_id)
             )
-            return user_login_histories.scalars().all()
+            user_login_histories = results.scalars().all()
+        user_login_histories = [
+            UserLoginHistory.model_validate(orm_object_to_dict(user_login_history))
+            for user_login_history in user_login_histories
+        ]
+        return user_login_histories
