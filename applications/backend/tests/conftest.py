@@ -3,7 +3,7 @@ from asgi_lifespan import LifespanManager
 
 from src.core.config import settings
 from src.core.main import app
-from tests.src.utils import random_email
+from tests.utils import random_email
 
 server_url = f"http://localhost:8000{settings.API_V1_STR}/"
 

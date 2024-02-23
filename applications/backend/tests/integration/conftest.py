@@ -4,7 +4,7 @@ from httpx import AsyncClient
 
 from src.core.config import settings
 from src.db.models.sqlalchemy_data_models import Base
-from tests.src.utils import create_random_test_user, create_test_superuser
+from tests.utils import create_random_test_user, create_test_superuser
 
 server_url = f"http://localhost:8000{settings.API_V1_STR}/"
 
