@@ -58,6 +58,11 @@ class BaseRepository(
         # If an exception is raised, it automatically calls async_session.rollback().
         async with self.async_session.begin():
             data_entity = await self.async_session.get(self.data_model, id)
+        if data_entity is None:
+            raise ValueError(
+                f'The data with id {id} should be found in the "{self.data_model.__tablename__}" table \
+                to read, but it was not found.'
+            )
         data_entity_dict = orm_object_to_dict(data_entity)
         read_domain_entity = self.domain_model.model_validate(data_entity_dict)
         return read_domain_entity
@@ -69,6 +74,11 @@ class BaseRepository(
             data_entity = await self.async_session.get(
                 self.data_model, domain_entity.self_id
             )
+            if data_entity is None:
+                raise ValueError(
+                    f'The data with id {domain_entity.self_id} should be found \
+                    in the "{self.data_model.__tablename__}" table to update, but it was not found.'
+                )
             domain_entity_dict = domain_entity.model_dump(exclude_none=True)
             for key, value in domain_entity_dict.items():
                 setattr(data_entity, key, value)
@@ -82,6 +92,11 @@ class BaseRepository(
         # If an exception is raised, it automatically calls async_session.rollback().
         async with self.async_session.begin():
             data_entity = await self.async_session.get(self.data_model, id)
+            if data_entity is None:
+                raise ValueError(
+                    f'The data with id {id} should be found in the "{self.data_model.__tablename__}" table \
+                    to delete, but it was not found.'
+                )
             await self.async_session.delete(data_entity)
         data_entity_dict = orm_object_to_dict(data_entity)
         deleted_domain_entity = self.domain_model.model_validate(data_entity_dict)
