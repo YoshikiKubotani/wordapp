@@ -2,8 +2,10 @@ from pydantic import AliasChoices, BaseModel, Field
 
 
 class Deck(BaseModel):
-    deck_id: int | None = Field(
-        default=None, validation_alias=AliasChoices("deck_id", "self_id")
-    )
+    deck_id: int | None = None
     user_id: int
     deck_name: str
+
+    @property
+    def self_id(self) -> int | None:
+        return self.deck_id
