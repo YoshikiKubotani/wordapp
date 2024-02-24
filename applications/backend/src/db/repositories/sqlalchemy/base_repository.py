@@ -69,7 +69,7 @@ class BaseRepository(
             data_entity = await self.async_session.get(
                 self.data_model, domain_entity.self_id
             )
-            domain_entity_dict = domain_entity.model_dump(exlude_none=True)
+            domain_entity_dict = domain_entity.model_dump(exclude_none=True)
             for key, value in domain_entity_dict.items():
                 setattr(data_entity, key, value)
             self.async_session.add(data_entity)
@@ -82,7 +82,7 @@ class BaseRepository(
         # If an exception is raised, it automatically calls async_session.rollback().
         async with self.async_session.begin():
             data_entity = await self.async_session.get(self.data_model, id)
-            self.async_session.delete(data_entity)
+            await self.async_session.delete(data_entity)
         data_entity_dict = orm_object_to_dict(data_entity)
         deleted_domain_entity = self.domain_model.model_validate(data_entity_dict)
         return deleted_domain_entity
