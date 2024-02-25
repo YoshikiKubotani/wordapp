@@ -58,7 +58,6 @@ async def test_read_by_user_id(async_db_session: AsyncSession) -> None:
                 quiz3_data_model,
             ]
         )
-        await async_db_session.flush()
 
     # Instantiate the `QuizRepository` class.
     quiz_repository = QuizRepository(async_db_session)
@@ -114,7 +113,6 @@ async def test_read_by_deck_id(async_db_session: AsyncSession) -> None:
                 quiz3_data_model,
             ]
         )
-        await async_db_session.flush()
 
     # Instantiate the `QuizRepository` class.
     quiz_repository = QuizRepository(async_db_session)

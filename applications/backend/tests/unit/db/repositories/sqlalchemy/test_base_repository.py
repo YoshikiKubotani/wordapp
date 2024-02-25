@@ -206,7 +206,6 @@ async def test_read(async_db_session: AsyncSession) -> None:
                 quiz_item_data_model,
             ]
         )
-        await async_db_session.flush()
 
     # Instantiate the `BaseRepository` class.
     user_repository = BaseRepository[SQLAlchemyUser, User](SQLAlchemyUser, User, async_db_session)
@@ -365,7 +364,6 @@ async def test_update(async_db_session: AsyncSession) -> None:
                 quiz_item_data_model,
             ]
         )
-        await async_db_session.flush()
 
     # Instantiate the `BaseRepository` class.
     user_repository = BaseRepository[SQLAlchemyUser, User](SQLAlchemyUser, User, async_db_session)
