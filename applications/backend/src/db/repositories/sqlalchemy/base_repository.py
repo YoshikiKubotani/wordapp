@@ -13,7 +13,7 @@ from src.db.models.sqlalchemy_data_models import (
     SQLAlchemyUserLoginHistory,
     orm_object_to_dict,
 )
-from src.db.repositories.repository_interface import IRepository
+from src.db.repositories.base_repository_interface import IBaseRepository
 
 DataModelType = TypeVar(
     "DataModelType",
@@ -29,7 +29,7 @@ DomainModelType = TypeVar("DomainModelType", bound=BaseModel)
 
 
 class BaseRepository(
-    IRepository[DomainModelType], Generic[DataModelType, DomainModelType]
+    IBaseRepository[DomainModelType], Generic[DataModelType, DomainModelType]
 ):
     def __init__(
         self,
