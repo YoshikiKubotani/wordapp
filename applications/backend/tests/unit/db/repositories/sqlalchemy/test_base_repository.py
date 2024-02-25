@@ -1,10 +1,5 @@
 import pytest
-from pydantic import AliasChoices, BaseModel, Field
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import (
-    Mapped,
-    mapped_column,
-)
 
 from src.db.models.sqlalchemy_data_models import (
     SQLAlchemyDeck,
@@ -15,7 +10,6 @@ from src.db.models.sqlalchemy_data_models import (
     SQLAlchemyUserLoginHistory,
 )
 from src.db.repositories.sqlalchemy.base_repository import BaseRepository
-from src.db.repositories.sqlalchemy.user_repository import UserRepository
 from src.domain.models import Deck, Item, Quiz, QuizItem, User, UserLoginHistory
 
 pytestmark = pytest.mark.anyio
