@@ -3,11 +3,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.db.models.sqlalchemy_data_models import SQLAlchemyQuiz, orm_object_to_dict
 from src.domain.models import Quiz
+from src.db.repositories.quiz_repository_interface import IQuizRepository
 
 from .base_repository import BaseRepository
 
 
-class QuizRepository(BaseRepository[SQLAlchemyQuiz, Quiz]):
+class QuizRepository(BaseRepository[SQLAlchemyQuiz, Quiz], IQuizRepository):
     def __init__(self, async_session: AsyncSession) -> None:
         super().__init__(
             data_model=SQLAlchemyQuiz, domain_model=Quiz, async_seesoon=async_session

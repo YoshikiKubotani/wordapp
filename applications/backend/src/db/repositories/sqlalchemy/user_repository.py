@@ -7,11 +7,12 @@ from src.db.models.sqlalchemy_data_models import (
     orm_object_to_dict,
 )
 from src.domain.models import User, UserLoginHistory
+from src.db.repositories.user_repository_interface import IUserRepository, IUserLoginHistoryRepository
 
 from .base_repository import BaseRepository
 
 
-class UserRepository(BaseRepository[SQLAlchemyUser, User]):
+class UserRepository(BaseRepository[SQLAlchemyUser, User], IUserRepository):
     def __init__(self, async_session: AsyncSession) -> None:
         super().__init__(
             data_model=SQLAlchemyUser, domain_model=User, async_seesoon=async_session
@@ -47,7 +48,8 @@ class UserRepository(BaseRepository[SQLAlchemyUser, User]):
 
 
 class UserLoginHistoryRepository(
-    BaseRepository[SQLAlchemyUserLoginHistory, UserLoginHistory]
+    BaseRepository[SQLAlchemyUserLoginHistory, UserLoginHistory],
+    IUserLoginHistoryRepository,
 ):
     def __init__(self, async_session: AsyncSession) -> None:
         super().__init__(

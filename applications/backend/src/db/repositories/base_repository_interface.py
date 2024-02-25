@@ -6,7 +6,7 @@ from pydantic import BaseModel
 DomainModelType = TypeVar("DomainModelType", bound=BaseModel)
 
 
-class IRepository(ABC, Generic[DomainModelType]):
+class IBaseRepository(ABC, Generic[DomainModelType]):
     @abstractmethod
     async def create(self, domain_entity: DomainModelType) -> DomainModelType:
         pass
