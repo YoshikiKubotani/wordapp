@@ -1,3 +1,4 @@
+import json
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from typing import cast
@@ -18,7 +19,15 @@ from src.db.models.sqlalchemy_data_models import Base
 from .config import settings
 
 
-def custom_generate_unique_id(route: APIRoute):
+def custom_generate_unique_id(route: APIRoute) -> str:
+    """Generate a unique id for each route.
+
+    Args:
+        route (APIRoute): The route.
+
+    Returns:
+        str: The unique id.
+    """
     return f"{route.tags[0]}-{route.name}"
 
 
@@ -29,23 +38,32 @@ engine: AsyncEngine | None = None
 # This is the lifespan context manager, which is called once before/after the server starts/stops.
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+    """Run startup and shutdown events of the app.
+
+    FastAPI lifespan events are used to run code before the app starts and after the app stops.
+    More specifically, the code before `yield` is executed before the app starts, and the code
+    after `yield` is executed after the app stops.
+
+    Args:
+        app (FastAPI): The FastAPI app instance.
+
+    Yields:
+        None: This function yields nothing
+    """
     print("Running startup lifespan events ...")
 
     global engine
     global async_session_factory
     # Create a new async engine instance, which offers a session environment to manage a database.
-    engine = create_async_engine(settings.SQLALCHEMY_DATABASE_URI.unicode_string())
+    engine = create_async_engine(cast(str, settings.SQLALCHEMY_DATABASE_URI))
     # Create a factiry that returns a new AsyncSession instance.
-    async_session_factory = cast(
-        async_sessionmaker[AsyncSession],
-        async_sessionmaker(engine, expire_on_commit=False),
-    )
+    async_session_factory = async_sessionmaker(engine, expire_on_commit=False)
 
     # Create all tables defined as data models under `src/db` if they do not exist.
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 
-    # Yield the app instance.
+    # Yield nothing, but boot up the FastAPI app instance. If the app stops, the code after the yield will run.
     yield
 
     print("Running shutdown lifespan events ...")
@@ -64,7 +82,7 @@ app = FastAPI(
 if settings.BACKEND_CORS_ORIGINS:
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=[str(origin) for origin in settings.BACKEND_CORS_ORIGINS],
+        allow_origins=[origin for origin in json.loads(settings.BACKEND_CORS_ORIGINS)],
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
