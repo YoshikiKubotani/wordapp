@@ -19,7 +19,18 @@ reusable_oauth2 = OAuth2PasswordBearer(
 
 
 async def get_db_session() -> AsyncGenerator[AsyncSession, None]:
+    """Create a new async session for each endpoint that requires a database connection.
+
+    Raises:
+        Exception: If the async_session_factory is not set.
+
+    Yields:
+        AsyncSession: The async session.
+    """
     from src.core.main import async_session_factory
+
+    if async_session_factory is None:
+        raise Exception("async_session_factory is not set")
 
     # This context automatically calls async_session.close() when the code block is exited.
     async with async_session_factory() as async_session:
@@ -34,6 +45,18 @@ async def get_current_user(
     async_session: async_session_dependency,
     token: token_dependency,
 ) -> User:
+    """Get the current user from the database using the token.
+
+    Args:
+        async_session (AsyncSession): The current database session.
+        token (str): The authentication token.
+
+    Raises:
+        HTTPException: If the authentication token is invalid.
+
+    Returns:
+        User: The current user.
+    """
     try:
         print(f"Received a request with authentication header of token {token}.")
         # Decode the received token and extract the payload.  Note that the payload will not be
@@ -43,16 +66,16 @@ async def get_current_user(
             token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
         )
         token_data = TokenPayload(**payload)
-    except (jwt.JWTError, ValidationError):
+    except (jwt.JWTError, ValidationError) as e:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Could not validate credentials",
             headers={"WWW-Authenticate": "Bearer"},
-        )
+        ) from e
     # user = session.get(User, token_data.sub)
     user = User(
         user_id=1,
-        user_name=token_data.sub,
+        user_name=token_data.sub,  # type: ignore
         email="dummy@gmail.com",
         password="$2b$12$gjLw4vccsNb41k/eHJeGtemKhjzw3aKxW6ANle2ZXzJTfhiRyvgNy",
         full_name="dummy user",
@@ -74,6 +97,17 @@ current_user_dependency = Annotated[User, Depends(get_current_user)]
 
 
 def get_current_active_superuser(current_user: current_user_dependency) -> User:
+    """Check if the current user is a superuser.
+
+    Args:
+        current_user (User): The current user.
+
+    Raises:
+        HTTPException: If the user is not a superuser.
+
+    Returns:
+        User: The current superuser.
+    """
     if not current_user.is_superuser:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
