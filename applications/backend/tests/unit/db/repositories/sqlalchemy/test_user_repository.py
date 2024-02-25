@@ -32,7 +32,6 @@ async def test_read_by_username(async_db_session: AsyncSession) -> None:
     user_data_model = SQLAlchemyUser(**user_domain_model.model_dump())
     async with async_db_session.begin():
         async_db_session.add(user_data_model)
-        await async_db_session.flush()
 
     # Instantiate the `UserRepository` class.
     user_repository = UserRepository(async_db_session)
@@ -58,7 +57,6 @@ async def test_read_by_email(async_db_session: AsyncSession) -> None:
     user_data_model = SQLAlchemyUser(**user_domain_model.model_dump())
     async with async_db_session.begin():
         async_db_session.add(user_data_model)
-        await async_db_session.flush()
 
     # Instantiate the `UserRepository` class.
     user_repository = UserRepository(async_db_session)
@@ -123,7 +121,6 @@ async def test_user_login_read_by_user_id(async_db_session: AsyncSession) -> Non
                 user_login_history3_data_model,
             ]
         )
-        await async_db_session.flush()
 
     # Instantiate the `UserRepository` class.
     user_login_history_repository = UserLoginHistoryRepository(async_db_session)

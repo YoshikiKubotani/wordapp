@@ -28,7 +28,6 @@ async def test_real_all(async_db_session: AsyncSession) -> None:
     deck2_data_model = SQLAlchemyDeck(**deck2_domain_model.model_dump())
     async with async_db_session.begin():
         async_db_session.add_all([user_data_model, deck1_data_model, deck2_data_model])
-        await async_db_session.flush()
 
     # Instantiate the `DeckRepository` class.
     deck_repository = DeckRepository(async_db_session)
@@ -77,7 +76,6 @@ async def test_read_by_user_id(async_db_session: AsyncSession) -> None:
                 deck3_data_model,
             ]
         )
-        await async_db_session.flush()
 
     # Instantiate the `DeckRepository` class.
     deck_repository = DeckRepository(async_db_session)

@@ -63,7 +63,6 @@ async def test_read_by_user_id(async_db_session: AsyncSession) -> None:
                 item3_data_model,
             ]
         )
-        await async_db_session.flush()
 
     # Instantiate the `ItemRepository` class.
     item_repository = ItemRepository(async_db_session)

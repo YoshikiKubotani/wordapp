@@ -137,7 +137,6 @@ async def test_read_by_user_id(async_db_session: AsyncSession) -> None:
                 quiz_item4_data_model,
             ]
         )
-        await async_db_session.flush()
 
     # Instantiate the `QuizItemRepository` class.
     quiz_item_repository = QuizItemRepository(async_db_session)
@@ -288,7 +287,6 @@ async def test_read_by_item_id(async_db_session: AsyncSession) -> None:
                 quiz_item5_data_model,
             ]
         )
-        await async_db_session.flush()
 
     # Instantiate the `QuizItemRepository` class.
     quiz_item_repository = QuizItemRepository(async_db_session)
