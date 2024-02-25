@@ -14,6 +14,7 @@ class Quiz(BaseModel):
     def self_id(self) -> int | None:
         return self.quiz_id
 
+
 class QuizItem(BaseModel):
     quiz_item_id: int | None = None
     quiz_id: int

@@ -2,10 +2,11 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.db.models.sqlalchemy_data_models import SQLAlchemyDeck, orm_object_to_dict
-from src.domain.models import Deck
 from src.db.repositories.deck_repository_interface import IDeckRepository
+from src.domain.models import Deck
 
 from .base_repository import BaseRepository
+
 
 class DeckRepository(BaseRepository[SQLAlchemyDeck, Deck], IDeckRepository):
     def __init__(self, async_session: AsyncSession) -> None:

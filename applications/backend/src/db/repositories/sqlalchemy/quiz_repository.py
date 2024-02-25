@@ -2,8 +2,8 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.db.models.sqlalchemy_data_models import SQLAlchemyQuiz, orm_object_to_dict
-from src.domain.models import Quiz
 from src.db.repositories.quiz_repository_interface import IQuizRepository
+from src.domain.models import Quiz
 
 from .base_repository import BaseRepository
 

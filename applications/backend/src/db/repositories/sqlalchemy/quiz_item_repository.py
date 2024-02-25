@@ -2,13 +2,15 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.db.models.sqlalchemy_data_models import SQLAlchemyQuizItem, orm_object_to_dict
-from src.domain.models import QuizItem
 from src.db.repositories.quiz_item_repository_interface import IQuizItemRepository
+from src.domain.models import QuizItem
 
 from .base_repository import BaseRepository
 
 
-class QuizItemRepository(BaseRepository[SQLAlchemyQuizItem, QuizItem], IQuizItemRepository):
+class QuizItemRepository(
+    BaseRepository[SQLAlchemyQuizItem, QuizItem], IQuizItemRepository
+):
     def __init__(self, async_session: AsyncSession) -> None:
         super().__init__(
             data_model=SQLAlchemyQuizItem,

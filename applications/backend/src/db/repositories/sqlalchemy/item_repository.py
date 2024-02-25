@@ -2,8 +2,8 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.db.models.sqlalchemy_data_models import SQLAlchemyItem, orm_object_to_dict
-from src.domain.models import Item
 from src.db.repositories.item_repository_interface import IItemRepository
+from src.domain.models import Item
 
 from .base_repository import BaseRepository
 

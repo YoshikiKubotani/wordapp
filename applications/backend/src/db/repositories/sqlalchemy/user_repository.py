@@ -6,8 +6,11 @@ from src.db.models.sqlalchemy_data_models import (
     SQLAlchemyUserLoginHistory,
     orm_object_to_dict,
 )
+from src.db.repositories.user_repository_interface import (
+    IUserLoginHistoryRepository,
+    IUserRepository,
+)
 from src.domain.models import User, UserLoginHistory
-from src.db.repositories.user_repository_interface import IUserRepository, IUserLoginHistoryRepository
 
 from .base_repository import BaseRepository
 

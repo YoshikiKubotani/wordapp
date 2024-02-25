@@ -4,6 +4,7 @@ from src.domain.models import Deck
 
 from .base_repository_interface import IBaseRepository
 
+
 class IDeckRepository(IBaseRepository[Deck], ABC):
     @abstractmethod
     async def read_all(self) -> list[Deck]:
