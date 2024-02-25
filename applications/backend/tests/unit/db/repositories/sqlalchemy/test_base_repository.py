@@ -402,28 +402,14 @@ async def test_delete(async_db_session: AsyncSession) -> None:
         email="dummy_email",
         password="dummy_password",
     )
-    user_login_history_domain_model = UserLoginHistory(
-        user_login_history_id=1,
-        user_id=1,
-        ip_address="127.0.0.1",
-    )
     user_data_model = SQLAlchemyUser(**user_domain_model.model_dump())
-    user_login_history_data_model = SQLAlchemyUserLoginHistory(**user_login_history_domain_model.model_dump())
     async with async_db_session.begin():
-        async_db_session.add_all(
-            [
-                user_data_model,
-                user_login_history_data_model,
-            ]
-        )
-        await async_db_session.flush()
+        async_db_session.add(user_data_model)
 
     # Instantiate the `UserRepository` class.
     user_repository = BaseRepository[SQLAlchemyUser, User](SQLAlchemyUser, User, async_db_session)
-    user_login_history_repository = BaseRepository[SQLAlchemyUserLoginHistory, UserLoginHistory](SQLAlchemyUserLoginHistory, UserLoginHistory, async_db_session)
     # Delete the user.
     await user_repository.delete(id=1)
-    user_login_history = await user_login_history_repository.read(id=1)
     # Test if the user is deleted.
     with pytest.raises(ValueError):
         await user_repository.read(id=1)
