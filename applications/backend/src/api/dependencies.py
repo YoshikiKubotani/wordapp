@@ -59,9 +59,10 @@ async def get_current_user(
     """
     try:
         print(f"Received a request with authentication header of token {token}.")
-        # Decode the received token and extract the payload.  Note that the payload will not be
-        # correctly retrieved unless the jwt is encrypted with the secret key and algorithm
-        # used during authentication (login)
+        # Decrypt the received token and retrieve the payload.
+        # Note that the payload will not be retrieved correctly unless the received token
+        # is encrypted with the secret key and algorithm used at authentication (login) ,
+        # nor has it been illegally tampered with during the process.
         payload = jwt.decode(
             token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
         )
@@ -75,7 +76,7 @@ async def get_current_user(
     # user = session.get(User, token_data.sub)
     user = User(
         user_id=1,
-        user_name=token_data.sub,  # type: ignore
+        user_name=token_data.sub,
         email="dummy@gmail.com",
         password="$2b$12$gjLw4vccsNb41k/eHJeGtemKhjzw3aKxW6ANle2ZXzJTfhiRyvgNy",
         full_name="dummy user",
