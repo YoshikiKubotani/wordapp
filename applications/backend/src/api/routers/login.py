@@ -20,6 +20,18 @@ async def login(
     async_session: async_session_dependency,
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
 ) -> Token:
+    """Log in and get an access token.
+
+    Args:
+        async_session (AsyncSession): The async session.
+        form_data (OAuth2PasswordRequestForm): The form data.
+
+    Raises:
+        HTTPException: If the username or password is incorrect.
+
+    Returns:
+        Token: The access token.
+    """
     user = await authenticate_user(
         async_session,
         form_data.username,
