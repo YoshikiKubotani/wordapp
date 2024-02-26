@@ -1,4 +1,7 @@
+# ruff: noqa: INP001
 # This is necessary to ensure the models are all imported and registered.
+from typing import cast
+
 from db.models.sqlalchemy_data_models import Base
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
@@ -9,8 +12,12 @@ from src.domain.models import User
 
 
 async def create_first_superuser() -> None:
+    """Create the first superuser.
+
+    This function creates the first superuser if it doesn't exist.
+    """
     # Create a new async engine instance, which offers a session environment to manage a database.
-    engine = create_async_engine(settings.SQLALCHEMY_DATABASE_URI.unicode_string())
+    engine = create_async_engine(cast(str, settings.SQLALCHEMY_DATABASE_URI))
 
     # Create a factiry that returns a new AsyncSession instance.
     async_session_maker = async_sessionmaker(engine, expire_on_commit=False)

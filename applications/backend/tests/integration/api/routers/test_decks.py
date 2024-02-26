@@ -1,4 +1,5 @@
 import pytest
+from httpx import AsyncClient
 
 pytestmark = pytest.mark.anyio
 
@@ -20,14 +21,24 @@ pytestmark = pytest.mark.anyio
 #         assert response.json() == {"deck_id": 1, "deck_name": "dummy_deck"}
 
 
-async def test_deck_get(normal_async_test_client):
+async def test_deck_get(normal_async_test_client: AsyncClient) -> None:
+    """Test the GET /decks/ endpoint.
+
+    Args:
+        normal_async_test_client (AsyncClient): An asynchronous test client authorized as a normal user.
+    """
     print(normal_async_test_client.build_request("GET", "/decks/").url)
     response = await normal_async_test_client.get("/decks/")
     assert response.status_code == 200
     assert response.json() == [{"deck_id": 1, "deck_name": "dummy_deck"}]
 
 
-async def test_deck_post(normal_async_test_client):
+async def test_deck_post(normal_async_test_client: AsyncClient) -> None:
+    """Test the POST /decks/ endpoint.
+
+    Args:
+        normal_async_test_client (AsyncClient): An asynchronous test client authorized as a normal user.
+    """
     print(normal_async_test_client.build_request("POST", "/decks/").url)
     response = await normal_async_test_client.post(
         "/decks/", json={"deck_name": "dummy_deck"}

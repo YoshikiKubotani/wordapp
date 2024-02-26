@@ -60,7 +60,7 @@ async def normal_async_test_client(async_test_client: AsyncClient) -> AsyncClien
     async_test_client.headers = {"Authorization": f"{token_type} {token}"}
 
     # Yield the test client.
-    yield async_test_client
+    return async_test_client
 
 
 @pytest.fixture(scope="function")
@@ -100,4 +100,4 @@ async def admin_async_test_client(async_test_client: AsyncClient) -> AsyncClient
     async_test_client.headers = {"Authorization": f"{token_type} {token}"}
 
     # Yield the test client.
-    yield async_test_client
+    return async_test_client

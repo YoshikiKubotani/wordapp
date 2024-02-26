@@ -20,6 +20,19 @@ async def login(
     async_session: async_session_dependency,
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
 ) -> Token:
+    """Log in and get an access token.
+
+    Args:
+        async_session (AsyncSession): The async session.
+        form_data (OAuth2PasswordRequestForm): The form data.
+
+    Raises:
+        HTTPException: If the username or password is incorrect.
+
+    Returns:
+        Token: The access token.
+    """
+    # Check if the user exists and the password is correct.
     user = await authenticate_user(
         async_session,
         form_data.username,
@@ -35,8 +48,9 @@ async def login(
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="Inactive user"
         )
+
+    # Create a new access token for the verified user.
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
-    # TODO:最終的にはuser.idを使う
     access_token = create_access_token(
         subject=user.user_name, expires_delta=access_token_expires
     )

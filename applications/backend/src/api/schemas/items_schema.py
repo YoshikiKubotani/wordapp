@@ -1,4 +1,5 @@
-from pydantic import BaseModel, PastDatetime
+# ruff: noqa: D101
+from pydantic import BaseModel
 
 
 class CreateItemRequest(BaseModel):

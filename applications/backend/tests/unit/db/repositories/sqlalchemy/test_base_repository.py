@@ -1,24 +1,19 @@
 import pytest
 from sqlalchemy.ext.asyncio import AsyncSession
-from pydantic import AliasChoices, BaseModel, Field
-from sqlalchemy.orm import (
-    Mapped,
-    mapped_column,
-)
 
 from src.db.models.sqlalchemy_data_models import (
-  SQLAlchemyDeck,
-  SQLAlchemyQuiz,
-  SQLAlchemyQuizItem,
-  SQLAlchemyItem,
-  SQLAlchemyUser,
-  SQLAlchemyUserLoginHistory,
+    SQLAlchemyDeck,
+    SQLAlchemyItem,
+    SQLAlchemyQuiz,
+    SQLAlchemyQuizItem,
+    SQLAlchemyUser,
+    SQLAlchemyUserLoginHistory,
 )
 from src.db.repositories.sqlalchemy.base_repository import BaseRepository
-from src.db.repositories.sqlalchemy.user_repository import UserRepository
-from src.domain.models import Deck, Quiz, QuizItem, Item, User, UserLoginHistory
+from src.domain.models import Deck, Item, Quiz, QuizItem, User, UserLoginHistory
 
 pytestmark = pytest.mark.anyio
+
 
 async def test_create(async_db_session: AsyncSession) -> None:
     """Test the `BaseRepository.create` method.
@@ -82,22 +77,36 @@ async def test_create(async_db_session: AsyncSession) -> None:
         quiz_id=1,
         item_id=1,
         question_number=1,
-        choice_item_ids=[1,2,3,4],
+        choice_item_ids=[1, 2, 3, 4],
         correct_answer=0,
         user_answer=0,
         answer_time=10,
     )
 
     # Instantiate the `BaseRepository` class.
-    user_repository = BaseRepository[SQLAlchemyUser, User](SQLAlchemyUser, User, async_db_session)
-    user_login_history_repository = BaseRepository[SQLAlchemyUserLoginHistory, UserLoginHistory](SQLAlchemyUserLoginHistory, UserLoginHistory, async_db_session)
-    item_repository = BaseRepository[SQLAlchemyItem, Item](SQLAlchemyItem, Item, async_db_session)
-    deck_repository = BaseRepository[SQLAlchemyDeck, Deck](SQLAlchemyDeck, Deck, async_db_session)
-    quiz_repository = BaseRepository[SQLAlchemyQuiz, Quiz](SQLAlchemyQuiz, Quiz, async_db_session)
-    quiz_item_repository = BaseRepository[SQLAlchemyQuizItem, QuizItem](SQLAlchemyQuizItem, QuizItem, async_db_session)
+    user_repository = BaseRepository[SQLAlchemyUser, User](
+        SQLAlchemyUser, User, async_db_session
+    )
+    user_login_history_repository = BaseRepository[
+        SQLAlchemyUserLoginHistory, UserLoginHistory
+    ](SQLAlchemyUserLoginHistory, UserLoginHistory, async_db_session)
+    item_repository = BaseRepository[SQLAlchemyItem, Item](
+        SQLAlchemyItem, Item, async_db_session
+    )
+    deck_repository = BaseRepository[SQLAlchemyDeck, Deck](
+        SQLAlchemyDeck, Deck, async_db_session
+    )
+    quiz_repository = BaseRepository[SQLAlchemyQuiz, Quiz](
+        SQLAlchemyQuiz, Quiz, async_db_session
+    )
+    quiz_item_repository = BaseRepository[SQLAlchemyQuizItem, QuizItem](
+        SQLAlchemyQuizItem, QuizItem, async_db_session
+    )
     # Create each domain model (note: order sensitive).
     user = await user_repository.create(user_domain_model)
-    user_login_history = await user_login_history_repository.create(user_login_history_domain_model)
+    user_login_history = await user_login_history_repository.create(
+        user_login_history_domain_model
+    )
     item1 = await item_repository.create(item1_domain_model)
     item2 = await item_repository.create(item2_domain_model)
     item3 = await item_repository.create(item3_domain_model)
@@ -115,6 +124,7 @@ async def test_create(async_db_session: AsyncSession) -> None:
     assert deck == deck_domain_model
     assert quiz == quiz_domain_model
     assert quiz_item == quiz_item_domain_model
+
 
 async def test_read(async_db_session: AsyncSession) -> None:
     """Test the `BaseRepository.read` method.
@@ -178,13 +188,15 @@ async def test_read(async_db_session: AsyncSession) -> None:
         quiz_id=1,
         item_id=1,
         question_number=1,
-        choice_item_ids=[1,2,3,4],
+        choice_item_ids=[1, 2, 3, 4],
         correct_answer=0,
         user_answer=0,
         answer_time=10,
     )
     user_data_model = SQLAlchemyUser(**user_domain_model.model_dump())
-    user_login_history_data_model = SQLAlchemyUserLoginHistory(**user_login_history_domain_model.model_dump())
+    user_login_history_data_model = SQLAlchemyUserLoginHistory(
+        **user_login_history_domain_model.model_dump()
+    )
     item1_data_model = SQLAlchemyItem(**item1_domain_model.model_dump())
     item2_data_model = SQLAlchemyItem(**item2_domain_model.model_dump())
     item3_data_model = SQLAlchemyItem(**item3_domain_model.model_dump())
@@ -208,12 +220,24 @@ async def test_read(async_db_session: AsyncSession) -> None:
         )
 
     # Instantiate the `BaseRepository` class.
-    user_repository = BaseRepository[SQLAlchemyUser, User](SQLAlchemyUser, User, async_db_session)
-    user_login_history_repository = BaseRepository[SQLAlchemyUserLoginHistory, UserLoginHistory](SQLAlchemyUserLoginHistory, UserLoginHistory, async_db_session)
-    item_repository = BaseRepository[SQLAlchemyItem, Item](SQLAlchemyItem, Item, async_db_session)
-    deck_repository = BaseRepository[SQLAlchemyDeck, Deck](SQLAlchemyDeck, Deck, async_db_session)
-    quiz_repository = BaseRepository[SQLAlchemyQuiz, Quiz](SQLAlchemyQuiz, Quiz, async_db_session)
-    quiz_item_repository = BaseRepository[SQLAlchemyQuizItem, QuizItem](SQLAlchemyQuizItem, QuizItem, async_db_session)
+    user_repository = BaseRepository[SQLAlchemyUser, User](
+        SQLAlchemyUser, User, async_db_session
+    )
+    user_login_history_repository = BaseRepository[
+        SQLAlchemyUserLoginHistory, UserLoginHistory
+    ](SQLAlchemyUserLoginHistory, UserLoginHistory, async_db_session)
+    item_repository = BaseRepository[SQLAlchemyItem, Item](
+        SQLAlchemyItem, Item, async_db_session
+    )
+    deck_repository = BaseRepository[SQLAlchemyDeck, Deck](
+        SQLAlchemyDeck, Deck, async_db_session
+    )
+    quiz_repository = BaseRepository[SQLAlchemyQuiz, Quiz](
+        SQLAlchemyQuiz, Quiz, async_db_session
+    )
+    quiz_item_repository = BaseRepository[SQLAlchemyQuizItem, QuizItem](
+        SQLAlchemyQuizItem, QuizItem, async_db_session
+    )
     # Get each data by ID.
     user = await user_repository.read(id=1)
     user_login_history = await user_login_history_repository.read(id=1)
@@ -234,6 +258,7 @@ async def test_read(async_db_session: AsyncSession) -> None:
     assert deck == deck_domain_model
     assert quiz == quiz_domain_model
     assert quiz_item == quiz_item_domain_model
+
 
 async def test_update(async_db_session: AsyncSession) -> None:
     """Test the `BaseRepository.update` method.
@@ -297,7 +322,7 @@ async def test_update(async_db_session: AsyncSession) -> None:
         quiz_id=1,
         item_id=1,
         question_number=1,
-        choice_item_ids=[1,2,3,4],
+        choice_item_ids=[1, 2, 3, 4],
         correct_answer=0,
         user_answer=0,
         answer_time=10,
@@ -336,13 +361,15 @@ async def test_update(async_db_session: AsyncSession) -> None:
         quiz_id=1,
         item_id=1,
         question_number=1,
-        choice_item_ids=[2,1,3,4],
+        choice_item_ids=[2, 1, 3, 4],
         correct_answer=1,
         user_answer=0,
         answer_time=10,
     )
     user_data_model = SQLAlchemyUser(**user_domain_model.model_dump())
-    user_login_history_data_model = SQLAlchemyUserLoginHistory(**user_login_history_domain_model.model_dump())
+    user_login_history_data_model = SQLAlchemyUserLoginHistory(
+        **user_login_history_domain_model.model_dump()
+    )
     item1_data_model = SQLAlchemyItem(**item1_domain_model.model_dump())
     item2_data_model = SQLAlchemyItem(**item2_domain_model.model_dump())
     item3_data_model = SQLAlchemyItem(**item3_domain_model.model_dump())
@@ -366,15 +393,29 @@ async def test_update(async_db_session: AsyncSession) -> None:
         )
 
     # Instantiate the `BaseRepository` class.
-    user_repository = BaseRepository[SQLAlchemyUser, User](SQLAlchemyUser, User, async_db_session)
-    user_login_history_repository = BaseRepository[SQLAlchemyUserLoginHistory, UserLoginHistory](SQLAlchemyUserLoginHistory, UserLoginHistory, async_db_session)
-    item_repository = BaseRepository[SQLAlchemyItem, Item](SQLAlchemyItem, Item, async_db_session)
-    deck_repository = BaseRepository[SQLAlchemyDeck, Deck](SQLAlchemyDeck, Deck, async_db_session)
-    quiz_repository = BaseRepository[SQLAlchemyQuiz, Quiz](SQLAlchemyQuiz, Quiz, async_db_session)
-    quiz_item_repository = BaseRepository[SQLAlchemyQuizItem, QuizItem](SQLAlchemyQuizItem, QuizItem, async_db_session)
+    user_repository = BaseRepository[SQLAlchemyUser, User](
+        SQLAlchemyUser, User, async_db_session
+    )
+    user_login_history_repository = BaseRepository[
+        SQLAlchemyUserLoginHistory, UserLoginHistory
+    ](SQLAlchemyUserLoginHistory, UserLoginHistory, async_db_session)
+    item_repository = BaseRepository[SQLAlchemyItem, Item](
+        SQLAlchemyItem, Item, async_db_session
+    )
+    deck_repository = BaseRepository[SQLAlchemyDeck, Deck](
+        SQLAlchemyDeck, Deck, async_db_session
+    )
+    quiz_repository = BaseRepository[SQLAlchemyQuiz, Quiz](
+        SQLAlchemyQuiz, Quiz, async_db_session
+    )
+    quiz_item_repository = BaseRepository[SQLAlchemyQuizItem, QuizItem](
+        SQLAlchemyQuizItem, QuizItem, async_db_session
+    )
     # Update each data.
     user = await user_repository.update(updated_user_domain_model)
-    user_login_history = await user_login_history_repository.update(updated_user_login_history_domain_model)
+    user_login_history = await user_login_history_repository.update(
+        updated_user_login_history_domain_model
+    )
     item3 = await item_repository.update(updated_item3_domain_model)
     deck = await deck_repository.update(updated_deck_domain_model)
     quiz = await quiz_repository.update(updated_quiz_domain_model)
@@ -386,6 +427,7 @@ async def test_update(async_db_session: AsyncSession) -> None:
     assert deck == updated_deck_domain_model
     assert quiz == updated_quiz_domain_model
     assert quiz_item == updated_quiz_item_domain_model
+
 
 async def test_delete(async_db_session: AsyncSession) -> None:
     """Test the `BaseRepository.delete` method.
@@ -405,7 +447,9 @@ async def test_delete(async_db_session: AsyncSession) -> None:
         async_db_session.add(user_data_model)
 
     # Instantiate the `UserRepository` class.
-    user_repository = BaseRepository[SQLAlchemyUser, User](SQLAlchemyUser, User, async_db_session)
+    user_repository = BaseRepository[SQLAlchemyUser, User](
+        SQLAlchemyUser, User, async_db_session
+    )
     # Delete the user.
     await user_repository.delete(id=1)
     # Test if the user is deleted.

@@ -1,3 +1,4 @@
+# ruff: noqa: D101
 from pydantic import BaseModel
 
 
@@ -7,4 +8,4 @@ class Token(BaseModel):
 
 
 class TokenPayload(BaseModel):
-    sub: str | None = None
+    sub: str

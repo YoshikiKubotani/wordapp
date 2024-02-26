@@ -1,6 +1,6 @@
 import datetime
 from ipaddress import IPv4Address, IPv6Address
-from typing import Any, Optional
+from typing import Any, ClassVar, Optional, Type
 
 from pydantic.networks import IPvAnyAddress
 from sqlalchemy import JSON, Column, ForeignKey, MetaData, Table
@@ -19,14 +19,24 @@ from src.core.config import settings
 
 
 def orm_object_to_dict(model: "Base") -> dict[str, Any]:
+    """Convert an ORM object to a dictionary.
+
+    Args:
+        model (Base): The ORM object.
+
+    Returns:
+        dict[str, Any]: The dictionary representation of the ORM object.
+    """
     return {c.key: getattr(model, c.key) for c in inspect(model).mapper.column_attrs}
 
 
 class Base(DeclarativeBase, AsyncAttrs):
-    type_annotation_map = {
-        list[str]: JSON().with_variant(JSONB(), "postgresql"),
+    """The base class for all data models."""
+
+    type_annotation_map: ClassVar[dict[Type, Any]] = {
+        list[str]: JSON().with_variant(JSONB(), "postgresql"),  # type: ignore
     }
-    metadata = MetaData(schema=settings.POSTGRES_SCHEMA)
+    metadata: ClassVar[MetaData] = MetaData(schema=settings.POSTGRES_SCHEMA)
 
 
 item_genre_mapper_table = Table(
@@ -45,6 +55,8 @@ item_deck_mapper_table = Table(
 
 
 class SQLAlchemyUser(Base):
+    """The SQLAlchemy data model for users."""
+
     __tablename__ = "users"
 
     user_id: Mapped[int] = mapped_column(primary_key=True)
@@ -70,6 +82,8 @@ class SQLAlchemyUser(Base):
 
 
 class SQLAlchemyUserLoginHistory(Base):
+    """The SQLAlchemy data model for user login histories."""
+
     __tablename__ = "user_login_history"
 
     user_login_history_id: Mapped[int] = mapped_column(primary_key=True)
@@ -87,6 +101,15 @@ class SQLAlchemyUserLoginHistory(Base):
 
     @validates("ip_address")
     def validate_ip_address(self, key: str, ip_address: str | IPvAnyAddress) -> str:
+        """Validate `ip_address` attribute before inserting into the database.
+
+        Args:
+            key (str): The attribute name. (equivalent to "ip_address" in this case)
+            ip_address (str | IPvAnyAddress): The IP address to validate.
+
+        Returns:
+            str: The validated IP address.
+        """
         if isinstance(ip_address, (IPv4Address, IPv6Address)):
             return str(ip_address)
         elif isinstance(ip_address, str):
@@ -99,6 +122,8 @@ class SQLAlchemyUserLoginHistory(Base):
 
 
 class SQLAlchemyItem(Base):
+    """The SQLAlchemy data model for items."""
+
     __tablename__ = "items"
 
     item_id: Mapped[int] = mapped_column(primary_key=True)
@@ -126,6 +151,8 @@ class SQLAlchemyItem(Base):
 
 
 class SQLAlchemyGenre(Base):
+    """The SQLAlchemy data model for genres."""
+
     __tablename__ = "genres"
 
     genre_id: Mapped[int] = mapped_column(primary_key=True)
@@ -139,6 +166,8 @@ class SQLAlchemyGenre(Base):
 
 
 class SQLAlchemyDeck(Base):
+    """The SQLAlchemy data model for decks."""
+
     __tablename__ = "decks"
 
     deck_id: Mapped[int] = mapped_column(primary_key=True)
@@ -157,6 +186,8 @@ class SQLAlchemyDeck(Base):
 
 
 class SQLAlchemyQuizItem(Base):
+    """The SQLAlchemy data model for quiz items."""
+
     __tablename__ = "quiz_items"
 
     quiz_item_id: Mapped[int] = mapped_column(primary_key=True)
@@ -175,6 +206,8 @@ class SQLAlchemyQuizItem(Base):
 
 
 class SQLAlchemyQuiz(Base):
+    """The SQLAlchemy data model for quizzes."""
+
     __tablename__ = "quizzes"
 
     quiz_id: Mapped[int] = mapped_column(primary_key=True)
