@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from pydantic import PastDatetime
+
 from .base_model import BaseDomainModel
 
 
