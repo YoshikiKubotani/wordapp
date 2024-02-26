@@ -10,13 +10,13 @@ class IQuizRepository(IBaseRepository[Quiz], ABC):
 
     @abstractmethod
     async def read_by_user_id(self, user_id: int) -> list[Quiz]:
-        """Read all quizzes from the database that a specific user solved.
+        """Read all quizzes from the database that a specific user has taken.
 
         Args:
             user_id (int): The unique identifier for the user.
 
         Returns:
-            list[Quiz]: The list of quizzes that the user solved.
+            list[Quiz]: The list of quizzes that the user has taken.
         """
         pass
 

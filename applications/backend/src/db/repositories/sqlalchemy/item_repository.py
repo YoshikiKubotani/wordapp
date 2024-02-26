@@ -9,12 +9,27 @@ from .base_repository import BaseRepository
 
 
 class ItemRepository(BaseRepository[SQLAlchemyItem, Item], IItemRepository):
+    """The SQLAlchemy repository class for items."""
+
     def __init__(self, async_session: AsyncSession) -> None:
+        """Initialize the repository.
+
+        Args:
+            async_session (AsyncSession): The asynchronous session to use for database operations.
+        """
         super().__init__(
             data_model=SQLAlchemyItem, domain_model=Item, async_seesoon=async_session
         )
 
     async def read_by_user_id(self, user_id: int) -> list[Item]:
+        """Read all items from the database that were made by a specific user.
+
+        Args:
+            user_id (int): The unique identifier for the user.
+
+        Returns:
+            list[Item]: The list of items that were made by the user.
+        """
         # This context automatically calls async_session.commit() if no exceptions are raised.
         # If an exception is raised, it automatically calls async_session.rollback().
         async with self.async_session.begin():
