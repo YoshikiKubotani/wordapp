@@ -1,9 +1,10 @@
 from datetime import datetime
 
-from pydantic import BaseModel, PastDatetime
+from pydantic import PastDatetime
+from .base_model import BaseDomainModel
 
 
-class Quiz(BaseModel):
+class Quiz(BaseDomainModel):
     """The domain model for a quiz.
 
     Attributes:
@@ -33,7 +34,7 @@ class Quiz(BaseModel):
         return self.quiz_id
 
 
-class QuizItem(BaseModel):
+class QuizItem(BaseDomainModel):
     """The domain model for a quiz item.
 
     Attributes:

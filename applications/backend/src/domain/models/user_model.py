@@ -1,10 +1,12 @@
 from datetime import datetime
 
-from pydantic import BaseModel, PastDatetime
+from pydantic import PastDatetime
 from pydantic.networks import IPvAnyAddress
 
+from .base_model import BaseDomainModel
 
-class User(BaseModel):
+
+class User(BaseDomainModel):
     """The domain model for a user.
 
     Attributes:
@@ -42,7 +44,7 @@ class User(BaseModel):
         return self.user_id
 
 
-class UserLoginHistory(BaseModel):
+class UserLoginHistory(BaseDomainModel):
     """The domain model for a user login history.
 
     Attributes:

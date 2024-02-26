@@ -1,7 +1,7 @@
-from pydantic import BaseModel
+from .base_model import BaseDomainModel
 
 
-class Deck(BaseModel):
+class Deck(BaseDomainModel):
     """The domain model for a deck.
 
     Attributes:

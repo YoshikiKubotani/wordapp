@@ -1,9 +1,11 @@
 from datetime import datetime
 
-from pydantic import BaseModel, PastDatetime
+from pydantic import PastDatetime
+
+from .base_model import BaseDomainModel
 
 
-class Item(BaseModel):
+class Item(BaseDomainModel):
     """The domain model for an item.
 
     Attributes:
