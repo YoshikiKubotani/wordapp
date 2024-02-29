@@ -38,6 +38,9 @@ jobs:
       - name: debug print
         run: ls -la
 
+      - name: Make test schema in database
+        run: docker compose exec -T postgresql psql -U ci -c -d wordapp "CREAE SCHEMA test;"
+
       # In the built stage of Docker image, .venv dir is moved from working directory to prevent
       # overwrite by volume operation of Docker. Here, .venv is moved back to working directory.
       - name: Move back the .venv directory
