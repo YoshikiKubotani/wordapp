@@ -39,7 +39,7 @@ jobs:
         run: ls -la
 
       - name: Make test schema in database
-        run: docker compose exec -T postgresql psql -U postgresql -d wordapp
+        run: docker compose exec -T postgresql psql -U ci -d wordapp -c "CREATE SCHEMA test;"
         working-directory: ${{ env.DOCKER_COMPOSE_DIRECTORY }}
 
       # In the built stage of Docker image, .venv dir is moved from working directory to prevent

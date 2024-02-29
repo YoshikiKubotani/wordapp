@@ -9,7 +9,7 @@ services:
       dockerfile: environments/Dockerfile.backend
     environment:
       - POSTGRES_DB=wordapp
-      # - POSTGRES_USER=ci
+      - POSTGRES_USER=ci
       - POSTGRES_PASSWORD=test
       - FIRST_SUPERUSER=ci_admin
       - FIRST_SUPERUSER_EMAIL=ci_admin@gmail.com
@@ -22,5 +22,7 @@ services:
     image: postgres:15.3
     environment:
       - POSTGRES_DB=wordapp
-      # - POSTGRES_USER=ci
+      - POSTGRES_USER=ci
       - POSTGRES_PASSWORD=test
+    ports:
+      - "5432:5432"
