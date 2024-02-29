@@ -38,17 +38,18 @@ jobs:
       - name: debug print
         run: ls -la
 
-      - name: Wait for PostgreSQL to become available
-        run: sleep 10
       # - name: Wait for PostgreSQL to become available
-      #   run: |
-      #     until docker compose exec -T postgresql pg_isready -U ci; do
-      #       echo 'Waiting for PostgreSQL...'
-      #       sleep 5
-      #     done
-      - name: pg_isready
-        run: docker compose exec -T postgresql pg_isready -U ci
+      #   run: sleep 10
+      - name: Wait for PostgreSQL to become available
+        run: |
+          until docker compose exec -T postgresql pg_isready -U ci; do
+            echo 'Waiting for PostgreSQL...'
+            sleep 3
+          done
         working-directory: ${{ env.DOCKER_COMPOSE_DIRECTORY }}
+      # - name: pg_isready
+      #   run: docker compose exec -T postgresql pg_isready -U ci
+      #   working-directory: ${{ env.DOCKER_COMPOSE_DIRECTORY }}
 
       - name: Check docker compose logs
         run: docker compose logs
