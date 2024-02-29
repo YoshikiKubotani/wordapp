@@ -38,6 +38,10 @@ jobs:
       - name: debug print
         run: ls -la
 
+      -name: check docker compose logs
+        run: docker compose logs
+        working-directory: ${{ env.DOCKER_COMPOSE_DIRECTORY }}
+
       - name: Make test schema in database
         run: docker compose exec -T postgresql psql -U ci -d wordapp -c "CREATE SCHEMA test;"
         working-directory: ${{ env.DOCKER_COMPOSE_DIRECTORY }}
