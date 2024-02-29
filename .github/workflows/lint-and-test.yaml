@@ -38,8 +38,12 @@ jobs:
       - name: debug print
         run: ls -la
 
-      - name: check docker compose logs
+      - name: Check docker compose logs
         run: docker compose logs
+        working-directory: ${{ env.DOCKER_COMPOSE_DIRECTORY }}
+
+      - name: Check docker container status
+        run: docker compose ps
         working-directory: ${{ env.DOCKER_COMPOSE_DIRECTORY }}
 
       - name: Check the database system file
