@@ -44,7 +44,7 @@ class Settings(BaseSettings, case_sensitive=True):
 
     # BACKEND_CORS_ORIGINS is a JSON-formatted list of origins
     # e.g: '["http://localhost", "http://localhost:8080"]'
-    BACKEND_CORS_ORIGINS: str
+    BACKEND_CORS_ORIGINS: str = '["http://localhost:3000"]'
 
     @field_validator("BACKEND_CORS_ORIGINS", mode="before")
     @classmethod
