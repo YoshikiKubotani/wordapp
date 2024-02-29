@@ -24,5 +24,3 @@ services:
       - POSTGRES_DB=wordapp
       # - POSTGRES_USER=ci
       - POSTGRES_PASSWORD=test
-    ports:
-      - "5432:5432"
