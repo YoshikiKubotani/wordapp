@@ -47,14 +47,14 @@ jobs:
 
       - name: Wait for PostgreSQL to become available
         run: |
-          until docker compose exec -T postgresql pg_isready -U ${{ env:POSTGRES_USER }}; do
+          until docker compose exec -T postgresql pg_isready -U ${{ env.POSTGRES_USER }}; do
             echo 'Waiting for PostgreSQL...'
             sleep 3
           done
         working-directory: ${{ env.DOCKER_COMPOSE_DIRECTORY }}
 
       - name: Make test schema in database
-        run: docker compose exec -T postgresql psql -U ${{ env:POSTGRES_USER }} -d ${{ env:POSTGRES_DB }} -c "CREATE SCHEMA test;"
+        run: docker compose exec -T postgresql psql -U ${{ env.POSTGRES_USER }} -d ${{ env.POSTGRES_DB }} -c "CREATE SCHEMA test;"
         working-directory: ${{ env.DOCKER_COMPOSE_DIRECTORY }}
 
       # In the built stage of Docker image, .venv dir is moved from working directory to prevent
