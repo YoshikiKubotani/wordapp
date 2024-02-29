@@ -38,14 +38,16 @@ jobs:
       - name: debug print
         run: ls -la
 
-      # - name: Wait for PostgreSQL to become available
-      #   run: sleep 30
       - name: Wait for PostgreSQL to become available
-        run: |
-          until docker compose exec -T postgresql pg_isready -U ci; do
-            echo 'Waiting for PostgreSQL...'
-            sleep 5
-          done
+        run: sleep 30
+      # - name: Wait for PostgreSQL to become available
+      #   run: |
+      #     until docker compose exec -T postgresql pg_isready -U ci; do
+      #       echo 'Waiting for PostgreSQL...'
+      #       sleep 5
+      #     done
+      - name: ps_isready
+        run: docker compose exec -T postgresql pg_isready -U ci
 
       - name: Check docker compose logs
         run: docker compose logs
