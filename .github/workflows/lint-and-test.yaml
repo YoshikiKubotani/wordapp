@@ -39,7 +39,7 @@ jobs:
         run: ls -la
 
       - name: Wait for PostgreSQL to become available
-        run: sleep 30
+        run: sleep 10
       # - name: Wait for PostgreSQL to become available
       #   run: |
       #     until docker compose exec -T postgresql pg_isready -U ci; do
@@ -47,7 +47,7 @@ jobs:
       #       sleep 5
       #     done
       - name: ps_isready
-        run: docker compose exec -T postgresql pg_isready -U ci
+        run: docker compose exec -T postgresql pg_isready -h postgresql -p 5432 -U ci
 
       - name: Check docker compose logs
         run: docker compose logs
