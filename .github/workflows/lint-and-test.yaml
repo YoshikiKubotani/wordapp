@@ -46,6 +46,10 @@ jobs:
         run: docker compose exec -T postgresql ls -la /var/lib/postgresql/data
         working-directory: ${{ env.DOCKER_COMPOSE_DIRECTORY }}
 
+      - name: Check the database run file
+        run: docker compose exec -T postgresql ls -la /var/run/postgresql
+        working-directory: ${{ env.DOCKER_COMPOSE_DIRECTORY }}
+
       - name: Make test schema in database
         run: docker compose exec -T postgresql psql -U ci -d wordapp -c "CREATE SCHEMA test;"
         working-directory: ${{ env.DOCKER_COMPOSE_DIRECTORY }}
