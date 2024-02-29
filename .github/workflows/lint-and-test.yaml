@@ -9,6 +9,16 @@ jobs:
   lint-and-test:
     name: ${{ matrix.os }} / ${{ matrix.python-version }}
     runs-on: ${{ matrix.image }}
+    environment:
+      name: development
+    env:
+      POSTGRES_DB: wordapp
+      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      FIRST_SUPERUSER: ${{ secrets.FIRST_SUPERUSER }}
+      FIRST_SUPERUSER_EMAIL: ${{ secrets.FIRST_SUPERUSER_EMAIL }}
+      FIRST_SUPERUSER_PASSWORD: ${{ secrets.FIRST_SUPERUSER_PASSWORD }}
+
     timeout-minutes: 10
     strategy:
       fail-fast: false
@@ -37,14 +47,14 @@ jobs:
 
       - name: Wait for PostgreSQL to become available
         run: |
-          until docker compose exec -T postgresql pg_isready -U ci; do
+          until docker compose exec -T postgresql pg_isready -U "$env:POSTGRES_USER"; do
             echo 'Waiting for PostgreSQL...'
             sleep 3
           done
         working-directory: ${{ env.DOCKER_COMPOSE_DIRECTORY }}
 
       - name: Make test schema in database
-        run: docker compose exec -T postgresql psql -U ci -d wordapp -c "CREATE SCHEMA test;"
+        run: docker compose exec -T postgresql psql -U "$env:POSTGRES_USER" -d "$env.POSTGRES_DB" -c "CREATE SCHEMA test;"
         working-directory: ${{ env.DOCKER_COMPOSE_DIRECTORY }}
 
       # In the built stage of Docker image, .venv dir is moved from working directory to prevent
