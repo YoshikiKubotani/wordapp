@@ -17,6 +17,8 @@ services:
     tty: true
     volumes:
         - ../../applications/backend:/home/trailblazer/wordapp-backend
+    depends_on:
+      - postgresql
 
   postgresql:
     image: postgres:15.3
