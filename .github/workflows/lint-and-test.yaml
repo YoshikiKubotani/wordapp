@@ -35,36 +35,12 @@ jobs:
       - name: Change permission
         run: chmod 777 ./applications/backend
 
-      - name: debug print
-        run: ls -la
-
-      # - name: Wait for PostgreSQL to become available
-      #   run: sleep 10
       - name: Wait for PostgreSQL to become available
         run: |
           until docker compose exec -T postgresql pg_isready -U ci; do
             echo 'Waiting for PostgreSQL...'
             sleep 3
           done
-        working-directory: ${{ env.DOCKER_COMPOSE_DIRECTORY }}
-      # - name: pg_isready
-      #   run: docker compose exec -T postgresql pg_isready -U ci
-      #   working-directory: ${{ env.DOCKER_COMPOSE_DIRECTORY }}
-
-      - name: Check docker compose logs
-        run: docker compose logs
-        working-directory: ${{ env.DOCKER_COMPOSE_DIRECTORY }}
-
-      - name: Check docker container status
-        run: docker compose ps
-        working-directory: ${{ env.DOCKER_COMPOSE_DIRECTORY }}
-
-      - name: Check the database system file
-        run: docker compose exec -T postgresql ls -la /var/lib/postgresql/data
-        working-directory: ${{ env.DOCKER_COMPOSE_DIRECTORY }}
-
-      - name: Check the database run file
-        run: docker compose exec -T postgresql ls -la /var/run/postgresql
         working-directory: ${{ env.DOCKER_COMPOSE_DIRECTORY }}
 
       - name: Make test schema in database
