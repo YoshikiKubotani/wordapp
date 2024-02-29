@@ -38,7 +38,7 @@ jobs:
       - name: debug print
         run: ls -la
 
-      -name: check docker compose logs
+      - name: check docker compose logs
         run: docker compose logs
         working-directory: ${{ env.DOCKER_COMPOSE_DIRECTORY }}
 
