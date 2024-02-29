@@ -33,7 +33,7 @@ async def normal_async_test_client(async_test_client: AsyncClient) -> AsyncClien
     in tests is that the async_session_factory created within the lifespan event is utilized in the test target
     FastAPI endpoints through dependency injection.
 
-    Yields:
+    Returns:
         AsyncClient: An asynchronous test client which is authorized as a normal user.
     """
     # Import `engine` here to make sure the lifespan manager is executed before creating the session.
@@ -59,7 +59,7 @@ async def normal_async_test_client(async_test_client: AsyncClient) -> AsyncClien
     token_type = response.json()["token_type"]
     async_test_client.headers = {"Authorization": f"{token_type} {token}"}
 
-    # Yield the test client.
+    # Return the test client.
     return async_test_client
 
 
@@ -74,7 +74,7 @@ async def admin_async_test_client(async_test_client: AsyncClient) -> AsyncClient
     in tests is that the async_session_factory created within the lifespan event is utilized in the test target
     FastAPI endpoints through dependency injection.
 
-    Yields:
+    Returns:
         AsyncClient: An asynchronous test client which is authorized as a superuser.
     """
     # Import `engine` here to make sure the lifespan manager is executed before creating the session.
@@ -99,5 +99,5 @@ async def admin_async_test_client(async_test_client: AsyncClient) -> AsyncClient
     token_type = response.json()["token_type"]
     async_test_client.headers = {"Authorization": f"{token_type} {token}"}
 
-    # Yield the test client.
+    # Return the test client.
     return async_test_client
