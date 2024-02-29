@@ -4,9 +4,6 @@ on: [pull_request]
 env:
   DOCKER_FILE_DIRECTORY: environments
   DOCKER_COMPOSE_DIRECTORY: environments/ci
-  FIRST_SUPERUSER: ci_admin
-  FIRST_SUPERUSER_EMAIL: ci_admin@gmail.com
-  FIRST_SUPERUSER_PASSWORD: test
 
 jobs:
   lint-and-test:

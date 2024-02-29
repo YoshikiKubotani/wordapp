@@ -7,6 +7,13 @@ services:
         - RUN_POETRY_INSTALL_AT_BUILD_TIME=true
       context: ../../
       dockerfile: environments/Dockerfile.backend
+    environment:
+      - POSTGRES_DB=wordapp
+      - POSTGRES_USER=ci
+      - POSTGRES_PASSWORD=test
+      - FIRST_SUPERUSER=ci_admin
+      - FIRST_SUPERUSER_EMAIL=ci_admin@gmail.com
+      - FIRST_SUPERUSER_PASSWORD=test
     tty: true
     volumes:
         - ../../applications/backend:/home/trailblazer/wordapp-backend
@@ -14,8 +21,8 @@ services:
   postgresql:
     image: postgres:15.3
     environment:
-      POSTGRES_DB: wordapp
-      POSTGRES_USER: ci
-      POSTGRES_PASSWORD: test
+      - POSTGRES_DB=wordapp
+      - POSTGRES_USER=ci
+      - POSTGRES_PASSWORD=test
     ports:
       - "5432:5432"
