@@ -10,3 +10,12 @@ services:
     tty: true
     volumes:
         - ../../applications/backend:/home/trailblazer/wordapp-backend
+
+  postgresql:
+    image: postgres:15.3
+    environment:
+      POSTGRES_DB: wordapp
+      POSTGRES_USER: ci
+      POSTGRES_PASSWORD: test
+    ports:
+      - "5432:5432"
