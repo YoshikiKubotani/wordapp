@@ -7,8 +7,10 @@ from src.domain.models import Deck, User
 
 pytestmark = pytest.mark.anyio
 
+
 class TestDeckRepositorySuccess:
     """Test cases for the `DeckRepository` class when successful."""
+
     async def test_real_all(self, async_db_session: AsyncSession) -> None:
         """Test the `DeckRepository.read_all` method.
 
@@ -28,7 +30,9 @@ class TestDeckRepositorySuccess:
         deck1_data_model = SQLAlchemyDeck(**deck1_domain_model.model_dump())
         deck2_data_model = SQLAlchemyDeck(**deck2_domain_model.model_dump())
         async with async_db_session.begin():
-            async_db_session.add_all([user_data_model, deck1_data_model, deck2_data_model])
+            async_db_session.add_all(
+                [user_data_model, deck1_data_model, deck2_data_model]
+            )
 
         # Instantiate the `DeckRepository` class.
         deck_repository = DeckRepository(async_db_session)
@@ -38,7 +42,6 @@ class TestDeckRepositorySuccess:
         assert len(decks) == 2
         assert decks[0] == deck1_domain_model
         assert decks[1] == deck2_domain_model
-
 
     async def test_read_by_user_id(self, async_db_session: AsyncSession) -> None:
         """Test the `DeckRepository.read_by_user_id` method.

@@ -7,8 +7,10 @@ from src.domain.models import Item, User
 
 pytestmark = pytest.mark.anyio
 
+
 class TestItemRepositorySuccess:
     """Test cases for the `ItemRepository` class when successful."""
+
     async def test_read_by_user_id(self, async_db_session: AsyncSession) -> None:
         """Test the `ItemRepository.read_by_user_id` method.
 

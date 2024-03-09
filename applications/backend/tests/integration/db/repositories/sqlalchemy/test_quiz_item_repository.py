@@ -13,8 +13,10 @@ from src.domain.models import Deck, Item, Quiz, QuizItem, User
 
 pytestmark = pytest.mark.anyio
 
+
 class TestQuizItemRepositorySuccess:
     """Test cases for the `QuizItemRepository` class when successful."""
+
     async def test_read_by_user_id(self, async_db_session: AsyncSession) -> None:
         """Test the `QuizItemRepository.read_by_quiz_id` method.
 
@@ -117,10 +119,18 @@ class TestQuizItemRepositorySuccess:
         item2_data_model = SQLAlchemyItem(**item2_domain_model.model_dump())
         item3_data_model = SQLAlchemyItem(**item3_domain_model.model_dump())
         item4_data_model = SQLAlchemyItem(**item4_domain_model.model_dump())
-        quiz_item1_data_model = SQLAlchemyQuizItem(**quiz_item1_domain_model.model_dump())
-        quiz_item2_data_model = SQLAlchemyQuizItem(**quiz_item2_domain_model.model_dump())
-        quiz_item3_data_model = SQLAlchemyQuizItem(**quiz_item3_domain_model.model_dump())
-        quiz_item4_data_model = SQLAlchemyQuizItem(**quiz_item4_domain_model.model_dump())
+        quiz_item1_data_model = SQLAlchemyQuizItem(
+            **quiz_item1_domain_model.model_dump()
+        )
+        quiz_item2_data_model = SQLAlchemyQuizItem(
+            **quiz_item2_domain_model.model_dump()
+        )
+        quiz_item3_data_model = SQLAlchemyQuizItem(
+            **quiz_item3_domain_model.model_dump()
+        )
+        quiz_item4_data_model = SQLAlchemyQuizItem(
+            **quiz_item4_domain_model.model_dump()
+        )
         async with async_db_session.begin():
             async_db_session.add_all(
                 [
@@ -151,7 +161,6 @@ class TestQuizItemRepositorySuccess:
         assert len(quiz2_items) == 2
         assert quiz2_items[0] == quiz_item3_domain_model
         assert quiz2_items[1] == quiz_item4_domain_model
-
 
     async def test_read_by_item_id(self, async_db_session: AsyncSession) -> None:
         """Test the `QuizItemRepository.read_by_item_id` method.
@@ -265,11 +274,21 @@ class TestQuizItemRepositorySuccess:
         item2_data_model = SQLAlchemyItem(**item2_domain_model.model_dump())
         item3_data_model = SQLAlchemyItem(**item3_domain_model.model_dump())
         item4_data_model = SQLAlchemyItem(**item4_domain_model.model_dump())
-        quiz_item1_data_model = SQLAlchemyQuizItem(**quiz_item1_domain_model.model_dump())
-        quiz_item2_data_model = SQLAlchemyQuizItem(**quiz_item2_domain_model.model_dump())
-        quiz_item3_data_model = SQLAlchemyQuizItem(**quiz_item3_domain_model.model_dump())
-        quiz_item4_data_model = SQLAlchemyQuizItem(**quiz_item4_domain_model.model_dump())
-        quiz_item5_data_model = SQLAlchemyQuizItem(**quiz_item5_domain_model.model_dump())
+        quiz_item1_data_model = SQLAlchemyQuizItem(
+            **quiz_item1_domain_model.model_dump()
+        )
+        quiz_item2_data_model = SQLAlchemyQuizItem(
+            **quiz_item2_domain_model.model_dump()
+        )
+        quiz_item3_data_model = SQLAlchemyQuizItem(
+            **quiz_item3_domain_model.model_dump()
+        )
+        quiz_item4_data_model = SQLAlchemyQuizItem(
+            **quiz_item4_domain_model.model_dump()
+        )
+        quiz_item5_data_model = SQLAlchemyQuizItem(
+            **quiz_item5_domain_model.model_dump()
+        )
         async with async_db_session.begin():
             async_db_session.add_all(
                 [

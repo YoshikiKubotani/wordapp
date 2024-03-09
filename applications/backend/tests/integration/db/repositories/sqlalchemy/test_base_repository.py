@@ -14,8 +14,10 @@ from src.domain.models import Deck, Item, Quiz, QuizItem, User, UserLoginHistory
 
 pytestmark = pytest.mark.anyio
 
+
 class TestBaseRepositorySuccess:
     """Test cases for the `BaseRepository` class when successful."""
+
     # Create all domain models for testing.
     user_domain_models = (
         User(
@@ -32,7 +34,7 @@ class TestBaseRepositorySuccess:
         ),
     )
     user_login_history_domain_models = (
-            UserLoginHistory(
+        UserLoginHistory(
             user_login_history_id=1,
             user_id=1,
             ip_address="127.0.0.1",
@@ -144,7 +146,6 @@ class TestBaseRepositorySuccess:
         assert quiz == self.quiz_domain_models[0]
         assert quiz_item == self.quiz_item_domain_models[0]
 
-
     async def test_read(self, async_db_session: AsyncSession) -> None:
         """Test the `BaseRepository.read` method.
 
@@ -162,7 +163,9 @@ class TestBaseRepositorySuccess:
         item4_data_model = SQLAlchemyItem(**self.item_domain_models[3].model_dump())
         deck_data_model = SQLAlchemyDeck(**self.deck_domain_models[0].model_dump())
         quiz_data_model = SQLAlchemyQuiz(**self.quiz_domain_models[0].model_dump())
-        quiz_item_data_model = SQLAlchemyQuizItem(**self.quiz_item_domain_models[0].model_dump())
+        quiz_item_data_model = SQLAlchemyQuizItem(
+            **self.quiz_item_domain_models[0].model_dump()
+        )
         async with async_db_session.begin():
             async_db_session.add_all(
                 [
@@ -217,7 +220,6 @@ class TestBaseRepositorySuccess:
         assert deck == self.deck_domain_models[0]
         assert quiz == self.quiz_domain_models[0]
         assert quiz_item == self.quiz_item_domain_models[0]
-
 
     async def test_update(self, async_db_session: AsyncSession) -> None:
         """Test the `BaseRepository.update` method.
@@ -275,7 +277,9 @@ class TestBaseRepositorySuccess:
         item4_data_model = SQLAlchemyItem(**self.item_domain_models[3].model_dump())
         deck_data_model = SQLAlchemyDeck(**self.deck_domain_models[0].model_dump())
         quiz_data_model = SQLAlchemyQuiz(**self.quiz_domain_models[0].model_dump())
-        quiz_item_data_model = SQLAlchemyQuizItem(**self.quiz_item_domain_models[0].model_dump())
+        quiz_item_data_model = SQLAlchemyQuizItem(
+            **self.quiz_item_domain_models[0].model_dump()
+        )
         async with async_db_session.begin():
             async_db_session.add_all(
                 [
@@ -326,7 +330,6 @@ class TestBaseRepositorySuccess:
         assert deck == updated_deck_domain_model
         assert quiz == updated_quiz_domain_model
         assert quiz_item == updated_quiz_item_domain_model
-
 
     async def test_delete(self, async_db_session: AsyncSession) -> None:
         """Test the `BaseRepository.delete` method.

@@ -13,8 +13,10 @@ from src.domain.models import User, UserLoginHistory
 
 pytestmark = pytest.mark.anyio
 
+
 class TestUserRepositorySuccess:
     """Test cases for the `UserRepository` class when successful."""
+
     async def test_read_by_username(self, async_db_session: AsyncSession) -> None:
         """Test the `UserRepository.read_by_username` method.
 
@@ -38,7 +40,6 @@ class TestUserRepositorySuccess:
         user = await user_repository.read_by_username("dummy_user")
         # Test if the returned user is correct (i.e. equals to the one created above).
         assert user == user_domain_model
-
 
     async def test_read_by_email(self, async_db_session: AsyncSession) -> None:
         """Test the `UserRepository.read_by_email` method.
@@ -64,8 +65,9 @@ class TestUserRepositorySuccess:
         # Test if the returned user is correct (i.e. equals to the one created above).
         assert user == user_domain_model
 
-
-    async def test_user_login_read_by_user_id(self, async_db_session: AsyncSession) -> None:
+    async def test_user_login_read_by_user_id(
+        self, async_db_session: AsyncSession
+    ) -> None:
         """Test the `UserLoginHistoryRepository.read_by_user_id` method.
 
         Args:
@@ -124,8 +126,12 @@ class TestUserRepositorySuccess:
         # Instantiate the `UserRepository` class.
         user_login_history_repository = UserLoginHistoryRepository(async_db_session)
         # Get the user login history by user_id.
-        user1_login_history = await user_login_history_repository.read_by_user_id(user_id=1)
-        user2_login_history = await user_login_history_repository.read_by_user_id(user_id=2)
+        user1_login_history = await user_login_history_repository.read_by_user_id(
+            user_id=1
+        )
+        user2_login_history = await user_login_history_repository.read_by_user_id(
+            user_id=2
+        )
         # Test if the returned user login history is correct (i.e. equals to the one created above).
         assert len(user1_login_history) == 2
         assert user1_login_history[0] == user_login_history1_domain_model

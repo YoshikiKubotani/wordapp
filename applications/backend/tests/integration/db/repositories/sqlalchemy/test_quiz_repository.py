@@ -11,8 +11,10 @@ from src.domain.models import Deck, Quiz, User
 
 pytestmark = pytest.mark.anyio
 
+
 class TestQuizRepositorySuccess:
     """Test cases for the `QuizRepository` class when successful."""
+
     async def test_read_by_user_id(self, async_db_session: AsyncSession) -> None:
         """Test the `QuizRepository.read_by_user_id` method.
 
@@ -71,7 +73,6 @@ class TestQuizRepositorySuccess:
         assert user1_quizzes[1] == quiz2_domain_model
         assert len(user2_quizzes) == 1
         assert user2_quizzes[0] == quiz3_domain_model
-
 
     async def test_read_by_deck_id(self, async_db_session: AsyncSession) -> None:
         """Test the `QuizRepository.read_by_deck_id` method.
