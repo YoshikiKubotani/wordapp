@@ -22,7 +22,7 @@ class QuizItemRepository(
         super().__init__(
             data_model=SQLAlchemyQuizItem,
             domain_model=QuizItem,
-            async_seesoon=async_session,
+            async_session=async_session,
         )
 
     async def read_by_quiz_id(self, quiz_id: int) -> list[QuizItem]:

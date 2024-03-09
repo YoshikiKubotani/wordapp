@@ -18,7 +18,7 @@ class DeckRepository(BaseRepository[SQLAlchemyDeck, Deck], IDeckRepository):
             async_session (AsyncSession): The asynchronous session to use for database operations.
         """
         super().__init__(
-            data_model=SQLAlchemyDeck, domain_model=Deck, async_seesoon=async_session
+            data_model=SQLAlchemyDeck, domain_model=Deck, async_session=async_session
         )
 
     async def read_all(self) -> list[Deck]:

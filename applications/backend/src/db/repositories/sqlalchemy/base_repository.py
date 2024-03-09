@@ -37,18 +37,18 @@ class BaseRepository(
         self,
         data_model: Type[DataModelType],
         domain_model: Type[DomainModelType],
-        async_seesoon: AsyncSession,
+        async_session: AsyncSession,
     ) -> None:
         """Initialize the repository.
 
         Args:
             data_model (Type[DataModelType]): The SQLAlchemy data model.
             domain_model (Type[DomainModelType]): The domain model.
-            async_seesoon (AsyncSession): The asynchronous session to use for database operations.
+            async_session (AsyncSession): The asynchronous session to use for database operations.
         """
         self.data_model = data_model  # type: ignore
         self.domain_model = domain_model
-        self.async_session = async_seesoon
+        self.async_session = async_session
 
     async def create(self, domain_entity: DomainModelType) -> DomainModelType:
         """Create a new record in the database.

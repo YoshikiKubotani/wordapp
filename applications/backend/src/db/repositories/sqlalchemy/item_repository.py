@@ -18,7 +18,7 @@ class ItemRepository(BaseRepository[SQLAlchemyItem, Item], IItemRepository):
             async_session (AsyncSession): The asynchronous session to use for database operations.
         """
         super().__init__(
-            data_model=SQLAlchemyItem, domain_model=Item, async_seesoon=async_session
+            data_model=SQLAlchemyItem, domain_model=Item, async_session=async_session
         )
 
     async def read_by_user_id(self, user_id: int) -> list[Item]:
