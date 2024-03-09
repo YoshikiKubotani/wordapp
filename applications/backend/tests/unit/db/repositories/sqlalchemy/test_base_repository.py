@@ -15,7 +15,7 @@ from src.domain.models import Deck, Item, Quiz, QuizItem, User, UserLoginHistory
 pytestmark = pytest.mark.anyio
 
 class TestBaseRepositorySuccess:
-    """Test cases for the `BaseRepository` class."""
+    """Test cases for the `BaseRepository` class when successful."""
     # Create all domain models for testing.
     user_domain_models = (
         User(
