@@ -288,4 +288,3 @@ class TestBaseRepositorySuccess:
         deck2 = await deck_repository.read(id=2)
         assert deck1.user_id is None
         assert deck2.user_id is None
-

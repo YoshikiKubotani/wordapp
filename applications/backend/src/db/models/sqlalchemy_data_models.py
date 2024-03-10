@@ -93,7 +93,9 @@ class SQLAlchemyUserLoginHistory(Base):
     __tablename__ = "user_login_history"
 
     user_login_history_id: Mapped[int] = mapped_column(primary_key=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.user_id", ondelete="CASCADE"))
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey("users.user_id", ondelete="CASCADE")
+    )
     login_timestamp: Mapped[datetime.datetime] = mapped_column(
         default=datetime.datetime.now
     )
@@ -197,7 +199,9 @@ class SQLAlchemyQuizItem(Base):
     __tablename__ = "quiz_items"
 
     quiz_item_id: Mapped[int] = mapped_column(primary_key=True)
-    quiz_id: Mapped[int] = mapped_column(ForeignKey("quizzes.quiz_id", ondelete="CASCADE"))
+    quiz_id: Mapped[int] = mapped_column(
+        ForeignKey("quizzes.quiz_id", ondelete="CASCADE")
+    )
     item_id: Mapped[int] = mapped_column(ForeignKey("items.item_id"), nullable=True)
     question_number: Mapped[int]
     choice_item_ids: Mapped[list[str]]
@@ -217,7 +221,9 @@ class SQLAlchemyQuiz(Base):
     __tablename__ = "quizzes"
 
     quiz_id: Mapped[int] = mapped_column(primary_key=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.user_id", ondelete="CASCADE"))
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey("users.user_id", ondelete="CASCADE")
+    )
     deck_id: Mapped[int] = mapped_column(ForeignKey("decks.deck_id"), nullable=True)
     quiz_type: Mapped[str]
     quiz_timestamp: Mapped[datetime.datetime] = mapped_column(
