@@ -5,21 +5,21 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.core.config import settings
 from src.db.models.sqlalchemy_data_models import Base
-from tests.utils import create_random_test_user, create_test_superuser
+from tests.utils import create_random_test_user, create_test_superuser, prepare_data_repository_test, DomainModelDict
 
 server_url = f"http://localhost:8000{settings.API_V1_STR}/"
 
 
 @pytest.fixture(scope="function")
-async def async_db_session(
+async def repository_class_provision(
     lifespan_manager: LifespanManager,
-) -> AsyncSession:
-    """Provide an asynchronous database session.
+) -> tuple[AsyncSession, DomainModelDict]:
+    """Provide an asynchronous database session and prepared domain models for testing.
 
-    This fixture is used for testing which does not require an asynchronous test client.
+    This fixture is used for testing repository classes.
 
     Yields:
-        AsyncSession: An asynchronous database session.
+        tuple[AsyncSession, DomainModelDict]: A tuple of asynchronous database session and domain model dictionary.
     """
     # Import `async_session_factory` and `engine` here to make sure the lifespan manager is executed before creating the session.
     from src.core.main import async_session_factory, engine
@@ -31,7 +31,8 @@ async def async_db_session(
 
     # This context automatically calls async_session.close() when the code block is exited.
     async with async_session_factory() as async_session:
-        yield async_session
+        domain_model_dict = await prepare_data_repository_test(async_session)
+        yield (async_session, domain_model_dict)
 
 
 @pytest.fixture(scope="class")
