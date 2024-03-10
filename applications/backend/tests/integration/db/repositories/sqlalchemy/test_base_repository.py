@@ -253,8 +253,39 @@ class TestBaseRepositorySuccess:
         user_repository = BaseRepository[SQLAlchemyUser, User](
             SQLAlchemyUser, User, async_db_session
         )
+        user_login_history_repository = BaseRepository[
+            SQLAlchemyUserLoginHistory, UserLoginHistory
+        ](SQLAlchemyUserLoginHistory, UserLoginHistory, async_db_session)
+        item_repository = BaseRepository[SQLAlchemyItem, Item](
+            SQLAlchemyItem, Item, async_db_session
+        )
+        deck_repository = BaseRepository[SQLAlchemyDeck, Deck](
+            SQLAlchemyDeck, Deck, async_db_session
+        )
+        quiz_repository = BaseRepository[SQLAlchemyQuiz, Quiz](
+            SQLAlchemyQuiz, Quiz, async_db_session
+        )
         # Delete the user.
         await user_repository.delete(id=1)
         # Test if the user is deleted.
         with pytest.raises(ValueError):
             await user_repository.read(id=1)
+        # Test if the related data records whose table has delete cascade are deleted.
+        with pytest.raises(ValueError):
+            await user_login_history_repository.read(id=1)
+        with pytest.raises(ValueError):
+            await user_login_history_repository.read(id=2)
+        with pytest.raises(ValueError):
+            await quiz_repository.read(id=1)
+        with pytest.raises(ValueError):
+            await quiz_repository.read(id=2)
+        # Test if the related data records whose table does not have delete cascade are not deleted.
+        item1 = await item_repository.read(id=1)
+        item2 = await item_repository.read(id=2)
+        assert item1.user_id is None
+        assert item2.user_id is None
+        deck1 = await deck_repository.read(id=1)
+        deck2 = await deck_repository.read(id=2)
+        assert deck1.user_id is None
+        assert deck2.user_id is None
+
