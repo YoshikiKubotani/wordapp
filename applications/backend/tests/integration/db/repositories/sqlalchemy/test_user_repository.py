@@ -10,6 +10,7 @@ from src.db.repositories.sqlalchemy.user_repository import (
     UserRepository,
 )
 from src.domain.models import User, UserLoginHistory
+from tests.utils import DomainModelDict
 
 pytestmark = pytest.mark.anyio
 
@@ -17,111 +18,49 @@ pytestmark = pytest.mark.anyio
 class TestUserRepositorySuccess:
     """Test cases for the `UserRepository` class when successful."""
 
-    async def test_read_by_username(self, async_db_session: AsyncSession) -> None:
+    async def test_read_by_username(self, repository_class_provision: tuple[AsyncSession, DomainModelDict]) -> None:
         """Test the `UserRepository.read_by_username` method.
 
         Args:
             async_db_session (AsyncSession): An asynchronous database session.
         """
-        # Create a user for testing.
-        user_domain_model = User(
-            user_id=1,
-            user_name="dummy_user",
-            email="dummy_email",
-            password="dummy_password",
-        )
-        user_data_model = SQLAlchemyUser(**user_domain_model.model_dump())
-        async with async_db_session.begin():
-            async_db_session.add(user_data_model)
+        async_db_session, domain_model_dict = repository_class_provision
 
         # Instantiate the `UserRepository` class.
         user_repository = UserRepository(async_db_session)
         # Get the user by username.
-        user = await user_repository.read_by_username("dummy_user")
+        user = await user_repository.read_by_username("dummy_user1")
         # Test if the returned user is correct (i.e. equals to the one created above).
-        assert user == user_domain_model
+        assert user == domain_model_dict["user_domain_models"][0]
 
-    async def test_read_by_email(self, async_db_session: AsyncSession) -> None:
+    async def test_read_by_email(self, repository_class_provision: tuple[AsyncSession, DomainModelDict]) -> None:
         """Test the `UserRepository.read_by_email` method.
 
         Args:
             async_db_session (AsyncSession): An asynchronous database session.
         """
-        # Create a user for testing.
-        user_domain_model = User(
-            user_id=1,
-            user_name="dummy_user",
-            email="dummy_email",
-            password="dummy_password",
-        )
-        user_data_model = SQLAlchemyUser(**user_domain_model.model_dump())
-        async with async_db_session.begin():
-            async_db_session.add(user_data_model)
+        async_db_session, domain_model_dict = repository_class_provision
 
         # Instantiate the `UserRepository` class.
         user_repository = UserRepository(async_db_session)
         # Get the user by email.
-        user = await user_repository.read_by_email("dummy_email")
+        user = await user_repository.read_by_email("dummy_email1")
         # Test if the returned user is correct (i.e. equals to the one created above).
-        assert user == user_domain_model
+        assert user == domain_model_dict["user_domain_models"][0]
+
+
+class TestUserLoginHistoryRepositorySuccess:
+    """Test cases for the `UserLoginHistoryRepository` class when successful."""
 
     async def test_user_login_read_by_user_id(
-        self, async_db_session: AsyncSession
+        self, repository_class_provision: tuple[AsyncSession, DomainModelDict]
     ) -> None:
         """Test the `UserLoginHistoryRepository.read_by_user_id` method.
 
         Args:
             async_db_session (AsyncSession): An asynchronous database session.
         """
-        # Create two users and three user login histories for testing.
-        user1_domain_model = User(
-            user_id=1,
-            user_name="dummy_user1",
-            email="dummy_email1",
-            password="dummy_password1",
-        )
-        user2_domain_model = User(
-            user_id=2,
-            user_name="dummy_user2",
-            email="dummy_email2",
-            password="dummy_password2",
-        )
-        user_login_history1_domain_model = UserLoginHistory(
-            user_login_history_id=1,
-            user_id=1,
-            ip_address="127.0.0.1",
-        )
-        user_login_history2_domain_model = UserLoginHistory(
-            user_login_history_id=2,
-            user_id=1,
-            ip_address="127.0.0.1",
-        )
-        user_login_history3_domain_model = UserLoginHistory(
-            user_login_history_id=3,
-            user_id=2,
-            ip_address="127.0.0.2",
-        )
-        user1_data_model = SQLAlchemyUser(**user1_domain_model.model_dump())
-        user2_data_model = SQLAlchemyUser(**user2_domain_model.model_dump())
-        user_login_history1_data_model = SQLAlchemyUserLoginHistory(
-            **user_login_history1_domain_model.model_dump()
-        )
-        user_login_history2_data_model = SQLAlchemyUserLoginHistory(
-            **user_login_history2_domain_model.model_dump()
-        )
-        user_login_history3_data_model = SQLAlchemyUserLoginHistory(
-            **user_login_history3_domain_model.model_dump()
-        )
-        async with async_db_session.begin():
-            async_db_session.add_all(
-                [
-                    user1_data_model,
-                    user2_data_model,
-                    user_login_history1_data_model,
-                    user_login_history2_data_model,
-                    user_login_history3_data_model,
-                ]
-            )
+        async_db_session, domain_model_dict = repository_class_provision
 
         # Instantiate the `UserRepository` class.
         user_login_history_repository = UserLoginHistoryRepository(async_db_session)
@@ -134,7 +73,7 @@ class TestUserRepositorySuccess:
         )
         # Test if the returned user login history is correct (i.e. equals to the one created above).
         assert len(user1_login_history) == 2
-        assert user1_login_history[0] == user_login_history1_domain_model
-        assert user1_login_history[1] == user_login_history2_domain_model
+        assert user1_login_history[0] == domain_model_dict["user_login_history_domain_models"][0]
+        assert user1_login_history[1] == domain_model_dict["user_login_history_domain_models"][1]
         assert len(user2_login_history) == 1
-        assert user2_login_history[0] == user_login_history3_domain_model
+        assert user2_login_history[0] == domain_model_dict["user_login_history_domain_models"][2]
