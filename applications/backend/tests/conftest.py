@@ -5,8 +5,6 @@ from src.core.config import settings
 from src.core.main import app
 from tests.utils import random_email
 
-server_url = f"http://localhost:8000{settings.API_V1_STR}/"
-
 settings.TEST_USER_EMAIL = random_email()
 
 

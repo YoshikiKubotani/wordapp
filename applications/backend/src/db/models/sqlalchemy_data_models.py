@@ -69,16 +69,22 @@ class SQLAlchemyUser(Base):
     created_at: Mapped[datetime.datetime] = mapped_column(default=datetime.datetime.now)
     updated_at: Mapped[datetime.datetime] = mapped_column(default=datetime.datetime.now)
 
-    # One-to-many relationship with UserLoginHistory
+    # One-to-many relationship with UserLoginHistory. If a user is deleted, all related login histories will be deleted as well.
     user_login_history: Mapped[list["SQLAlchemyUserLoginHistory"]] = relationship(
-        back_populates="user"
+        back_populates="user",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
     )
     # One-to-many relationship with Item
     items: Mapped[list["SQLAlchemyItem"]] = relationship(back_populates="user")
     # One-to-many relationship with Deck
     decks: Mapped[list["SQLAlchemyDeck"]] = relationship(back_populates="user")
-    # One-to-many relationship with Quiz
-    quizzes: Mapped[list["SQLAlchemyQuiz"]] = relationship(back_populates="user")
+    # One-to-many relationship with Quiz. If a user is deleted, all related quizzes will be deleted as well.
+    quizzes: Mapped[list["SQLAlchemyQuiz"]] = relationship(
+        back_populates="user",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+    )
 
 
 class SQLAlchemyUserLoginHistory(Base):
@@ -87,7 +93,9 @@ class SQLAlchemyUserLoginHistory(Base):
     __tablename__ = "user_login_history"
 
     user_login_history_id: Mapped[int] = mapped_column(primary_key=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.user_id"))
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey("users.user_id", ondelete="CASCADE")
+    )
     login_timestamp: Mapped[datetime.datetime] = mapped_column(
         default=datetime.datetime.now
     )
@@ -127,7 +135,7 @@ class SQLAlchemyItem(Base):
     __tablename__ = "items"
 
     item_id: Mapped[int] = mapped_column(primary_key=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.user_id"))
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.user_id"), nullable=True)
     english: Mapped[str]
     japanese: Mapped[str]
     grade: Mapped[int]
@@ -171,7 +179,7 @@ class SQLAlchemyDeck(Base):
     __tablename__ = "decks"
 
     deck_id: Mapped[int] = mapped_column(primary_key=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.user_id"))
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.user_id"), nullable=True)
     deck_name: Mapped[str]
 
     # Many-to-many relationship with Item
@@ -191,8 +199,10 @@ class SQLAlchemyQuizItem(Base):
     __tablename__ = "quiz_items"
 
     quiz_item_id: Mapped[int] = mapped_column(primary_key=True)
-    quiz_id: Mapped[int] = mapped_column(ForeignKey("quizzes.quiz_id"))
-    item_id: Mapped[int] = mapped_column(ForeignKey("items.item_id"))
+    quiz_id: Mapped[int] = mapped_column(
+        ForeignKey("quizzes.quiz_id", ondelete="CASCADE")
+    )
+    item_id: Mapped[int] = mapped_column(ForeignKey("items.item_id"), nullable=True)
     question_number: Mapped[int]
     choice_item_ids: Mapped[list[str]]
     correct_answer: Mapped[int]
@@ -211,15 +221,21 @@ class SQLAlchemyQuiz(Base):
     __tablename__ = "quizzes"
 
     quiz_id: Mapped[int] = mapped_column(primary_key=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.user_id"))
-    deck_id: Mapped[int] = mapped_column(ForeignKey("decks.deck_id"))
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey("users.user_id", ondelete="CASCADE")
+    )
+    deck_id: Mapped[int] = mapped_column(ForeignKey("decks.deck_id"), nullable=True)
     quiz_type: Mapped[str]
     quiz_timestamp: Mapped[datetime.datetime] = mapped_column(
         default=datetime.datetime.now
     )
 
-    # One-to-many relationship with QuizItem
-    quiz_items: Mapped[list[SQLAlchemyQuizItem]] = relationship(back_populates="quiz")
+    # One-to-many relationship with QuizItem. If a quiz is deleted, all related quiz items will be deleted as well.
+    quiz_items: Mapped[list[SQLAlchemyQuizItem]] = relationship(
+        back_populates="quiz",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+    )
     # Many-to-one relationship with User
     user: Mapped[SQLAlchemyUser] = relationship(back_populates="quizzes")
     # Many-to-one relationship with Deck

@@ -18,7 +18,7 @@ class QuizRepository(BaseRepository[SQLAlchemyQuiz, Quiz], IQuizRepository):
             async_session (AsyncSession): The asynchronous session to use for database operations.
         """
         super().__init__(
-            data_model=SQLAlchemyQuiz, domain_model=Quiz, async_seesoon=async_session
+            data_model=SQLAlchemyQuiz, domain_model=Quiz, async_session=async_session
         )
 
     async def read_by_user_id(self, user_id: int) -> list[Quiz]:

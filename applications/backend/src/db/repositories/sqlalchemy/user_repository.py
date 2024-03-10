@@ -27,7 +27,7 @@ class UserRepository(BaseRepository[SQLAlchemyUser, User], IUserRepository):
             async_session (AsyncSession): The asynchronous session to use for database operations.
         """
         super().__init__(
-            data_model=SQLAlchemyUser, domain_model=User, async_seesoon=async_session
+            data_model=SQLAlchemyUser, domain_model=User, async_session=async_session
         )
 
     async def read_by_username(self, user_name: str) -> User | None:
@@ -94,7 +94,7 @@ class UserLoginHistoryRepository(
         super().__init__(
             data_model=SQLAlchemyUserLoginHistory,
             domain_model=UserLoginHistory,
-            async_seesoon=async_session,
+            async_session=async_session,
         )
 
     async def read_by_user_id(self, user_id: int) -> list[UserLoginHistory]:
