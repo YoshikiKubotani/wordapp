@@ -1,15 +1,7 @@
 import pytest
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.db.models.sqlalchemy_data_models import (
-    SQLAlchemyDeck,
-    SQLAlchemyItem,
-    SQLAlchemyQuiz,
-    SQLAlchemyQuizItem,
-    SQLAlchemyUser,
-)
 from src.db.repositories.sqlalchemy.quiz_item_repository import QuizItemRepository
-from src.domain.models import Deck, Item, Quiz, QuizItem, User
 from tests.utils import DomainModelDict
 
 pytestmark = pytest.mark.anyio
@@ -18,11 +10,14 @@ pytestmark = pytest.mark.anyio
 class TestQuizItemRepositorySuccess:
     """Test cases for the `QuizItemRepository` class when successful."""
 
-    async def test_read_by_user_id(self, repository_class_provision: tuple[AsyncSession, DomainModelDict]) -> None:
+    async def test_read_by_user_id(
+        self, repository_class_provision: tuple[AsyncSession, DomainModelDict]
+    ) -> None:
         """Test the `QuizItemRepository.read_by_quiz_id` method.
 
         Args:
-            async_db_session (AsyncSession): An asynchronous database session.
+            repository_class_provision (tuple[AsyncSession, DomainModelDict]):
+                A tuple of an asynchronous database session and a dictionary of prepared domain models.
         """
         async_db_session, domain_model_dict = repository_class_provision
 
@@ -42,12 +37,14 @@ class TestQuizItemRepositorySuccess:
         assert len(quiz3_items) == 1
         assert quiz3_items[0] == domain_model_dict["quiz_item_domain_models"][4]
 
-
-    async def test_read_by_item_id(self, repository_class_provision: tuple[AsyncSession, DomainModelDict]) -> None:
+    async def test_read_by_item_id(
+        self, repository_class_provision: tuple[AsyncSession, DomainModelDict]
+    ) -> None:
         """Test the `QuizItemRepository.read_by_item_id` method.
 
         Args:
-            async_db_session (AsyncSession): An asynchronous database session.
+            repository_class_provision (tuple[AsyncSession, DomainModelDict]):
+                A tuple of an asynchronous database session and a dictionary of prepared domain models.
         """
         async_db_session, domain_model_dict = repository_class_provision
 

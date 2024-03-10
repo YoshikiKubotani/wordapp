@@ -1,9 +1,7 @@
 import pytest
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.db.models.sqlalchemy_data_models import SQLAlchemyDeck, SQLAlchemyUser
 from src.db.repositories.sqlalchemy.deck_repository import DeckRepository
-from src.domain.models import Deck, User
 from tests.utils import DomainModelDict
 
 pytestmark = pytest.mark.anyio
@@ -12,11 +10,14 @@ pytestmark = pytest.mark.anyio
 class TestDeckRepositorySuccess:
     """Test cases for the `DeckRepository` class when successful."""
 
-    async def test_real_all(self, repository_class_provision: tuple[AsyncSession, DomainModelDict]) -> None:
+    async def test_real_all(
+        self, repository_class_provision: tuple[AsyncSession, DomainModelDict]
+    ) -> None:
         """Test the `DeckRepository.read_all` method.
 
         Args:
-            async_db_session (AsyncSession): An asynchronous database session.
+            repository_class_provision (tuple[AsyncSession, DomainModelDict]):
+                A tuple of an asynchronous database session and a dictionary of prepared domain models.
         """
         async_db_session, domain_model_dict = repository_class_provision
 
@@ -30,11 +31,14 @@ class TestDeckRepositorySuccess:
         assert decks[1] == domain_model_dict["deck_domain_models"][1]
         assert decks[2] == domain_model_dict["deck_domain_models"][2]
 
-    async def test_read_by_user_id(self, repository_class_provision: tuple[AsyncSession, DomainModelDict]) -> None:
+    async def test_read_by_user_id(
+        self, repository_class_provision: tuple[AsyncSession, DomainModelDict]
+    ) -> None:
         """Test the `DeckRepository.read_by_user_id` method.
 
         Args:
-            async_db_session (AsyncSession): An asynchronous database session.
+            repository_class_provision (tuple[AsyncSession, DomainModelDict]):
+                A tuple of an asynchronous database session and a dictionary of prepared domain models.
         """
         async_db_session, domain_model_dict = repository_class_provision
 

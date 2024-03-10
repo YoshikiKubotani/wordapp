@@ -18,11 +18,15 @@ pytestmark = pytest.mark.anyio
 
 class TestBaseRepositorySuccess:
     """Test cases for the `BaseRepository` class when successful."""
-    async def test_create(self, repository_class_provision: tuple[AsyncSession, DomainModelDict]) -> None:
+
+    async def test_create(
+        self, repository_class_provision: tuple[AsyncSession, DomainModelDict]
+    ) -> None:
         """Test the `BaseRepository.create` method.
 
         Args:
-            async_db_session (AsyncSession): An asynchronous database session.
+            repository_class_provision (tuple[AsyncSession, DomainModelDict]):
+                A tuple of an asynchronous database session and a dictionary of prepared domain models.
         """
         async_db_session, _ = repository_class_provision
 
@@ -38,11 +42,7 @@ class TestBaseRepositorySuccess:
             user_id=3,
             ip_address="127.0.0.3",
         )
-        deck_domain_model = Deck(
-            deck_id=4,
-            user_id=3,
-            deck_name="dummy_deck4"
-        )
+        deck_domain_model = Deck(deck_id=4, user_id=3, deck_name="dummy_deck4")
         quiz_domain_model = Quiz(
             quiz_id=4,
             user_id=3,
@@ -102,11 +102,14 @@ class TestBaseRepositorySuccess:
         assert quiz == quiz_domain_model
         assert quiz_item == quiz_item_domain_model
 
-    async def test_read(self, repository_class_provision: tuple[AsyncSession, DomainModelDict]) -> None:
+    async def test_read(
+        self, repository_class_provision: tuple[AsyncSession, DomainModelDict]
+    ) -> None:
         """Test the `BaseRepository.read` method.
 
         Args:
-            async_db_session (AsyncSession): An asynchronous database session.
+            repository_class_provision (tuple[AsyncSession, DomainModelDict]):
+                A tuple of an asynchronous database session and a dictionary of prepared domain models.
         """
         async_db_session, domain_model_dict = repository_class_provision
 
@@ -138,17 +141,23 @@ class TestBaseRepositorySuccess:
         quiz_item = await quiz_item_repository.read(id=1)
         # Test if the returned data are correct (i.e. equals to the ones created above).
         assert user == domain_model_dict["user_domain_models"][0]
-        assert user_login_history == domain_model_dict["user_login_history_domain_models"][0]
+        assert (
+            user_login_history
+            == domain_model_dict["user_login_history_domain_models"][0]
+        )
         assert item == domain_model_dict["item_domain_models"][0]
         assert deck == domain_model_dict["deck_domain_models"][0]
         assert quiz == domain_model_dict["quiz_domain_models"][0]
         assert quiz_item == domain_model_dict["quiz_item_domain_models"][0]
 
-    async def test_update(self, repository_class_provision: tuple[AsyncSession, DomainModelDict]) -> None:
+    async def test_update(
+        self, repository_class_provision: tuple[AsyncSession, DomainModelDict]
+    ) -> None:
         """Test the `BaseRepository.update` method.
 
         Args:
-            async_db_session (AsyncSession): An asynchronous database session.
+            repository_class_provision (tuple[AsyncSession, DomainModelDict]):
+                A tuple of an asynchronous database session and a dictionary of prepared domain models.
         """
         async_db_session, _ = repository_class_provision
 
@@ -229,11 +238,14 @@ class TestBaseRepositorySuccess:
         assert quiz == updated_quiz_domain_model
         assert quiz_item == updated_quiz_item_domain_model
 
-    async def test_delete(self, repository_class_provision: tuple[AsyncSession, DomainModelDict]) -> None:
+    async def test_delete(
+        self, repository_class_provision: tuple[AsyncSession, DomainModelDict]
+    ) -> None:
         """Test the `BaseRepository.delete` method.
 
         Args:
-            async_db_session (AsyncSession): An asynchronous database session.
+            repository_class_provision (tuple[AsyncSession, DomainModelDict]):
+                A tuple of an asynchronous database session and a dictionary of prepared domain models.
         """
         async_db_session, domain_model_dict = repository_class_provision
 

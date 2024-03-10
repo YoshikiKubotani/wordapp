@@ -1,13 +1,7 @@
 import pytest
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.db.models.sqlalchemy_data_models import (
-    SQLAlchemyDeck,
-    SQLAlchemyQuiz,
-    SQLAlchemyUser,
-)
 from src.db.repositories.sqlalchemy.quiz_repository import QuizRepository
-from src.domain.models import Deck, Quiz, User
 from tests.utils import DomainModelDict
 
 pytestmark = pytest.mark.anyio
@@ -16,11 +10,14 @@ pytestmark = pytest.mark.anyio
 class TestQuizRepositorySuccess:
     """Test cases for the `QuizRepository` class when successful."""
 
-    async def test_read_by_user_id(self, repository_class_provision: tuple[AsyncSession, DomainModelDict]) -> None:
+    async def test_read_by_user_id(
+        self, repository_class_provision: tuple[AsyncSession, DomainModelDict]
+    ) -> None:
         """Test the `QuizRepository.read_by_user_id` method.
 
         Args:
-            async_db_session (AsyncSession): An asynchronous database session.
+            repository_class_provision (tuple[AsyncSession, DomainModelDict]):
+                A tuple of an asynchronous database session and a dictionary of prepared domain models.
         """
         async_db_session, domain_model_dict = repository_class_provision
 
@@ -36,11 +33,14 @@ class TestQuizRepositorySuccess:
         assert len(user2_quizzes) == 1
         assert user2_quizzes[0] == domain_model_dict["quiz_domain_models"][2]
 
-    async def test_read_by_deck_id(self, repository_class_provision: tuple[AsyncSession, DomainModelDict]) -> None:
+    async def test_read_by_deck_id(
+        self, repository_class_provision: tuple[AsyncSession, DomainModelDict]
+    ) -> None:
         """Test the `QuizRepository.read_by_deck_id` method.
 
         Args:
-            async_db_session (AsyncSession): An asynchronous database session.
+            repository_class_provision (tuple[AsyncSession, DomainModelDict]):
+                A tuple of an asynchronous database session and a dictionary of prepared domain models.
         """
         async_db_session, domain_model_dict = repository_class_provision
 

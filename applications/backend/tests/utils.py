@@ -1,30 +1,33 @@
-from typing import TypedDict
 import random
 import string
+from typing import TypedDict
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.core.config import settings
 from src.core.security import get_password_hash
-from src.db.repositories.sqlalchemy.user_repository import UserRepository
-from src.domain.models import User, UserLoginHistory, Item, Deck, Quiz, QuizItem
 from src.db.models.sqlalchemy_data_models import (
-    SQLAlchemyUser,
-    SQLAlchemyUserLoginHistory,
-    SQLAlchemyItem,
     SQLAlchemyDeck,
+    SQLAlchemyItem,
     SQLAlchemyQuiz,
     SQLAlchemyQuizItem,
+    SQLAlchemyUser,
+    SQLAlchemyUserLoginHistory,
 )
+from src.db.repositories.sqlalchemy.user_repository import UserRepository
+from src.domain.models import Deck, Item, Quiz, QuizItem, User, UserLoginHistory
+
 
 class DomainModelDict(TypedDict):
     """A dictionary containing domain models."""
+
     user_domain_models: list[User]
     user_login_history_domain_models: list[UserLoginHistory]
     item_domain_models: list[Item]
     deck_domain_models: list[Deck]
     quiz_domain_models: list[Quiz]
     quiz_item_domain_models: list[QuizItem]
+
 
 def random_lower_string() -> str:
     """Generate a random string of lowercase letters.
@@ -111,6 +114,7 @@ async def create_test_superuser(async_session: AsyncSession) -> dict[str, str]:
         "password": settings.FIRST_SUPERUSER_PASSWORD,
     }
 
+
 async def prepare_data_repository_test(async_session: AsyncSession) -> DomainModelDict:
     """Prepare the data for testing the repository classes.
 
@@ -150,7 +154,7 @@ async def prepare_data_repository_test(async_session: AsyncSession) -> DomainMod
             user_login_history_id=3,
             user_id=2,
             ip_address="127.0.0.2",
-        )
+        ),
     ]
     item_domain_models = [
         Item(
@@ -269,16 +273,41 @@ async def prepare_data_repository_test(async_session: AsyncSession) -> DomainMod
             correct_answer=0,
             user_answer=0,
             answer_time=7,
-        )
+        ),
     ]
 
-    user_data_models = [SQLAlchemyUser(**user_domain_model.model_dump()) for user_domain_model in user_domain_models]
-    user_login_history_data_models = [SQLAlchemyUserLoginHistory(**user_login_history_domain_model.model_dump()) for user_login_history_domain_model in user_login_history_domain_models]
-    item_data_models = [SQLAlchemyItem(**item_domain_model.model_dump()) for item_domain_model in item_domain_models]
-    deck_data_models = [SQLAlchemyDeck(**deck_domain_model.model_dump()) for deck_domain_model in deck_domain_models]
-    quiz_data_models = [SQLAlchemyQuiz(**quiz_domain_model.model_dump()) for quiz_domain_model in quiz_domain_models]
-    quiz_item_data_models = [SQLAlchemyQuizItem(**quiz_item_domain_model.model_dump()) for quiz_item_domain_model in quiz_item_domain_models]
-    all_data_models = user_data_models + user_login_history_data_models + item_data_models + deck_data_models + quiz_data_models + quiz_item_data_models
+    user_data_models = [
+        SQLAlchemyUser(**user_domain_model.model_dump())
+        for user_domain_model in user_domain_models
+    ]
+    user_login_history_data_models = [
+        SQLAlchemyUserLoginHistory(**user_login_history_domain_model.model_dump())
+        for user_login_history_domain_model in user_login_history_domain_models
+    ]
+    item_data_models = [
+        SQLAlchemyItem(**item_domain_model.model_dump())
+        for item_domain_model in item_domain_models
+    ]
+    deck_data_models = [
+        SQLAlchemyDeck(**deck_domain_model.model_dump())
+        for deck_domain_model in deck_domain_models
+    ]
+    quiz_data_models = [
+        SQLAlchemyQuiz(**quiz_domain_model.model_dump())
+        for quiz_domain_model in quiz_domain_models
+    ]
+    quiz_item_data_models = [
+        SQLAlchemyQuizItem(**quiz_item_domain_model.model_dump())
+        for quiz_item_domain_model in quiz_item_domain_models
+    ]
+    all_data_models = (
+        user_data_models
+        + user_login_history_data_models
+        + item_data_models
+        + deck_data_models
+        + quiz_data_models
+        + quiz_item_data_models
+    )
 
     async with async_session.begin():
         async_session.add_all(all_data_models)

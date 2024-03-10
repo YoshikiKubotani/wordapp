@@ -1,9 +1,7 @@
 import pytest
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.db.models.sqlalchemy_data_models import SQLAlchemyItem, SQLAlchemyUser
 from src.db.repositories.sqlalchemy.item_repository import ItemRepository
-from src.domain.models import Item, User
 from tests.utils import DomainModelDict
 
 pytestmark = pytest.mark.anyio
@@ -12,11 +10,14 @@ pytestmark = pytest.mark.anyio
 class TestItemRepositorySuccess:
     """Test cases for the `ItemRepository` class when successful."""
 
-    async def test_read_by_user_id(self, repository_class_provision: tuple[AsyncSession, DomainModelDict]) -> None:
+    async def test_read_by_user_id(
+        self, repository_class_provision: tuple[AsyncSession, DomainModelDict]
+    ) -> None:
         """Test the `ItemRepository.read_by_user_id` method.
 
         Args:
-            async_db_session (AsyncSession): An asynchronous database session.
+            repository_class_provision (tuple[AsyncSession, DomainModelDict]):
+                A tuple of an asynchronous database session and a dictionary of prepared domain models.
         """
         async_db_session, domain_model_dict = repository_class_provision
 
