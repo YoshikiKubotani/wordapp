@@ -19,7 +19,7 @@ class Item(BaseDomainModel):
     """
 
     item_id: int | None = None
-    user_id: int
+    user_id: int | None
     english: str
     japanese: str
     grade: int

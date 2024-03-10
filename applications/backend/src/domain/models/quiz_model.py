@@ -18,7 +18,7 @@ class Quiz(BaseDomainModel):
 
     quiz_id: int | None = None
     user_id: int
-    deck_id: int
+    deck_id: int | None
     quiz_type: str
     quiz_timestamp: PastDatetime = datetime.now()
 
@@ -52,7 +52,7 @@ class QuizItem(BaseDomainModel):
 
     quiz_item_id: int | None = None
     quiz_id: int
-    item_id: int
+    item_id: int | None
     question_number: int
     choice_item_ids: list[int]
     correct_answer: int

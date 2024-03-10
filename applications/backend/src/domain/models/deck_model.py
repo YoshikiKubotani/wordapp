@@ -11,7 +11,7 @@ class Deck(BaseDomainModel):
     """
 
     deck_id: int | None = None
-    user_id: int
+    user_id: int | None
     deck_name: str
 
     @property
