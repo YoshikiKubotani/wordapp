@@ -1,8 +1,8 @@
 export {
-  registerWordAtom,
-  removeWordAtom,
+  registerWordMutationAtom,
+  removeWordMutationAtom,
   sortedWordsAtom,
   wordStatsAtom,
-  wordsAtom,
+  wordsQueryAtom,
 } from './model/atoms'
 export type { WordDraft } from './model/atoms'

@@ -1,6 +1,7 @@
 import { atom } from 'jotai'
-import { atomWithStorage, createJSONStorage } from 'jotai/utils'
+import { atomWithMutation, atomWithQuery, queryClientAtom } from 'jotai-tanstack-query'
 import { seedWords } from './seed-words'
+import { apiRequest } from '@/shared/lib/api-client'
 import type { Word } from '@/entities/word'
 
 export type WordDraft = {
@@ -9,35 +10,26 @@ export type WordDraft = {
   note?: string
 }
 
-const generateWordId = () => {
-  const cryptoObj = typeof globalThis !== 'undefined' ? globalThis.crypto : undefined
-  if (cryptoObj?.randomUUID) return cryptoObj.randomUUID()
-  if (cryptoObj?.getRandomValues) {
-    const parts = cryptoObj.getRandomValues(new Uint32Array(4))
-    return (
-      'word-' +
-      Array.from(parts)
-        .map((value) => value.toString(16).padStart(8, '0'))
-        .join('')
-    )
-  }
-  return `word-${Date.now()}-${Math.random().toString(16).slice(2)}`
-}
+const WORDS_QUERY_KEY = ['words']
 
-const storage = createJSONStorage<Word[]>(() =>
-  typeof window === 'undefined' ? undefined : localStorage,
-)
+export const wordsQueryAtom = atomWithQuery<Word[]>((_get) => ({
+  queryKey: WORDS_QUERY_KEY,
+  queryFn: async ({ signal }) => apiRequest<Word[]>({ path: '/words', signal }),
+  initialData: seedWords,
+  staleTime: 5 * 60 * 1000,
+}))
 
-export const wordsAtom = atomWithStorage<Word[]>('wordapp.words', seedWords, storage)
-
-export const sortedWordsAtom = atom((get) =>
-  [...get(wordsAtom)].sort(
+export const sortedWordsAtom = atom((get) => {
+  const result = get(wordsQueryAtom)
+  const words = result.data ?? []
+  return [...words].sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-  ),
-)
+  )
+})
 
 export const wordStatsAtom = atom((get) => {
-  const words = get(wordsAtom)
+  const result = get(wordsQueryAtom)
+  const words = result.data ?? []
   const newest = words.at(-1)
   return {
     total: words.length,
@@ -45,34 +37,52 @@ export const wordStatsAtom = atom((get) => {
   }
 })
 
-export const registerWordAtom = atom(null, (get, set, draft: WordDraft) => {
-  const term = draft.term.trim()
-  const meaning = draft.meaning.trim()
-  if (!term || !meaning) return
+export const registerWordMutationAtom = atomWithMutation<Word, Error, WordDraft>((get) => ({
+  mutationKey: ['registerWord'],
+  mutationFn: async (draft) => {
+    const term = draft.term.trim()
+    const meaning = draft.meaning.trim()
+    const note = draft.note?.trim() || undefined
 
-  const normalizedTerm = term.toLowerCase()
-  const words = get(wordsAtom)
-  const existingIndex = words.findIndex((word) => word.term.toLowerCase() === normalizedTerm)
+    if (!term || !meaning) {
+      throw new Error('単語と意味の両方を入力してください')
+    }
 
-  const nextWord: Word = {
-    id: existingIndex >= 0 ? words[existingIndex].id : generateWordId(),
-    term,
-    meaning,
-    note: draft.note?.trim() || undefined,
-    createdAt: existingIndex >= 0 ? words[existingIndex].createdAt : new Date().toISOString(),
-  }
+    const existing = get(sortedWordsAtom).find(
+      (word) => word.term.trim().toLowerCase() === term.toLowerCase(),
+    )
 
-  if (existingIndex >= 0) {
-    const nextWords = [...words]
-    nextWords[existingIndex] = nextWord
-    set(wordsAtom, nextWords)
-    return
-  }
+    const payload: WordDraft = { term, meaning, note }
 
-  set(wordsAtom, [...words, nextWord])
-})
+    if (existing) {
+      return apiRequest<Word>({
+        path: `/words/${encodeURIComponent(existing.id)}`,
+        method: 'PUT',
+        body: payload,
+      })
+    }
 
-export const removeWordAtom = atom(null, (get, set, id: string) => {
-  const nextWords = get(wordsAtom).filter((word) => word.id !== id)
-  set(wordsAtom, nextWords)
-})
+    return apiRequest<Word>({
+      path: '/words',
+      method: 'POST',
+      body: payload,
+    })
+  },
+  onSuccess: async (_data, _variables, _context) => {
+    const queryClient = get(queryClientAtom)
+    await queryClient.invalidateQueries({ queryKey: WORDS_QUERY_KEY })
+  },
+}))
+
+export const removeWordMutationAtom = atomWithMutation<undefined, Error, string>((get) => ({
+  mutationKey: ['removeWord'],
+  mutationFn: async (id) =>
+    apiRequest({
+      path: `/words/${encodeURIComponent(id)}`,
+      method: 'DELETE',
+    }),
+  onSuccess: async () => {
+    const queryClient = get(queryClientAtom)
+    await queryClient.invalidateQueries({ queryKey: WORDS_QUERY_KEY })
+  },
+}))

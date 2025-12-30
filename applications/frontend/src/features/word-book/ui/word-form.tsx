@@ -1,6 +1,6 @@
 import { type FormEvent, useState } from 'react'
-import { useSetAtom } from 'jotai'
-import { registerWordAtom, type WordDraft } from '@/features/word-book'
+import { useAtomValue } from 'jotai'
+import { registerWordMutationAtom, type WordDraft } from '@/features/word-book'
 import { Button } from '@/shared/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/ui/card'
 import { Input } from '@/shared/ui/input'
@@ -10,7 +10,7 @@ import { Textarea } from '@/shared/ui/textarea'
 type FormState = WordDraft
 
 export function WordForm() {
-  const registerWord = useSetAtom(registerWordAtom)
+  const registerWord = useAtomValue(registerWordMutationAtom)
   const [form, setForm] = useState<FormState>({
     term: '',
     meaning: '',
@@ -25,16 +25,24 @@ export function WordForm() {
     setError(null)
   }
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    setFeedback(null)
+    setError(null)
     if (!form.term.trim() || !form.meaning.trim()) {
       setError('単語と意味の両方を記入して追加してね')
       return
     }
 
-    registerWord(form)
-    setForm({ term: '', meaning: '', note: '' })
-    setFeedback('保存しました。この調子でどんどん追加しちゃおう！')
+    try {
+      await registerWord.mutateAsync(form)
+      setForm({ term: '', meaning: '', note: '' })
+      setFeedback('保存しました。この調子でどんどん追加しちゃおう！')
+    } catch (submitError) {
+      setError(
+        submitError instanceof Error ? submitError.message : '保存に失敗しました。もう一度試してね',
+      )
+    }
   }
 
   return (
@@ -79,8 +87,8 @@ export function WordForm() {
           {error ? <p className="text-sm font-medium text-destructive">{error}</p> : null}
           {feedback ? <p className="text-sm text-foreground">{feedback}</p> : null}
           <div className="flex items-center gap-2">
-            <Button type="submit" className="flex-1">
-              追加
+            <Button type="submit" className="flex-1" disabled={registerWord.isPending}>
+              {registerWord.isPending ? '送信中...' : '追加'}
             </Button>
             <Button
               type="button"

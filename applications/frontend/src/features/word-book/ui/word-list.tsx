@@ -1,15 +1,16 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useAtomValue, useSetAtom } from 'jotai'
-import { removeWordAtom, sortedWordsAtom } from '@/features/word-book'
-import { Badge } from '@/shared/ui/badge'
+import { useAtomValue } from 'jotai'
+import { removeWordMutationAtom, sortedWordsAtom, wordsQueryAtom } from '@/features/word-book'
 import { Button } from '@/shared/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/ui/card'
+import { Skeleton } from '@/shared/ui/skeleton'
 
 const PAGE_SIZE = 5
 
 export function WordList() {
+  const wordsQuery = useAtomValue(wordsQueryAtom)
   const words = useAtomValue(sortedWordsAtom)
-  const removeWord = useSetAtom(removeWordAtom)
+  const removeWord = useAtomValue(removeWordMutationAtom)
   const [page, setPage] = useState(1)
 
   const totalPages = useMemo(
@@ -28,6 +29,12 @@ export function WordList() {
   const hasPagination = words.length > PAGE_SIZE
   const displayStart = words.length === 0 ? 0 : startIndex + 1
   const displayEnd = Math.min(startIndex + PAGE_SIZE, words.length)
+  const isLoading = wordsQuery.isPending && !wordsQuery.data
+  const isError = wordsQuery.isError
+  const errorMessage =
+    wordsQuery.error instanceof Error
+      ? wordsQuery.error.message
+      : '単語一覧の取得に失敗しました。時間をおいて再度お試しください。'
 
   return (
     <Card className="backdrop-blur">
@@ -38,7 +45,31 @@ export function WordList() {
         </div>
       </CardHeader>
       <CardContent className="space-y-3">
-        {words.length === 0 ? (
+        {isLoading ? (
+          <div className="space-y-3">
+            {Array.from({ length: 3 }).map((_, index) => (
+              <div
+                key={index}
+                className="space-y-2 rounded-lg border border-border/70 bg-card/60 p-3"
+              >
+                <Skeleton className="h-4 w-1/3" />
+                <Skeleton className="h-3 w-1/2" />
+              </div>
+            ))}
+          </div>
+        ) : isError ? (
+          <div className="space-y-2 rounded-lg border border-dashed border-destructive/60 bg-destructive/10 p-4 text-sm text-destructive">
+            <p>{errorMessage}</p>
+            <Button
+              type="button"
+              size="sm"
+              variant="outline"
+              onClick={() => wordsQuery.refetch?.()}
+            >
+              再読み込み
+            </Button>
+          </div>
+        ) : words.length === 0 ? (
           <p className="text-sm text-secondary-foreground">
             まだ単語が追加されていないよ！まずは学習したい単語を追加しよう
           </p>
@@ -60,10 +91,11 @@ export function WordList() {
                       size="sm"
                       variant="ghost"
                       className="opacity-0 transition group-hover:opacity-100"
-                      onClick={() => removeWord(word.id)}
+                      onClick={() => removeWord.mutate(word.id)}
+                      disabled={removeWord.isPending}
                       aria-label={`Remove ${word.term}`}
                     >
-                      削除
+                      {removeWord.isPending ? '削除中...' : '削除'}
                     </Button>
                   </div>
                   {word.note ? (
