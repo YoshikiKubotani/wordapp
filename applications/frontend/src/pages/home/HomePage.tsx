@@ -17,7 +17,7 @@ export function HomePage() {
             <p className="text-sm font-semibold uppercase tracking-wide text-primary">Word app</p>
             <div className="space-y-2">
               <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-                シンプル単語暗記アプリ
+                シンプル単語学習アプリ
               </h1>
               <p className="max-w-2xl text-base text-secondary-foreground">
                 単語を登録して、さくっと学習しちゃおう！難しい場合は思い出すためのヒントをつけてもOK

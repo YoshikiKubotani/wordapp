@@ -36,7 +36,6 @@ export function WordList() {
           <CardTitle>単語一覧</CardTitle>
           <CardDescription>追加した単語の一覧（追加した順）</CardDescription>
         </div>
-        <Badge variant="solid">合計 {words.length}</Badge>
       </CardHeader>
       <CardContent className="space-y-3">
         {words.length === 0 ? (
