@@ -35,24 +35,23 @@ export function FlashcardPanel({ words }: FlashcardPanelProps) {
 
   const renderEmpty = () => (
     <div className="flex flex-col items-start gap-3 rounded-xl border border-dashed border-border bg-muted/40 p-6">
-      <p className="text-base font-semibold text-foreground">No cards yet</p>
-      <p className="text-sm text-muted-foreground">
-        Add a few words on the left. We will shuffle them into a practice round automatically.
+      <p className="text-sm text-secondary-foreground">
+        まだ単語が追加されていないよ！まずは学習したい単語を追加しよう
       </p>
     </div>
   )
 
   const renderFinished = () => (
     <div className="flex flex-col gap-4 rounded-xl border border-border bg-accent/30 p-6">
-      <p className="text-base font-semibold text-foreground">Round complete</p>
+      <p className="text-base font-semibold text-foreground">🎉ラウンド完了</p>
       <div className="flex flex-wrap gap-2">
         <Badge variant="solid">Correct {progress.correct}</Badge>
         <Badge variant="outline">Review again {progress.incorrect}</Badge>
       </div>
       <div className="flex flex-wrap gap-2">
-        <Button onClick={() => startSession(words)}>Shuffle a new round</Button>
+        <Button onClick={() => startSession(words)}>新しいラウンドの開始</Button>
         <Button variant="ghost" onClick={() => resetSession()}>
-          Reset session
+          セッションをリセット
         </Button>
       </div>
     </div>
@@ -65,42 +64,37 @@ export function FlashcardPanel({ words }: FlashcardPanelProps) {
       <div className="flex flex-col gap-4">
         <div className="rounded-xl border border-border bg-gradient-to-br from-card via-card to-accent/30 p-6 shadow-lg">
           <div className="flex items-center justify-between gap-2">
-            <p className="text-xs font-semibold uppercase text-muted-foreground">Prompt</p>
+            <p className="text-xs font-semibold uppercase text-secondary-foreground">単語</p>
             <Badge variant="outline">
-              Card {Math.min(progress.completed + 1, progress.total)} / {progress.total}
+              カード {Math.min(progress.completed + 1, progress.total)} / {progress.total}
             </Badge>
           </div>
           <p className="mt-2 text-3xl font-bold tracking-tight text-foreground">
             {activeCard.term}
           </p>
           {activeCard.note ? (
-            <p className="mt-1 text-sm text-muted-foreground">Hint: {activeCard.note}</p>
+            <p className="mt-1 text-sm text-secondary-foreground">ヒント: {activeCard.note}</p>
           ) : null}
           {progress.revealed ? (
             <div className="mt-6 space-y-1 rounded-lg border border-border/70 bg-card/70 p-4">
-              <p className="text-xs font-semibold uppercase text-muted-foreground">Meaning</p>
+              <p className="text-xs font-semibold uppercase text-secondary-foreground">意味</p>
               <p className="text-lg font-semibold text-foreground">{activeCard.meaning}</p>
             </div>
           ) : (
-            <p className="mt-6 text-sm text-muted-foreground">
-              Think of the meaning, then reveal to self-check.
-            </p>
+            null
           )}
         </div>
         <div className="flex flex-wrap gap-2">
           {!progress.revealed ? (
             <>
-              <Button onClick={() => revealCard()}>Reveal meaning</Button>
-              <Button variant="ghost" onClick={() => startSession(words)}>
-                Reshuffle
-              </Button>
+              <Button onClick={() => revealCard()}>答えを見る</Button>
             </>
           ) : (
             <>
               <Button variant="secondary" onClick={() => gradeCard('incorrect')}>
-                Need to review
+                間違い
               </Button>
-              <Button onClick={() => gradeCard('correct')}>I remembered it</Button>
+              <Button onClick={() => gradeCard('correct')}>正解</Button>
             </>
           )}
         </div>
@@ -112,8 +106,8 @@ export function FlashcardPanel({ words }: FlashcardPanelProps) {
     <Card className="h-full backdrop-blur">
       <CardHeader className="flex flex-row items-start justify-between gap-4">
         <div className="space-y-1">
-          <CardTitle>Flashcards</CardTitle>
-          <CardDescription>Shuffle the deck, reveal answers, and track your round.</CardDescription>
+          <CardTitle>学習</CardTitle>
+          <CardDescription>追加した単語をシャッフルして覚えたかどうかチェック</CardDescription>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <Badge variant="solid">Round size {progress.total}</Badge>

@@ -42,9 +42,9 @@
     --primary: theme(colors.emerald.600);
     --primary-foreground: theme(colors.white);
     --secondary: color-mix(in srgb, theme(colors.emerald.100) 70%, theme(colors.white) 30%);
-    --secondary-foreground: theme(colors.emerald.950);
+    --secondary-foreground: theme(colors.emerald.700);
     --muted: theme(colors.emerald.100);
-    --muted-foreground: theme(colors.emerald.700);
+    --muted-foreground: color-mix(in srgb, theme(colors.emerald.200) 60%, theme(colors.slate.500) 40%);
     --accent: color-mix(in srgb, theme(colors.emerald.100) 55%, theme(colors.emerald.200) 45%);
     --accent-foreground: theme(colors.emerald.950);
     --destructive: theme(colors.red.600);

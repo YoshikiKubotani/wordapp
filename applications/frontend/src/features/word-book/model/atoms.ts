@@ -9,6 +9,21 @@ export type WordDraft = {
   note?: string
 }
 
+const generateWordId = () => {
+  const cryptoObj = typeof globalThis !== 'undefined' ? globalThis.crypto : undefined
+  if (cryptoObj?.randomUUID) return cryptoObj.randomUUID()
+  if (cryptoObj?.getRandomValues) {
+    const parts = cryptoObj.getRandomValues(new Uint32Array(4))
+    return (
+      'word-' +
+      Array.from(parts)
+        .map((value) => value.toString(16).padStart(8, '0'))
+        .join('')
+    )
+  }
+  return `word-${Date.now()}-${Math.random().toString(16).slice(2)}`
+}
+
 const storage = createJSONStorage<Word[]>(() =>
   typeof window === 'undefined' ? undefined : localStorage,
 )
@@ -40,7 +55,7 @@ export const registerWordAtom = atom(null, (get, set, draft: WordDraft) => {
   const existingIndex = words.findIndex((word) => word.term.toLowerCase() === normalizedTerm)
 
   const nextWord: Word = {
-    id: existingIndex >= 0 ? words[existingIndex].id : crypto.randomUUID(),
+    id: existingIndex >= 0 ? words[existingIndex].id : generateWordId(),
     term,
     meaning,
     note: draft.note?.trim() || undefined,

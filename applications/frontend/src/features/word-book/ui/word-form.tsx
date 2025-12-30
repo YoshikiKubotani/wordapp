@@ -28,50 +28,50 @@ export function WordForm() {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (!form.term.trim() || !form.meaning.trim()) {
-      setError('Please add both the word and its meaning.')
+      setError('単語と意味の両方を記入して追加してね')
       return
     }
 
     registerWord(form)
     setForm({ term: '', meaning: '', note: '' })
-    setFeedback('Saved! Add another word or jump into practice.')
+    setFeedback('保存しました。この調子でどんどん追加しちゃおう！')
   }
 
   return (
     <Card className="h-full backdrop-blur">
       <CardHeader>
-        <CardTitle>Register a word</CardTitle>
+        <CardTitle>単語を追加する</CardTitle>
         <CardDescription>
-          Keep the deck fresh—adding a word with the same spelling updates its meaning.
+          表面に覚えたい単語を、裏面にその意味を記入して「追加」ボタンを押そう！
         </CardDescription>
       </CardHeader>
       <CardContent>
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div className="space-y-2">
-            <Label htmlFor="term">Word</Label>
+            <Label htmlFor="term">単語/表面</Label>
             <Input
               id="term"
-              placeholder="meticulous"
+              placeholder="apple"
               value={form.term}
               onChange={(event) => updateField('term')(event.target.value)}
               autoComplete="off"
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="meaning">Meaning</Label>
+            <Label htmlFor="meaning">意味/裏面</Label>
             <Input
               id="meaning"
-              placeholder="Showing great attention to detail"
+              placeholder="りんご"
               value={form.meaning}
               onChange={(event) => updateField('meaning')(event.target.value)}
               autoComplete="off"
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="note">Memory hook (optional)</Label>
+            <Label htmlFor="note">ヒント（任意）</Label>
             <Textarea
               id="note"
-              placeholder="e.g. Her notes were meticulous—every comma was intentional."
+              placeholder="例：赤くて美味しい手のひらサイズの果物"
               value={form.note}
               onChange={(event) => updateField('note')(event.target.value)}
             />
@@ -80,14 +80,14 @@ export function WordForm() {
           {feedback ? <p className="text-sm text-foreground">{feedback}</p> : null}
           <div className="flex items-center gap-2">
             <Button type="submit" className="flex-1">
-              Save word
+              追加
             </Button>
             <Button
               type="button"
               variant="ghost"
               onClick={() => setForm({ term: '', meaning: '', note: '' })}
             >
-              Clear
+              クリア
             </Button>
           </div>
         </form>
