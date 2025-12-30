@@ -7,7 +7,6 @@ import { queryClientAtom } from 'jotai-tanstack-query'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import './index.css'
 import App from './App.tsx'
-import { Toaster } from '@/shared/ui/sonner'
 
 // Create a QueryClient instance for jotai-tanstack-query
 const queryClient = new QueryClient({
@@ -38,7 +37,6 @@ createRoot(rootElement).render(
       <QueryClientProvider client={queryClient}>
         <Provider>
           <HydrateAtoms>
-            <Toaster richColors theme="light" position="top-center" />
             <App />
           </HydrateAtoms>
         </Provider>

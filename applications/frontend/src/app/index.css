@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;600;700&display=swap');
 @import 'tailwindcss';
 
 @theme {
@@ -32,37 +33,37 @@
 
 @layer base {
   :root {
-    --background: theme(colors.slate.50);
+    --background: theme(colors.emerald.50);
     --foreground: theme(colors.slate.900);
-    --card: theme(colors.slate.50);
+    --card: theme(colors.white);
     --card-foreground: theme(colors.slate.900);
-    --popover: theme(colors.slate.50);
+    --popover: theme(colors.white);
     --popover-foreground: theme(colors.slate.900);
-    --primary: theme(colors.slate.600);
-    --primary-foreground: theme(colors.slate.50);
-    --secondary: theme(colors.slate.300);
-    --secondary-foreground: theme(colors.slate.950);
-    --muted: theme(colors.slate.200);
-    --muted-foreground: theme(colors.slate.600);
-    --accent: color-mix(in srgb, theme(colors.slate.200) 70%, theme(colors.slate.300) 30%);
-    --accent-foreground: theme(colors.slate.950);
-    --destructive: theme(colors.red.500);
-    --destructive-foreground: theme(colors.slate.50);
-    --border: theme(colors.slate.200);
-    --input: theme(colors.slate.200);
-    --ring: theme(colors.slate.950);
-    --radius: 0.5rem;
+    --primary: theme(colors.emerald.600);
+    --primary-foreground: theme(colors.white);
+    --secondary: color-mix(in srgb, theme(colors.emerald.100) 70%, theme(colors.white) 30%);
+    --secondary-foreground: theme(colors.emerald.950);
+    --muted: theme(colors.emerald.100);
+    --muted-foreground: theme(colors.emerald.700);
+    --accent: color-mix(in srgb, theme(colors.emerald.100) 55%, theme(colors.emerald.200) 45%);
+    --accent-foreground: theme(colors.emerald.950);
+    --destructive: theme(colors.red.600);
+    --destructive-foreground: theme(colors.white);
+    --border: color-mix(in srgb, theme(colors.emerald.200) 60%, theme(colors.emerald.300) 40%);
+    --input: color-mix(in srgb, theme(colors.emerald.200) 60%, theme(colors.emerald.300) 40%);
+    --ring: theme(colors.emerald.500);
+    --radius: 0.75rem;
   }
 
   .dark {
     --background: theme(colors.slate.950);
     --foreground: theme(colors.slate.50);
-    --card: theme(colors.slate.950);
+    --card: theme(colors.slate.900);
     --card-foreground: theme(colors.slate.50);
-    --popover: theme(colors.slate.950);
+    --popover: theme(colors.slate.900);
     --popover-foreground: theme(colors.slate.50);
-    --primary: theme(colors.slate.50);
-    --primary-foreground: theme(colors.slate.900);
+    --primary: theme(colors.emerald.400);
+    --primary-foreground: theme(colors.slate.950);
     --secondary: theme(colors.slate.800);
     --secondary-foreground: theme(colors.slate.50);
     --muted: theme(colors.slate.800);
@@ -73,7 +74,7 @@
     --destructive-foreground: theme(colors.slate.50);
     --border: theme(colors.slate.800);
     --input: theme(colors.slate.800);
-    --ring: theme(colors.slate.300);
+    --ring: theme(colors.emerald.400);
   }
 }
 
@@ -82,6 +83,25 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    font-family:
+      'Space Grotesk',
+      'Manrope',
+      'Segoe UI',
+      system-ui,
+      -apple-system,
+      sans-serif;
+    background-image:
+      radial-gradient(
+        circle at 20% 20%,
+        color-mix(in srgb, var(--accent) 30%, white 70%),
+        transparent 28%
+      ),
+      radial-gradient(
+        circle at 80% 0%,
+        color-mix(in srgb, var(--primary) 22%, white 78%),
+        transparent 24%
+      );
+    min-height: 100vh;
   }
 }
