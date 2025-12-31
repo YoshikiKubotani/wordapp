@@ -14,7 +14,7 @@ const WORDS_QUERY_KEY = ['words']
 
 export const wordsQueryAtom = atomWithQuery<Word[]>((_get) => ({
   queryKey: WORDS_QUERY_KEY,
-  queryFn: async ({ signal }) => apiRequest<Word[]>({ path: '/words', signal }),
+  queryFn: async ({ signal }) => apiRequest<Word[]>({ path: 'words', signal }),
   initialData: seedWords,
   staleTime: 5 * 60 * 1000,
 }))
@@ -56,14 +56,14 @@ export const registerWordMutationAtom = atomWithMutation<Word, Error, WordDraft>
 
     if (existing) {
       return apiRequest<Word>({
-        path: `/words/${encodeURIComponent(existing.id)}`,
+        path: `words/${encodeURIComponent(existing.id)}`,
         method: 'PUT',
         body: payload,
       })
     }
 
     return apiRequest<Word>({
-      path: '/words',
+      path: 'words',
       method: 'POST',
       body: payload,
     })
@@ -78,7 +78,7 @@ export const removeWordMutationAtom = atomWithMutation<undefined, Error, string>
   mutationKey: ['removeWord'],
   mutationFn: async (id) =>
     apiRequest({
-      path: `/words/${encodeURIComponent(id)}`,
+      path: `words/${encodeURIComponent(id)}`,
       method: 'DELETE',
     }),
   onSuccess: async () => {
