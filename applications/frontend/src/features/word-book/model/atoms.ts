@@ -19,7 +19,7 @@ export const wordsQueryAtom = atomWithQuery<Word[]>((_get) => ({
 
 export const sortedWordsAtom = atom((get) => {
   const result = get(wordsQueryAtom)
-  const words = result.data ?? []
+  const words = Array.isArray(result.data) ? result.data : []
   return [...words].sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
   )
@@ -27,8 +27,8 @@ export const sortedWordsAtom = atom((get) => {
 
 export const wordStatsAtom = atom((get) => {
   const result = get(wordsQueryAtom)
-  const words = result.data ?? []
-  const newest = words.at(-1)
+  const words = Array.isArray(result.data) ? result.data : []
+  const newest = words.length > 0 ? words[words.length - 1] : undefined
   return {
     total: words.length,
     newestTerm: newest?.term ?? null,

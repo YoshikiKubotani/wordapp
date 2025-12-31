@@ -1,3 +1,4 @@
+import { Trash2 } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import { useAtomValue } from 'jotai'
 import { removeWordMutationAtom, sortedWordsAtom, wordsQueryAtom } from '@/features/word-book'
@@ -88,14 +89,18 @@ export function WordList() {
                     </div>
                     <Button
                       type="button"
-                      size="sm"
+                      size="icon"
                       variant="ghost"
-                      className="opacity-0 transition group-hover:opacity-100"
+                      className="text-muted-foreground hover:text-destructive"
                       onClick={() => removeWord.mutate(word.id)}
                       disabled={removeWord.isPending}
                       aria-label={`Remove ${word.term}`}
                     >
-                      {removeWord.isPending ? '削除中...' : '削除'}
+                      {removeWord.isPending ? (
+                        <span className="text-[10px] font-semibold">...</span>
+                      ) : (
+                        <Trash2 className="h-4 w-4" aria-hidden="true" />
+                      )}
                     </Button>
                   </div>
                   {word.note ? (
