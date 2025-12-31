@@ -1,6 +1,5 @@
 import { atom } from 'jotai'
 import { atomWithMutation, atomWithQuery, queryClientAtom } from 'jotai-tanstack-query'
-import { seedWords } from './seed-words'
 import { apiRequest } from '@/shared/lib/api-client'
 import type { Word } from '@/entities/word'
 
@@ -15,7 +14,6 @@ const WORDS_QUERY_KEY = ['words']
 export const wordsQueryAtom = atomWithQuery<Word[]>((_get) => ({
   queryKey: WORDS_QUERY_KEY,
   queryFn: async ({ signal }) => apiRequest<Word[]>({ path: 'words', signal }),
-  initialData: seedWords,
   staleTime: 5 * 60 * 1000,
 }))
 
