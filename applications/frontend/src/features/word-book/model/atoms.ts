@@ -37,7 +37,7 @@ export const wordStatsAtom = atom((get) => {
   }
 })
 
-export const registerWordMutationAtom = atomWithMutation<Word, Error, WordDraft>((get) => ({
+export const registerWordMutationAtom = atomWithMutation<Word, WordDraft, Error>((get) => ({
   mutationKey: ['registerWord'],
   mutationFn: async (draft) => {
     const term = draft.term.trim()
@@ -74,7 +74,7 @@ export const registerWordMutationAtom = atomWithMutation<Word, Error, WordDraft>
   },
 }))
 
-export const removeWordMutationAtom = atomWithMutation<undefined, Error, string>((get) => ({
+export const removeWordMutationAtom = atomWithMutation<undefined, string, Error>((get) => ({
   mutationKey: ['removeWord'],
   mutationFn: async (id) =>
     apiRequest({
