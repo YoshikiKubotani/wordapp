@@ -32,7 +32,7 @@ export function HomePage() {
       </header>
 
       <main className="grid gap-5 lg:grid-cols-2">
-        <div className='col-span-full'>
+        <div className="col-span-full">
           <FlashcardPanel words={words} />
         </div>
         <WordForm />
