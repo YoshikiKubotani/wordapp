@@ -1,8 +1,10 @@
+data/*
 __pycache__
 .coverage
 .mypy_cache
 .pytest_cache
 .ruff_cache
 .venv
+!data/.gitkeep
 
 /environments/*.env
