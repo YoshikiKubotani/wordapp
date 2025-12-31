@@ -1,0 +1,38 @@
+services:
+  backend:
+    build:
+      target: base
+      args:
+        - BASE_IMAGE=python:3.11.13-slim-bookworm
+        - PROJECT_NAME=wordapp
+        - SERVICE_NAME=backend
+        - USER_NAME=developer
+        - GROUP_NAME=developers
+        - UID=1000
+        - GID=1000
+        - RUN_UV_SYNC_AT_BUILD_TIME=true
+      context: ../../applications/backend
+      dockerfile: environments/Dockerfile.backend
+    tty: true
+    volumes:
+      - ../../applications/backend:/home/developer/wordapp-backend
+      - /home/developer/wordapp-backend/.venv
+
+  frontend:
+    build:
+      target: base
+      args:
+        - BASE_IMAGE=node:22.16.0-bookworm-slim
+        - PROJECT_NAME=wordapp
+        - SERVICE_NAME=frontend
+        - USER_NAME=developer
+        - GROUP_NAME=developers
+        - UID=1000
+        - GID=1000
+        - RUN_YARN_INSTALL_AT_BUILD_TIME=true
+      context: ../../applications/frontend
+      dockerfile: environments/Dockerfile.frontend
+    tty: true
+    volumes:
+      - ../../applications/frontend:/home/developer/wordapp-frontend
+      - /home/developer/wordapp-frontend/node_modules

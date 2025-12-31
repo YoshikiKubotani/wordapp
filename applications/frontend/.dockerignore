@@ -1,0 +1,20 @@
+# Add files/folders to ignore when building the image
+# This only affects the "ADD" and "COPY" commands in the Dockerfile
+
+# Files to ignore
+.dockerignore
+.gitignore
+# .prettierrc
+# .eslint.config.js
+README.md
+# tsconfig.app.json
+# tsconfig.json
+# tsconfig.node.json
+# vite.config.ts
+
+# Folder to ignore
+dist
+environments
+node_modules
+# public
+# src

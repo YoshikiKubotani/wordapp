@@ -1,0 +1,18 @@
+# Add files/folders to ignore when building the image
+# This only affects the "ADD" and "COPY" commands in the Dockerfile
+
+# Files to ignore
+.coverage
+.dockerignore
+.gitignore
+
+# Folder to ignore
+.mypy_cache
+.pytest_cache
+.ruff_cache
+.venv
+data
+environments
+results
+# src
+# tests

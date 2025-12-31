@@ -1,4 +1,1 @@
-db/data/*
-
-/environments/.env
-*.csv
+.vscode/

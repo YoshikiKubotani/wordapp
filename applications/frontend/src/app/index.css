@@ -1,0 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;600;700&display=swap');
+@import 'tailwindcss';
+
+@theme {
+  --breakpoint-2md: 58rem;
+  --breakpoint-xl: 85rem;
+}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+}
+
+@layer base {
+  :root {
+    --background: theme(colors.emerald.50);
+    --foreground: theme(colors.slate.900);
+    --card: theme(colors.white);
+    --card-foreground: theme(colors.slate.900);
+    --popover: theme(colors.white);
+    --popover-foreground: theme(colors.slate.900);
+    --primary: theme(colors.emerald.600);
+    --primary-foreground: theme(colors.white);
+    --secondary: color-mix(in srgb, theme(colors.emerald.100) 70%, theme(colors.white) 30%);
+    --secondary-foreground: theme(colors.emerald.700);
+    --muted: theme(colors.emerald.100);
+    --muted-foreground: color-mix(
+      in srgb,
+      theme(colors.emerald.200) 60%,
+      theme(colors.slate.500) 40%
+    );
+    --accent: color-mix(in srgb, theme(colors.emerald.100) 55%, theme(colors.emerald.200) 45%);
+    --accent-foreground: theme(colors.emerald.950);
+    --destructive: theme(colors.red.600);
+    --destructive-foreground: theme(colors.white);
+    --border: color-mix(in srgb, theme(colors.emerald.200) 60%, theme(colors.emerald.300) 40%);
+    --input: color-mix(in srgb, theme(colors.emerald.200) 60%, theme(colors.emerald.300) 40%);
+    --ring: theme(colors.emerald.500);
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: theme(colors.slate.950);
+    --foreground: theme(colors.slate.50);
+    --card: theme(colors.slate.900);
+    --card-foreground: theme(colors.slate.50);
+    --popover: theme(colors.slate.900);
+    --popover-foreground: theme(colors.slate.50);
+    --primary: theme(colors.emerald.400);
+    --primary-foreground: theme(colors.slate.950);
+    --secondary: theme(colors.slate.800);
+    --secondary-foreground: theme(colors.slate.50);
+    --muted: theme(colors.slate.800);
+    --muted-foreground: theme(colors.slate.400);
+    --accent: theme(colors.slate.800);
+    --accent-foreground: theme(colors.slate.50);
+    --destructive: theme(colors.red.700);
+    --destructive-foreground: theme(colors.slate.50);
+    --border: theme(colors.slate.800);
+    --input: theme(colors.slate.800);
+    --ring: theme(colors.emerald.400);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family:
+      'Space Grotesk',
+      'Manrope',
+      'Segoe UI',
+      system-ui,
+      -apple-system,
+      sans-serif;
+    background-image:
+      radial-gradient(
+        circle at 20% 20%,
+        color-mix(in srgb, var(--accent) 30%, white 70%),
+        transparent 28%
+      ),
+      radial-gradient(
+        circle at 80% 0%,
+        color-mix(in srgb, var(--primary) 22%, white 78%),
+        transparent 24%
+      );
+    min-height: 100vh;
+  }
+}

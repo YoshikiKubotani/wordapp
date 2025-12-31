@@ -1,0 +1,49 @@
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE} AS base
+
+# Define shared build arguments.
+ARG PROJECT_NAME
+ARG USER_NAME
+ARG GROUP_NAME
+ARG UID=1000
+ARG GID=1000
+
+# Deifne service-specific build arguments.
+ARG SERVICE_NAME
+ARG APPLICATION_PATH=.
+ARG INNER_APPLICATION_PATH=/home/${USER_NAME}/${PROJECT_NAME}-${SERVICE_NAME}
+
+ARG RUN_UV_SYNC_AT_BUILD_TIME="false"
+
+ENV DEBIAN_FRONTEND="noninteractive" \
+    LC_ALL="C.UTF-8" \
+    LANG="C.UTF-8" \
+    PYTHONPATH=${INNER_APPLICATION_PATH}
+
+# Update the certificate as the base image may not have the latest CA certificates.
+# This is important for security and to avoid issues with HTTPS connections (e.g., when downloading VS Code extensions).
+RUN apt update -y && apt install --no-install-recommends -y ca-certificates \
+    && update-ca-certificates
+
+# Install necessary development tools.
+RUN apt-get update -y \
+    && apt-get install -y --no-install-recommends build-essential openssl \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Install Poethepoet directly using pip to type "poe" command without "uv run".
+RUN python3 -m pip install --upgrade pip setuptools requests wheel six urllib3 \
+    && python3 -m pip install uv poethepoet
+
+# Add user. Without this, following process is executed as admin.
+RUN groupadd -g ${GID} ${GROUP_NAME} \
+    && useradd -ms /bin/bash -u ${UID} -g ${GID} ${USER_NAME}
+
+USER ${USER_NAME}
+WORKDIR ${INNER_APPLICATION_PATH}
+
+# When this Dockerfile is used in GitHub Actions, the ${RUN_UV_SYNC_AT_BUILD_TIME} is set to "true" in the workflow file.
+# This leads to the installation of Python packages in the Docker image.
+COPY --chown=${UID}:${GID} ${APPLICATION_PATH}/pyproject.toml ${APPLICATION_PATH}/uv.lock  ./
+RUN test ${RUN_UV_SYNC_AT_BUILD_TIME} = "true" && uv sync --frozen || echo "skip to run uv sync."
+
+CMD ["bash"]

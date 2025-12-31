@@ -1,8 +1,10 @@
-.env.backend
+data/*
 __pycache__
 .coverage
 .mypy_cache
 .pytest_cache
+.ruff_cache
 .venv
-outputs/*
-!outputs/.gitkeep
+!data/.gitkeep
+
+/environments/*.env
