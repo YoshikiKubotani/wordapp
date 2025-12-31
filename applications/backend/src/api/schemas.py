@@ -25,7 +25,10 @@ class WordBase(BaseModel):
 
     term: Annotated[str, Field(..., description="The vocabulary term to memorize.")]
     meaning: Annotated[str, Field(..., description="The meaning of the term.")]
-    note: Annotated[str | None, Field(None, description="An optional hint to help remember the term.")]
+    note: Annotated[
+        str | None,
+        Field(None, description="An optional hint to help remember the term."),
+    ]
 
     @field_validator("term", "meaning")
     @classmethod
@@ -76,6 +79,13 @@ class Word(WordBase):
     """
 
     id: Annotated[str, Field(..., description="A unique identifier for the word.")]
-    created_at: Annotated[datetime, Field(..., alias="createdAt", description="ISO timestamp when the word was created.")]
+    created_at: Annotated[
+        datetime,
+        Field(
+            ...,
+            alias="createdAt",
+            description="ISO timestamp when the word was created.",
+        ),
+    ]
 
     model_config = ConfigDict(populate_by_name=True)

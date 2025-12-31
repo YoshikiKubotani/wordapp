@@ -1,9 +1,10 @@
-from collections.abc import AsyncIterator
-from contextlib import asynccontextmanager
+from collections.abc import Sequence
+from typing import Any
 
-from fastapi import FastAPI, Request, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
+from starlette import status
 from starlette.middleware.cors import CORSMiddleware
 
 from src.api.routes import router
@@ -24,6 +25,7 @@ if settings.CORS_ALLOW_ORIGINS:
     )
 
 app.include_router(router, prefix="/api")
+
 
 @app.exception_handler(HTTPException)
 async def handle_http_exception(_request: Request, exc: HTTPException) -> JSONResponse:
@@ -58,7 +60,7 @@ async def handle_validation_error(
     Returns:
         JSONResponse: JSON response carrying the validation error message.
     """
-    error_details: list[dict[str, Any]] = exc.errors()
+    error_details: Sequence[dict[str, Any]] = exc.errors()
     first_error: dict[str, Any] = error_details[0] if error_details else {}
     error_message: str = first_error.get("msg", "Invalid request payload.")
     response: JSONResponse = JSONResponse(

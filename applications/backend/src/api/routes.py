@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Any
 from uuid import uuid4
 
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, HTTPException
 from fastapi.responses import Response
 from starlette import status
 
@@ -16,6 +16,7 @@ from src.api.schemas import HealthCheckResponse, Word, WordCreate
 router: APIRouter = APIRouter()
 
 WORDS_FILE_PATH: Path = Path(__file__).resolve().parents[2] / "data" / "words.json"
+
 
 def _load_words(storage_path: Path = WORDS_FILE_PATH) -> list[Word]:
     """Load stored words from disk.
@@ -184,7 +185,9 @@ async def delete_word(word_id: str) -> Response:
         HTTPException: If the word is not found.
     """
     existing_words: list[Word] = _load_words()
-    remaining_words: list[Word] = [word for word in existing_words if word.id != word_id]
+    remaining_words: list[Word] = [
+        word for word in existing_words if word.id != word_id
+    ]
     if len(remaining_words) == len(existing_words):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

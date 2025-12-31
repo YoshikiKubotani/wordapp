@@ -1,8 +1,9 @@
 # ruff: noqa: N802
-from typing import Any, Literal
+from typing import Any
 
-from pydantic import BaseModel, computed_field, field_validator, model_validator
+from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
 
 class Settings(BaseSettings):
     """The settings for the application.
@@ -44,5 +45,6 @@ class Settings(BaseSettings):
         if isinstance(v, list) and all(isinstance(item, str) for item in v):
             return v
         raise ValueError(f"Expected list of strings, got {type(v)}")
+
 
 settings = Settings()
