@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import base64
 import json
 import os
 from datetime import datetime, timezone
@@ -14,31 +15,42 @@ from pydantic import ValidationError
 from src.api.schemas import Word, WordCreate
 
 TABLE_NAME_ENV_VAR: str = "WORDS_TABLE_NAME"
-BASE_HEADERS: dict[str, str] = {
-    "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "*",
-}
+BASE_HEADERS: dict[str, str] = {"Content-Type": "application/json"}
 
 
 def _response(
     body: dict[str, Any] | list[dict[str, Any]] | None,
     status_code: HTTPStatus,
+    *,
+    headers: dict[str, str] | None = None,
+    cookies: list[str] | None = None,
 ) -> dict[str, Any]:
-    """Build a standard API Gateway response.
+    """Build a standard API Gateway HTTP API response.
 
     Args:
         body (dict[str, Any] | list[dict[str, Any]] | None): The response payload.
         status_code (HTTPStatus): The HTTP status code to return.
+        headers (dict[str, str] | None): Optional additional headers to include.
+        cookies (list[str] | None): Optional cookies to return.
 
     Returns:
         dict[str, Any]: The formatted API Gateway response.
     """
+    if status_code == HTTPStatus.NO_CONTENT:
+        return {
+            "statusCode": int(status_code),
+            "headers": {**BASE_HEADERS, **(headers or {})},
+            "body": "",
+            **({"cookies": cookies} if cookies else {}),
+        }
+
     payload: dict[str, Any] | list[dict[str, Any]] = body or {}
     serialized_body: str = json.dumps(payload, ensure_ascii=False)
     response: dict[str, Any] = {
         "statusCode": int(status_code),
-        "headers": {**BASE_HEADERS},
+        "headers": {**BASE_HEADERS, **(headers or {})},
         "body": serialized_body,
+        **({"cookies": cookies} if cookies else {}),
     }
     return response
 
@@ -57,8 +69,25 @@ def _error_response(status_code: HTTPStatus, message: str) -> dict[str, Any]:
     return _response(error_body, status_code)
 
 
+def _get_method_and_path(event: dict[str, Any]) -> tuple[str, str]:
+    """Extract the HTTP method and path from an API Gateway HTTP API event, with REST API fallbacks.
+
+    Args:
+        event (dict[str, Any]): The API Gateway event payload.
+
+    Returns:
+        tuple[str, str]: The uppercased HTTP method and request path.
+    """
+    request_context: dict[str, Any] = event.get("requestContext") or {}
+    http_context: dict[str, Any] = request_context.get("http") or {}
+
+    method: str = (http_context.get("method") or event.get("httpMethod") or "").upper()
+    path: str = event.get("rawPath") or event.get("path") or ""
+    return method, path
+
+
 def _parse_body(event: dict[str, Any]) -> dict[str, Any]:
-    """Parse the JSON body from the API Gateway event.
+    """Parse the JSON body from the API Gateway event, handling base64 encoding.
 
     Args:
         event (dict[str, Any]): The API Gateway event payload.
@@ -67,11 +96,17 @@ def _parse_body(event: dict[str, Any]) -> dict[str, Any]:
         dict[str, Any]: The parsed JSON body, or an empty dictionary if not provided.
 
     Raises:
-        ValueError: If the body cannot be parsed as JSON.
+        ValueError: If the body cannot be parsed as JSON or base64 decoding fails.
     """
     raw_body: str | None = event.get("body")
-    if raw_body is None:
+    if raw_body is None or raw_body == "":
         return {}
+
+    if event.get("isBase64Encoded") is True:
+        try:
+            raw_body = base64.b64decode(raw_body).decode("utf-8")
+        except Exception as exc:
+            raise ValueError("Invalid base64 body.") from exc
 
     try:
         body: dict[str, Any] = json.loads(raw_body)
@@ -81,16 +116,21 @@ def _parse_body(event: dict[str, Any]) -> dict[str, Any]:
     return body
 
 
-def _extract_word_id(path: str) -> tuple[bool, str | None]:
-    """Identify whether the request targets the words resource and extract the identifier.
+def _extract_word_id(path: str, event: dict[str, Any]) -> tuple[bool, str | None]:
+    """Identify whether the request targets the words resource and extract the identifier, preferring path parameters.
 
     Args:
         path (str): The request path.
+        event (dict[str, Any]): The API Gateway event payload.
 
     Returns:
         tuple[bool, str | None]: A tuple indicating whether the path is under /words
         and the extracted identifier when present.
     """
+    path_parameters: dict[str, str] = event.get("pathParameters") or {}
+    if "id" in path_parameters and path_parameters["id"]:
+        return True, path_parameters["id"]
+
     segments: list[str] = [segment for segment in path.split("/") if segment]
     if "words" not in segments:
         return False, None
@@ -147,7 +187,11 @@ def _list_words(table: Any) -> dict[str, Any]:
         return _error_response(HTTPStatus.INTERNAL_SERVER_ERROR, str(exc))
 
     items: list[dict[str, Any]] = scan_result.get("Items", [])
-    words: list[Word] = [Word.model_validate(item) for item in items]
+    try:
+        words: list[Word] = [Word.model_validate(item) for item in items]
+    except ValidationError as exc:
+        return _error_response(HTTPStatus.INTERNAL_SERVER_ERROR, str(exc))
+
     serialized_words: list[dict[str, Any]] = [
         _serialize_word(word) for word in words
     ]
@@ -255,7 +299,7 @@ def _delete_word(table: Any, word_id: str) -> dict[str, Any]:
     if deleted_item is None:
         return _error_response(HTTPStatus.NOT_FOUND, "Word not found.")
 
-    return _response({}, HTTPStatus.NO_CONTENT)
+    return _response(None, HTTPStatus.NO_CONTENT)
 
 
 def handler(event: dict[str, Any], context: Any) -> dict[str, Any]:
@@ -268,11 +312,16 @@ def handler(event: dict[str, Any], context: Any) -> dict[str, Any]:
     Returns:
         dict[str, Any]: The HTTP response for API Gateway.
     """
-    path: str = event.get("path", "")
-    http_method: str = event.get("httpMethod", "").upper()
+    method: str
+    path: str
+    method, path = _get_method_and_path(event)
+
+    if method == "OPTIONS":
+        return _response(None, HTTPStatus.NO_CONTENT)
+
     is_word_route: bool
     word_id: str | None
-    is_word_route, word_id = _extract_word_id(path)
+    is_word_route, word_id = _extract_word_id(path, event)
 
     if not is_word_route:
         return _error_response(HTTPStatus.NOT_FOUND, "Route not found.")
@@ -282,16 +331,16 @@ def handler(event: dict[str, Any], context: Any) -> dict[str, Any]:
     except RuntimeError as exc:
         return _error_response(HTTPStatus.INTERNAL_SERVER_ERROR, str(exc))
 
-    if http_method == "GET" and word_id is None:
+    if method == "GET" and word_id is None:
         return _list_words(table)
 
-    if http_method == "POST" and word_id is None:
+    if method == "POST" and word_id is None:
         return _create_word(table, event)
 
-    if http_method == "PUT" and word_id is not None:
+    if method == "PUT" and word_id is not None:
         return _update_word(table, word_id, event)
 
-    if http_method == "DELETE" and word_id is not None:
+    if method == "DELETE" and word_id is not None:
         return _delete_word(table, word_id)
 
     return _error_response(HTTPStatus.METHOD_NOT_ALLOWED, "Unsupported method for this route.")
