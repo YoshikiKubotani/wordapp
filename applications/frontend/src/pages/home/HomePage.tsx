@@ -4,6 +4,7 @@ import { sortedWordsAtom, wordStatsAtom } from '@/features/word-book'
 import { WordForm } from '@/features/word-book/ui/word-form'
 import { WordList } from '@/features/word-book/ui/word-list'
 import { Badge } from '@/shared/ui/badge'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/tabs'
 
 export function HomePage() {
   const stats = useAtomValue(wordStatsAtom)
@@ -31,12 +32,24 @@ export function HomePage() {
         </div>
       </header>
 
-      <main className="grid gap-5 lg:grid-cols-2">
-        <div className="col-span-full">
-          <FlashcardPanel words={words} />
-        </div>
-        <WordForm />
-        <WordList />
+      <main>
+        <Tabs defaultValue="study" className="gap-4">
+          <TabsList>
+            <TabsTrigger value="study">学習</TabsTrigger>
+            <TabsTrigger value="add">追加</TabsTrigger>
+          </TabsList>
+          <TabsContent value="study">
+            <div className="grid gap-5">
+              <FlashcardPanel words={words} />
+            </div>
+          </TabsContent>
+          <TabsContent value="add">
+            <div className="grid gap-5 lg:grid-cols-2">
+              <WordForm />
+              <WordList />
+            </div>
+          </TabsContent>
+        </Tabs>
       </main>
     </div>
   )
